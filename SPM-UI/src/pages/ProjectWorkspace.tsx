@@ -48,13 +48,7 @@ export default function ProjectWorkspace() {
 
   return (
     <Layout>
-      <HorizontalNav
-        items={navItems}
-        workspaceParam={`code=${code}`}
-        workspaceTitle={t(String(project?.nameAr || ''), String(project?.nameEn || project?.nameAr || ''))}
-        workspaceCode={code || String(project?.code || '')}
-        workspaceType="project"
-      />
+
 
       <div className="pure-dashboard-wrapper">
 

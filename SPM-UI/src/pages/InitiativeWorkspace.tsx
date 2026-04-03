@@ -48,7 +48,6 @@ export default function InitiativeWorkspace() {
 
   return (
     <Layout>
-      <HorizontalNav items={navItems} workspaceParam={`code=${code}`} workspaceTitle={t(String(initiative?.nameAr || ''), String(initiative?.nameEn || initiative?.nameAr || ''))} workspaceCode={code || String(initiative?.code || '')} workspaceType="initiative" />
 
       <div className="pure-dashboard-wrapper">
 

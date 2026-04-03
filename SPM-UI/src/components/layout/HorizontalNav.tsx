@@ -25,22 +25,27 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
   const location = useLocation();
   const navigate = useNavigate();
 
+  // CRITICAL FIX: The active state now survives across /list, /add, /edit, and /view!
   const isActive = (item: HorizontalNavItem) => {
     if (!item.route) return false;
-    const itemPath = item.route.split('?')[0];
-    const currentPath = location.pathname;
-    const currentSearch = location.search;
-    if (itemPath === currentPath) {
-      if (item.moduleKey) {
-        return currentSearch.includes(`modulekey=${item.moduleKey}`);
-      }
-      return !currentSearch.includes('modulekey=');
+
+    const currentSearchParams = new URLSearchParams(location.search);
+    const currentModuleKey = currentSearchParams.get('modulekey');
+
+    // If the nav item points to a specific module (like Risks, Issues)
+    if (item.moduleKey) {
+      return currentModuleKey === item.moduleKey;
     }
-    return false;
+
+    // If the nav item is the main dashboard (no modulekey)
+    const itemPath = item.route.split('?')[0];
+    return location.pathname === itemPath && !currentModuleKey;
   };
 
   return (
-    <div className="pure-hnav-container">
+    /* ADDED: border-radius inline to perfectly match the main container's corners */
+    <div className="pure-hnav-container" style={{ borderTopLeftRadius: '24px', borderTopRightRadius: '24px' }}>
+
       {/* Workspace breadcrumb */}
       {workspaceTitle && (
         <div className="pure-hnav-breadcrumb">

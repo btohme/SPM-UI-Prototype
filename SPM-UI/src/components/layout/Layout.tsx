@@ -1,10 +1,12 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import TopHeader from './TopHeader';
-import { MODULE_MAP } from '../../data/modules';
+import HorizontalNav from './HorizontalNav';
+import { MODULE_MAP, PROJECT_WORKSPACE_NAV, INITIATIVE_WORKSPACE_NAV } from '../../data/modules';
 import { useApp } from '../../context/AppContext';
+import { MOCK_DATA } from '../../data/mockData';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -32,26 +34,59 @@ function getPageTitle(pathname: string, search: string) {
 
 export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
   const location = useLocation();
-  const { language } = useApp();
-  const autoTitle = getPageTitle(location.pathname, location.search);
+  const [searchParams] = useSearchParams();
+  const { language, t } = useApp();
 
+  const autoTitle = getPageTitle(location.pathname, location.search);
   const finalTitleAr = titleAr || autoTitle.ar;
   const finalTitleEn = titleEn || autoTitle.en;
 
+  // --- WORKSPACE DETECTION LOGIC ---
+  const projectCode = searchParams.get('projectCode');
+  const initiativeCode = searchParams.get('initiativeCode');
+
+  let workspaceNavItems = null;
+  let workspaceTitle = '';
+  let workspaceCode = '';
+  let workspaceType: 'project' | 'initiative' | undefined = undefined;
+
+  if (projectCode) {
+    const project = (MOCK_DATA.Projects as Record<string, unknown>[]).find(p => p.code === projectCode);
+    if (project) {
+      workspaceTitle = t(String(project.nameAr), String(project.nameEn || project.nameAr));
+      workspaceCode = projectCode;
+      workspaceType = 'project';
+      workspaceNavItems = PROJECT_WORKSPACE_NAV(projectCode);
+    }
+  } else if (initiativeCode) {
+    const initiative = (MOCK_DATA.Initiatives as Record<string, unknown>[]).find(i => i.code === initiativeCode);
+    if (initiative) {
+      workspaceTitle = t(String(initiative.nameAr), String(initiative.nameEn || initiative.nameAr));
+      workspaceCode = initiativeCode;
+      workspaceType = 'initiative';
+      workspaceNavItems = INITIATIVE_WORKSPACE_NAV(initiativeCode);
+    }
+  }
+
   return (
     <div className="pure-layout-root" dir={language === 'ar' ? 'rtl' : 'ltr'}>
-
-      {/* Because .pure-layout-root is a Flex container,
-        and Sidebar has a fixed width of 280px in our pure CSS,
-        it will automatically dock perfectly!
-      */}
       <Sidebar />
 
       <div className="pure-layout-column">
-
         <TopHeader titleAr={finalTitleAr} titleEn={finalTitleEn} />
 
         <main className="pure-layout-main custom-scrollbar">
+
+          {/* THE MAGIC: If a workspace is detected in the URL, the Nav appears globally! */}
+          {workspaceNavItems && (
+            <HorizontalNav
+              items={workspaceNavItems}
+              workspaceTitle={workspaceTitle}
+              workspaceCode={workspaceCode}
+              workspaceType={workspaceType}
+            />
+          )}
+
           <motion.div
             key={location.pathname + location.search}
             initial={{ opacity: 0, y: 12 }}
@@ -62,7 +97,6 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
             {children}
           </motion.div>
         </main>
-
       </div>
     </div>
   );
