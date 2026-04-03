@@ -2,28 +2,21 @@ import { motion } from 'framer-motion';
 
 export function LoadingSpinner({ size = 32, color = '#1B5E3B' }: { size?: number; color?: string }) {
   return (
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
-      style={{ width: size, height: size, borderTopColor: color }}
-      className="rounded-full border-4 border-gray-200"
+    <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
+      style={{ width: size, height: size, borderTopColor: color, borderRadius: '50%', border: '4px solid #e5e7eb', borderTopStyle: 'solid' }}
     />
   );
 }
 
-export function LoadingPage({ messageAr = 'جاري التحميل...', messageEn: _messageEn = 'Loading...' }: { messageAr?: string; messageEn?: string }) {
+export function LoadingPage({ messageAr = 'جاري التحميل...' }: { messageAr?: string; messageEn?: string }) {
   return (
-    <div className="fixed inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-50">
-      <div className="flex flex-col items-center gap-4">
-        <motion.div
-          animate={{ scale: [1, 1.1, 1] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="w-16 h-16 rounded-2xl bg-primary-700 flex items-center justify-center shadow-lg"
-        >
-          <span className="text-white font-bold text-xl">ت</span>
+    <div className="pure-loading-overlay">
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+        <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#1B5E3B', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
+          <span style={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>ت</span>
         </motion.div>
         <LoadingSpinner size={40} />
-        <p className="text-gray-600 text-sm">{messageAr}</p>
+        <p style={{ color: '#4b5563', fontSize: '14px', margin: 0 }}>{messageAr}</p>
       </div>
     </div>
   );
@@ -31,36 +24,29 @@ export function LoadingPage({ messageAr = 'جاري التحميل...', messageE
 
 export function SkeletonRow() {
   return (
-    <div className="flex items-center gap-4 py-3 px-4 border-b border-gray-100">
-      <div className="shimmer w-8 h-8 rounded-full" />
-      <div className="shimmer flex-1 h-4 rounded" />
-      <div className="shimmer w-24 h-4 rounded" />
-      <div className="shimmer w-20 h-6 rounded-full" />
+    <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '12px 16px', borderBottom: '1px solid #f3f4f6' }}>
+      <div className="pure-shimmer" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+      <div className="pure-shimmer" style={{ flex: 1, height: '16px', borderRadius: '4px' }} />
+      <div className="pure-shimmer" style={{ width: '96px', height: '16px', borderRadius: '4px' }} />
     </div>
   );
 }
 
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-xl p-5 border border-gray-100 space-y-3">
-      <div className="shimmer h-5 w-2/3 rounded" />
-      <div className="shimmer h-4 w-full rounded" />
-      <div className="shimmer h-4 w-4/5 rounded" />
-      <div className="flex gap-2 mt-4">
-        <div className="shimmer h-6 w-16 rounded-full" />
-        <div className="shimmer h-6 w-20 rounded-full" />
-      </div>
+    <div className="pure-ui-card pure-ui-card-p-md" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <div className="pure-shimmer" style={{ height: '20px', width: '66%', borderRadius: '4px' }} />
+      <div className="pure-shimmer" style={{ height: '16px', width: '100%', borderRadius: '4px' }} />
+      <div className="pure-shimmer" style={{ height: '16px', width: '80%', borderRadius: '4px' }} />
     </div>
   );
 }
 
 export function TableSkeleton({ rows = 6 }: { rows?: number }) {
   return (
-    <div className="bg-white rounded-xl overflow-hidden border border-gray-100">
-      <div className="bg-primary-700 h-10" />
-      {Array.from({ length: rows }).map((_, i) => (
-        <SkeletonRow key={i} />
-      ))}
+    <div className="pure-table-container">
+      <div style={{ background: '#1B5E3B', height: '40px' }} />
+      {Array.from({ length: rows }).map((_, i) => <SkeletonRow key={i} />)}
     </div>
   );
 }

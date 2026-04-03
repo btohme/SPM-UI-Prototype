@@ -40,22 +40,22 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
   };
 
   return (
-    <div className="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-gray-200 z-20 shadow-sm -mx-8 -mt-8 mb-8">
+    <div className="pure-hnav-container">
       {/* Workspace breadcrumb */}
       {workspaceTitle && (
-        <div className="flex items-center gap-3 px-8 py-2.5 bg-gradient-to-r from-primary-50 to-transparent border-b border-gray-100">
-          <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm border border-primary-100">
-            <span className="text-xs font-bold text-gray-500">{t('مساحة العمل', 'Workspace')}:</span>
-            <span className="text-xs font-extrabold text-primary-700">{workspaceTitle}</span>
+        <div className="pure-hnav-breadcrumb">
+          <div className="pure-hnav-badge">
+            <span style={{ fontSize: '12px', fontWeight: '700', color: '#6b7280' }}>{t('مساحة العمل', 'Workspace')}:</span>
+            <span style={{ fontSize: '12px', fontWeight: '900', color: '#1B5E3B' }}>{workspaceTitle}</span>
           </div>
           {workspaceCode && (
-            <span className="text-xs font-bold text-gray-400 bg-gray-100 rounded-md px-2 py-1 shadow-inner">{workspaceCode}</span>
+            <span className="pure-hnav-code">{workspaceCode}</span>
           )}
         </div>
       )}
 
       {/* Nav items */}
-      <div className="flex items-center overflow-x-auto px-8 gap-2 py-2 no-scrollbar">
+      <div className="pure-hnav-list no-scrollbar">
         {items.map(item => {
           const active = isActive(item);
           return (
@@ -63,25 +63,19 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
               key={item.key}
               whileHover={{ y: -2 }}
               onClick={() => item.route && navigate(item.route)}
-              className={`
-                relative flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold
-                whitespace-nowrap transition-all duration-300 shrink-0
-                ${active
-                  ? 'text-primary-700 bg-primary-50/80 shadow-sm'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                }
-              `}
+              className={`pure-hnav-item ${active ? 'active' : ''}`}
             >
               {item.icon && (
-                <span className={`transition-colors duration-300 ${active ? 'text-primary-600' : 'text-gray-400'}`}>
+                <span style={{ color: active ? '#1B5E3B' : '#9ca3af', transition: 'color 0.3s' }}>
                   <HNavIcon name={item.icon} size={18} />
                 </span>
               )}
               {t(item.labelAr, item.labelEn)}
+
               {active && (
                 <motion.div
                   layoutId={`horizontal-nav-indicator-${workspaceType}`}
-                  className="absolute bottom-0 start-4 end-4 h-1 bg-primary-600 rounded-t-full shadow-[0_-2px_8px_rgba(27,94,59,0.4)]"
+                  className="pure-hnav-indicator"
                 />
               )}
             </motion.button>
