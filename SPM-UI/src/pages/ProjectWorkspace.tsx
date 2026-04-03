@@ -1,12 +1,11 @@
 import { motion } from 'framer-motion';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { AlertTriangle, Flag, Users, FileText, CheckCircle, Clock, Activity } from 'lucide-react';
+import { AlertTriangle, Flag, Users, CheckCircle, Clock, Activity } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import Layout from '../components/layout/Layout';
-import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import { useApp } from '../context/AppContext';

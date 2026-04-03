@@ -166,7 +166,7 @@ export default function Dashboard() {
             { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={24} />, moduleKey: 'Initiatives' },
             { titleAr: 'الأهداف', titleEn: 'Objectives', value: 64, sub: t('هدف استراتيجي', 'Strategic'), color: '#7B1FA2', icon: <Target size={24} />, moduleKey: 'Objectives' },
             { titleAr: 'المؤشرات', titleEn: 'KPIs', value: 156, sub: t('مؤشر أداء', 'Indicators'), color: '#E65100', icon: <BarChart2 size={24} />, moduleKey: 'KPIs' },
-          ].map((s, i) => (
+          ].map((s) => (
             <div key={s.titleAr} onClick={() => navigate(`/list?modulekey=${s.moduleKey}`)} className="pure-stat-card">
               <div style={{ height: '6px', width: '100%', backgroundColor: s.color }} />
               <div style={{ padding: '24px' }}>

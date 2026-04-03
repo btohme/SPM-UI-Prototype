@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { AlertTriangle, Flag, Users, CheckCircle, Activity, TrendingUp } from 'lucide-react';
+import { AlertTriangle, Flag, Users, CheckCircle, Activity } from 'lucide-react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
