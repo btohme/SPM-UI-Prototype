@@ -43,7 +43,23 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
   const sorted = [...data].sort((a, b) => { if (!sortCol) return 0; const av = String(a[sortCol] ?? ''), bv = String(b[sortCol] ?? ''); return sortDir === 'asc' ? av.localeCompare(bv, 'ar') : bv.localeCompare(av, 'ar'); });
   const totalPages = Math.max(1, Math.ceil(sorted.length / PER_PAGE));
   const pageData = sorted.slice((page - 1) * PER_PAGE, page * PER_PAGE);
-  const buildRoute = (suffix: string, id?: string) => { let base = `/${suffix}?modulekey=${moduleKey}`; if (id) base += `&itemid=${id}`; if (workspaceParam) base += `&${workspaceParam}`; return base; };
+
+  // THE FIX: Smart Route Builder
+  // If we click a Project or Initiative row, it automatically injects its code to trigger the Workspace scope!
+  const buildRoute = (suffix: string, id?: string) => {
+    let base = `/${suffix}?modulekey=${moduleKey}`;
+    if (id) base += `&itemid=${id}`;
+
+    if (moduleKey === 'Projects' && id) {
+      base += `&projectCode=${id}`;
+    } else if (moduleKey === 'Initiatives' && id) {
+      base += `&initiativeCode=${id}`;
+    } else if (workspaceParam) {
+      base += `&${workspaceParam}`;
+    }
+
+    return base;
+  };
 
   if (loading) return <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>{Array.from({ length: 6 }).map((_, i) => <div key={i} className="pure-shimmer" style={{ height: '48px', borderRadius: '8px' }} />)}</div>;
 
@@ -80,7 +96,10 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
                 <tr><td colSpan={columns.length + 3} style={{ textAlign: 'center', padding: '48px', color: '#9ca3af' }}>{t('لا توجد بيانات', 'No data found')}</td></tr>
               ) : (
                 pageData.map((row, idx) => {
-                  const id = String(row.id ?? row.code ?? idx); const expanded = expandedRows.has(id);
+                  // THE FIX: Prioritize `row.code` over `row.id` so the Workspace Route gets the correct SC-26-XXXX format
+                  const id = String(row.code ?? row.id ?? idx);
+                  const expanded = expandedRows.has(id);
+
                   return (
                     <React.Fragment key={id}>
                       <motion.tr initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }} transition={{ delay: idx * 0.04 }}>

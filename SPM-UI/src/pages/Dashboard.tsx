@@ -127,7 +127,7 @@ function ProjectListCard() {
 
       <div>
         {filtered.slice(0, 4).map((p, i) => (
-          <motion.button key={i} onClick={() => navigate(`/workspace/project?code=${p.code}`)} className="pure-list-item">
+          <motion.button key={i} onClick={() => navigate(`/workspace/project?projectCode=${p.code}`)} className="pure-list-item">
             <div className="pure-flex-start">
               <div className="pure-list-icon" style={{ backgroundColor: statusColor(p.status) }}>
                 <FolderOpen size={16} />

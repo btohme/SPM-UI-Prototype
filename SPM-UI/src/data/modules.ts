@@ -155,8 +155,8 @@ export const SIDE_NAV_ITEMS: NavItem[] = [
 
 // ─── Project Workspace Horizontal Nav ─────────────────────────────────────
 export const PROJECT_WORKSPACE_NAV = (projectCode: string): HorizontalNavItem[] => [
-  { key: 'pw-dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: 'LayoutDashboard', route: `/workspace/project?code=${projectCode}` },
-  { key: 'pw-details', labelAr: 'التفاصيل', labelEn: 'Details', icon: 'Info', moduleKey: 'Projects', route: `/view?modulekey=Projects&itemid=${projectCode}` },
+  { key: 'pw-dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: 'LayoutDashboard', route: `/workspace/project?projectCode=${projectCode}` },
+  { key: 'pw-details', labelAr: 'التفاصيل', labelEn: 'Details', icon: 'Info', moduleKey: 'Projects', route: `/view?modulekey=Projects&itemid=${projectCode}&projectCode=${projectCode}` },
   { key: 'pw-risks', labelAr: 'المخاطر', labelEn: 'Risks', icon: 'ShieldAlert', moduleKey: 'ProjectRisks', route: `/list?modulekey=ProjectRisks&projectCode=${projectCode}` },
   { key: 'pw-issues', labelAr: 'القضايا', labelEn: 'Issues', icon: 'AlertOctagon', moduleKey: 'ProjectIssues', route: `/list?modulekey=ProjectIssues&projectCode=${projectCode}` },
   { key: 'pw-milestones', labelAr: 'المعالم', labelEn: 'Milestones', icon: 'Flag', moduleKey: 'ProjectMilestones', route: `/list?modulekey=ProjectMilestones&projectCode=${projectCode}` },
@@ -175,8 +175,8 @@ import type { HorizontalNavItem } from '../types';
 
 // ─── Initiative Workspace Horizontal Nav ──────────────────────────────────
 export const INITIATIVE_WORKSPACE_NAV = (initiativeCode: string): HorizontalNavItem[] => [
-  { key: 'iw-dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: 'LayoutDashboard', route: `/workspace/initiative?code=${initiativeCode}` },
-  { key: 'iw-details', labelAr: 'التفاصيل', labelEn: 'Details', icon: 'Info', moduleKey: 'Initiatives', route: `/view?modulekey=Initiatives&itemid=${initiativeCode}` },
+  { key: 'iw-dashboard', labelAr: 'لوحة التحكم', labelEn: 'Dashboard', icon: 'LayoutDashboard', route: `/workspace/initiative?initiativeCode=${initiativeCode}` },
+  { key: 'iw-details', labelAr: 'التفاصيل', labelEn: 'Details', icon: 'Info', moduleKey: 'Initiatives', route: `/view?modulekey=Initiatives&itemid=${initiativeCode}&initiativeCode=${initiativeCode}` },
   { key: 'iw-risks', labelAr: 'المخاطر', labelEn: 'Risks', icon: 'ShieldAlert', moduleKey: 'InitiativeRisks', route: `/list?modulekey=InitiativeRisks&initiativeCode=${initiativeCode}` },
   { key: 'iw-issues', labelAr: 'القضايا', labelEn: 'Issues', icon: 'AlertOctagon', moduleKey: 'InitiativeIssues', route: `/list?modulekey=InitiativeIssues&initiativeCode=${initiativeCode}` },
   { key: 'iw-milestones', labelAr: 'المعالم', labelEn: 'Milestones', icon: 'Flag', moduleKey: 'InitiativeMilestones', route: `/list?modulekey=InitiativeMilestones&initiativeCode=${initiativeCode}` },

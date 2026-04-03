@@ -6,12 +6,11 @@ import {
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import Layout from '../components/layout/Layout';
-import HorizontalNav from '../components/layout/HorizontalNav';
+import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
-import { PROJECT_WORKSPACE_NAV } from '../data/modules';
 
 const RISK_COLORS = ['#B71C1C', '#E65100', '#F57F17'];
 const STATUS_PIE = ['#1B5E3B', '#F57F17', '#B71C1C', '#283593', '#455A64'];
@@ -20,7 +19,9 @@ export default function ProjectWorkspace() {
   const { t } = useApp();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const code = searchParams.get('code') || '';
+
+  // Standardized URL Parameter!
+  const code = searchParams.get('projectCode') || searchParams.get('code') || '';
 
   const projects = (MOCK_DATA.Projects as Record<string, unknown>[]) || [];
   const project = projects.find(p => p.code === code) || projects[0];
@@ -30,8 +31,6 @@ export default function ProjectWorkspace() {
   const milestones = (MOCK_DATA.ProjectMilestones as Record<string, unknown>[]) || [];
   const tasks = (MOCK_DATA.Tasks as Record<string, unknown>[]) || [];
   const moms = (MOCK_DATA.ProjectMOMs as Record<string, unknown>[]) || [];
-
-  const navItems = PROJECT_WORKSPACE_NAV(code);
 
   const taskStatusData = [
     { name: t('مكتملة', 'Completed'), value: tasks.filter(t => t.status === 'completed').length },
@@ -48,8 +47,6 @@ export default function ProjectWorkspace() {
 
   return (
     <Layout>
-
-
       <div className="pure-dashboard-wrapper">
 
         {/* Project Hero Banner */}
@@ -67,15 +64,14 @@ export default function ProjectWorkspace() {
             </div>
           </div>
 
-          {/* Circular Progress SVG */}
           <div className="pure-circle-wrapper">
             <svg viewBox="0 0 36 36" className="pure-circle-svg">
               <circle cx="18" cy="18" r="15.915" className="pure-circle-bg" />
               <motion.circle cx="18" cy="18" r="15.915" className="pure-circle-fg" strokeDasharray={`${project?.completion || 0}, 100`} initial={{ strokeDasharray: '0, 100' }} animate={{ strokeDasharray: `${project?.completion || 0}, 100` }} transition={{ duration: 1.2 }} />
             </svg>
             <div className="pure-circle-text">
-              <span className="pure-circle-value">{String(project?.completion || 0)}%</span>
-              <span className="pure-circle-label">{t('إنجاز', 'Done')}</span>
+              <span className="pure-circle-value" style={{ fontSize: '24px', fontWeight: '900' }}>{String(project?.completion || 0)}%</span>
+              <span className="pure-circle-label" style={{ fontSize: '11px', opacity: 0.8 }}>{t('إنجاز', 'Done')}</span>
             </div>
           </div>
         </motion.div>

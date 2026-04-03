@@ -7,7 +7,8 @@ import { useApp } from '../../context/AppContext';
 import { SIDE_NAV_ITEMS } from '../../data/modules';
 import { IMPORTANT_LINKS } from '../../data/mockData';
 import type { NavItem } from '../../types';
-
+// IMPORT YOUR LOGO HERE
+import mainLogo from '../../assets/main-logo.png';
 // Dynamic icon renderer
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function NavIcon({ name, size = 18 }: { name?: string; size?: number }) {
@@ -97,15 +98,12 @@ export default function Sidebar() {
       {/* Logo Area */}
       <div className="pure-logo-area" onClick={() => navigate('/')}>
         <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '64px', height: '64px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
-            <svg viewBox="0 0 40 40" width="32" height="32" fill="none">
-              <circle cx="20" cy="20" r="19" stroke="white" strokeWidth="2.5"/>
-              <path d="M10 20 Q20 8 30 20 Q20 32 10 20Z" fill="white" opacity="0.9"/>
-            </svg>
-          </div>
-          <div style={{ textAlign: 'center' }}>
-            <p style={{ color: 'white', fontWeight: '900', fontSize: '28px', margin: '0 0 4px 0', letterSpacing: '-0.5px' }}>تنمية</p>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', margin: 0 }}>البرنامج الوطني للتنمية</p>
+          <div style={{ width: '100%', height: '74px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+           <img
+            src={mainLogo}
+            alt="تنمية البرنامج الوطني للتنمية"
+            className="w-32 md:w-36 h-auto object-contain drop-shadow-lg"
+          />
           </div>
         </motion.div>
       </div>

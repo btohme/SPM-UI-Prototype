@@ -20,12 +20,11 @@ interface HorizontalNavProps {
   workspaceParam?: string;
 }
 
-export default function HorizontalNav({ items, workspaceTitle, workspaceCode, workspaceType, workspaceParam: _workspaceParam }: HorizontalNavProps) {
+export default function HorizontalNav({ items, workspaceTitle, workspaceCode, workspaceType }: HorizontalNavProps) {
   const { t } = useApp();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // CRITICAL FIX: The active state now survives across /list, /add, /edit, and /view!
   const isActive = (item: HorizontalNavItem) => {
     if (!item.route) return false;
 
@@ -42,8 +41,30 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
     return location.pathname === itemPath && !currentModuleKey;
   };
 
+  // THE FIX: Smart Interceptor
+  // Automatically upgrades old `code=` params from modules.ts to the new standard
+  const handleNavClick = (route?: string) => {
+    if (!route) return;
+    let finalRoute = route;
+
+    if (workspaceType === 'project' && workspaceCode) {
+      finalRoute = finalRoute.replace(`code=${workspaceCode}`, `projectCode=${workspaceCode}`);
+      // Failsafe: If the route is entirely missing the parameter, append it
+      if (!finalRoute.includes('projectCode=')) {
+        finalRoute += finalRoute.includes('?') ? `&projectCode=${workspaceCode}` : `?projectCode=${workspaceCode}`;
+      }
+    } else if (workspaceType === 'initiative' && workspaceCode) {
+      finalRoute = finalRoute.replace(`code=${workspaceCode}`, `initiativeCode=${workspaceCode}`);
+      // Failsafe: If the route is entirely missing the parameter, append it
+      if (!finalRoute.includes('initiativeCode=')) {
+        finalRoute += finalRoute.includes('?') ? `&initiativeCode=${workspaceCode}` : `?initiativeCode=${workspaceCode}`;
+      }
+    }
+
+    navigate(finalRoute);
+  };
+
   return (
-    /* ADDED: border-radius inline to perfectly match the main container's corners */
     <div className="pure-hnav-container" style={{ borderTopLeftRadius: '24px', borderTopRightRadius: '24px' }}>
 
       {/* Workspace breadcrumb */}
@@ -67,7 +88,7 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
             <motion.button
               key={item.key}
               whileHover={{ y: -2 }}
-              onClick={() => item.route && navigate(item.route)}
+              onClick={() => handleNavClick(item.route)}
               className={`pure-hnav-item ${active ? 'active' : ''}`}
             >
               {item.icon && (

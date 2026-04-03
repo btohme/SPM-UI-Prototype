@@ -6,12 +6,10 @@ import {
   PieChart, Pie, Cell, Legend,
 } from 'recharts';
 import Layout from '../components/layout/Layout';
-import HorizontalNav from '../components/layout/HorizontalNav';
 import Badge from '../components/ui/Badge';
 import Avatar from '../components/ui/Avatar';
 import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
-import { INITIATIVE_WORKSPACE_NAV } from '../data/modules';
 
 const STATUS_PIE = ['#1B5E3B', '#E8A020', '#B71C1C', '#283593'];
 
@@ -19,7 +17,9 @@ export default function InitiativeWorkspace() {
   const { t } = useApp();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const code = searchParams.get('code') || '';
+
+  // Standardized URL Parameter!
+  const code = searchParams.get('initiativeCode') || searchParams.get('code') || '';
 
   const initiatives = (MOCK_DATA.Initiatives as Record<string, unknown>[]) || [];
   const initiative = initiatives.find(i => i.code === code) || initiatives[0];
@@ -30,8 +30,6 @@ export default function InitiativeWorkspace() {
   const tasks = (MOCK_DATA.Tasks as Record<string, unknown>[]) || [];
   const stakeholders = (MOCK_DATA.Stakeholders as Record<string, unknown>[]) || [];
   const benefits = (MOCK_DATA.Benefits as Record<string, unknown>[]) || [];
-
-  const navItems = INITIATIVE_WORKSPACE_NAV(code);
 
   const taskStatusData = [
     { name: t('مكتملة', 'Done'), value: tasks.filter(t => t.status === 'completed').length },
@@ -48,7 +46,6 @@ export default function InitiativeWorkspace() {
 
   return (
     <Layout>
-
       <div className="pure-dashboard-wrapper">
 
         {/* Initiative Hero Banner */}
@@ -134,7 +131,7 @@ export default function InitiativeWorkspace() {
           </div>
         </div>
 
-        {/* Risks & Milestones */}
+        {/* Lists */}
         <div className="pure-grid-2">
           <div className="pure-card">
             <div className="pure-card-header">
@@ -147,7 +144,6 @@ export default function InitiativeWorkspace() {
                   <div className="pure-mini-icon" style={{ backgroundColor: '#fef2f2', color: '#b91c1c' }}><AlertTriangle size={14} /></div>
                   <div className="pure-mini-text">
                     <p className="pure-mini-title">{t(String(r.nameAr), String(r.nameEn || r.nameAr))}</p>
-                    <p className="pure-mini-sub">{t(String(r.ownerAr), String(r.ownerEn || r.ownerAr))}</p>
                   </div>
                   <Badge label={t(r.level === 'high' ? 'مرتفع' : r.level === 'medium' ? 'متوسط' : 'منخفض', String(r.level))} color={r.level === 'high' ? '#B71C1C' : r.level === 'medium' ? '#E65100' : '#2E7D32'} />
                 </button>
@@ -166,56 +162,8 @@ export default function InitiativeWorkspace() {
                   <div className="pure-mini-icon" style={{ backgroundColor: '#eff6ff', color: '#1d4ed8' }}><Flag size={14} /></div>
                   <div className="pure-mini-text">
                     <p className="pure-mini-title">{t(String(m.nameAr), String(m.nameEn || m.nameAr))}</p>
-                    <div className="pure-progress-bar-container" style={{ marginTop: '4px' }}>
-                      <div className="pure-progress-bar-bg" style={{ height: '6px' }}><div style={{ height: '100%', width: `${m.completion}%`, backgroundColor: '#2563eb' }} /></div>
-                      <span style={{ fontSize: '11px', color: '#9ca3af' }}>{String(m.completion)}%</span>
-                    </div>
                   </div>
                 </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Stakeholders & Benefits */}
-        <div className="pure-grid-2">
-          <div className="pure-card">
-            <div className="pure-card-header">
-              <span className="pure-card-title">{t('أصحاب المصلحة', 'Stakeholders')}</span>
-              <button onClick={() => navigate(`/list?modulekey=Stakeholders&initiativeCode=${code}`)} className="pure-btn-link">{t('عرض الكل', 'View All')}</button>
-            </div>
-            <div className="pure-mini-list">
-              {stakeholders.map((s, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', background: '#f9fafb', borderRadius: '8px' }}>
-                  <Avatar name={String(s.nameAr)} size="sm" />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937', margin: 0 }}>{t(String(s.nameAr), String(s.nameEn || s.nameAr))}</p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: '2px 0 0 0' }}>{t(String(s.role || ''), String(s.role || ''))}</p>
-                  </div>
-                  <Badge label={t(String(s.influenceLevel || ''), String(s.influenceLevel || ''))} color="#006064" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="pure-card">
-            <div className="pure-card-header">
-              <span className="pure-card-title">{t('الفوائد', 'Benefits')}</span>
-              <button onClick={() => navigate(`/list?modulekey=Benefits&initiativeCode=${code}`)} className="pure-btn-link">{t('عرض الكل', 'View All')}</button>
-            </div>
-            <div className="pure-mini-list">
-              {benefits.map((b, i) => (
-                <div key={i} style={{ padding: '12px', border: '1px solid #f3f4f6', borderRadius: '8px' }}>
-                  <div className="pure-flex-between" style={{ marginBottom: '8px' }}>
-                    <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937', margin: 0 }}>{t(String(b.nameAr), String(b.nameEn || b.nameAr))}</p>
-                    <TrendingUp size={14} color="#0d9488" />
-                  </div>
-                  <div className="pure-flex-start" style={{ gap: '12px', fontSize: '12px', color: '#6b7280' }}>
-                    <span>{t('مخطط', 'Planned')}: <b style={{ color: '#374151' }}>{String(b.plannedValue || 0)}</b></span>
-                    <span>•</span>
-                    <span>{t('فعلي', 'Actual')}: <b style={{ color: '#0f766e' }}>{String(b.actualValue || 0)}</b></span>
-                  </div>
-                </div>
               ))}
             </div>
           </div>

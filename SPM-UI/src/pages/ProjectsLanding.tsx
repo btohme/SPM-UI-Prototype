@@ -118,7 +118,7 @@ export default function ProjectsLanding() {
           </div>
           <div className="pure-grid-3">
             {projects.map((p, i) => (
-              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} onClick={() => navigate(`/workspace/project?code=${p.code}`)} className="pure-item-card">
+              <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.07 }} onClick={() => navigate(`/workspace/project?projectCode=${p.code}`)} className="pure-item-card">
                 <div className="pure-flex-between" style={{ marginBottom: '12px' }}>
                   <div className="pure-flex-start" style={{ gap: '8px' }}>
                     <div style={{ width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', backgroundColor: PHASE_COLORS[String(p.status)] || '#78909C' }}>

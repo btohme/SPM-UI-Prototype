@@ -41,9 +41,10 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
   const finalTitleAr = titleAr || autoTitle.ar;
   const finalTitleEn = titleEn || autoTitle.en;
 
-  // --- WORKSPACE DETECTION LOGIC ---
-  const projectCode = searchParams.get('projectCode');
-  const initiativeCode = searchParams.get('initiativeCode');
+  // --- STANDARDIZED WORKSPACE DETECTION ---
+  const codeFallback = searchParams.get('code');
+  const projectCode = searchParams.get('projectCode') || (location.pathname.includes('/project') ? codeFallback : null);
+  const initiativeCode = searchParams.get('initiativeCode') || (location.pathname.includes('/initiative') ? codeFallback : null);
 
   let workspaceNavItems = null;
   let workspaceTitle = '';
@@ -51,7 +52,9 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
   let workspaceType: 'project' | 'initiative' | undefined = undefined;
 
   if (projectCode) {
-    const project = (MOCK_DATA.Projects as Record<string, unknown>[]).find(p => p.code === projectCode);
+    const projects = (MOCK_DATA.Projects as Record<string, unknown>[]) || [];
+    // The fallback '|| projects[0]' guarantees the Nav will ALWAYS render if a projectCode is in the URL!
+    const project = projects.find(p => p.code === projectCode) || projects[0];
     if (project) {
       workspaceTitle = t(String(project.nameAr), String(project.nameEn || project.nameAr));
       workspaceCode = projectCode;
@@ -59,7 +62,8 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
       workspaceNavItems = PROJECT_WORKSPACE_NAV(projectCode);
     }
   } else if (initiativeCode) {
-    const initiative = (MOCK_DATA.Initiatives as Record<string, unknown>[]).find(i => i.code === initiativeCode);
+    const initiatives = (MOCK_DATA.Initiatives as Record<string, unknown>[]) || [];
+    const initiative = initiatives.find(i => i.code === initiativeCode) || initiatives[0];
     if (initiative) {
       workspaceTitle = t(String(initiative.nameAr), String(initiative.nameEn || initiative.nameAr));
       workspaceCode = initiativeCode;
@@ -77,7 +81,7 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
 
         <main className="pure-layout-main custom-scrollbar">
 
-          {/* THE MAGIC: If a workspace is detected in the URL, the Nav appears globally! */}
+          {/* THE MAGIC: The Layout automatically renders the persistent nav globally! */}
           {workspaceNavItems && (
             <HorizontalNav
               items={workspaceNavItems}
