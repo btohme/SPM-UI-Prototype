@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { AppContextType, Language, Notification, User } from '../types';
 import { NOTIFICATION_ALERTS } from '../data/mockData';
 
@@ -22,10 +22,14 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [importantLinksOpen, setImportantLinksOpen] = useState(false);
 
+  // CRITICAL FIX: Ensure the HTML tag gets the direction immediately on load!
+  useEffect(() => {
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = language;
+  }, [language]);
+
   const setLanguage = useCallback((lang: Language) => {
     setLanguageState(lang);
-    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    document.documentElement.lang = lang;
   }, []);
 
   const t = useCallback(

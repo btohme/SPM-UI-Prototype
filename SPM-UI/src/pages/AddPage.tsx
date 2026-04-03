@@ -22,19 +22,13 @@ export default function AddPage() {
   const initiativeCode = searchParams.get('initiativeCode') || '';
 
   const config = getModuleConfig(moduleKey);
-  const workspaceParam = projectCode
-    ? `projectCode=${projectCode}`
-    : initiativeCode
-    ? `initiativeCode=${initiativeCode}`
-    : '';
+  const workspaceParam = projectCode ? `projectCode=${projectCode}` : initiativeCode ? `initiativeCode=${initiativeCode}` : '';
 
   const tabs = config.tabs;
   const currentTab = tabs[activeTab];
   const fieldsForTab = config.fields.filter(f => f.tab === currentTab?.key);
 
-  const handleChange = (key: string, value: unknown) => {
-    setFormData(prev => ({ ...prev, [key]: value }));
-  };
+  const handleChange = (key: string, value: unknown) => setFormData(prev => ({ ...prev, [key]: value }));
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -55,126 +49,75 @@ export default function AddPage() {
   };
 
   if (!moduleKey) {
-    return (
-      <Layout>
-        <p className="text-gray-400">{t('الرجاء تحديد الوحدة', 'Please specify a module')}</p>
-      </Layout>
-    );
+    return <Layout><p style={{ color: '#9ca3af' }}>{t('الرجاء تحديد الوحدة', 'Please specify a module')}</p></Layout>;
   }
 
   return (
     <Layout>
-      <div className="max-w-5xl">
+      <div className="pure-page-container">
+
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 mb-6 text-sm">
-          <button onClick={handleCancel} className="text-gray-400 hover:text-primary-700 transition-colors font-medium">
-            {t(config.nameAr, config.nameEn)}
-          </button>
-          <ChevronLeft size={14} className="text-gray-300" />
-          <span className="text-gray-800 font-semibold">{t('إضافة جديد', 'New Record')}</span>
+        <nav className="pure-breadcrumb">
+          <button onClick={handleCancel} className="pure-breadcrumb-link">{t(config.nameAr, config.nameEn)}</button>
+          <ChevronLeft size={14} color="#d1d5db" />
+          <span className="pure-breadcrumb-current">{t('إضافة جديد', 'New Record')}</span>
         </nav>
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="pure-content-card">
           {/* Tabs */}
-          <div className="border-b border-gray-200 overflow-x-auto bg-gray-50/50">
-            <div className="flex min-w-max px-6">
-              {tabs.map((tab, idx) => (
-                <button
-                  key={tab.key}
-                  onClick={() => setActiveTab(idx)}
-                  className={`
-                    px-5 py-4 text-sm font-semibold whitespace-nowrap border-b-2 -mb-px transition-all duration-200
-                    ${activeTab === idx
-                      ? 'border-primary-700 text-primary-700 bg-white'
-                      : 'border-transparent text-gray-500 hover:text-gray-800 hover:border-gray-300'
-                    }
-                  `}
-                >
-                  {t(tab.labelAr, tab.labelEn)}
-                </button>
-              ))}
-            </div>
+          <div className="pure-tabs-header no-scrollbar">
+            {tabs.map((tab, idx) => (
+              <button
+                key={tab.key}
+                onClick={() => setActiveTab(idx)}
+                className={`pure-tab-btn ${activeTab === idx ? 'active' : ''}`}
+              >
+                {t(tab.labelAr, tab.labelEn)}
+              </button>
+            ))}
           </div>
 
-          {/* Form */}
-          <div className="p-7">
-            <motion.div
-              key={currentTab?.key}
-              initial={{ opacity: 0, x: 10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-            >
+          {/* Form Body */}
+          <div className="pure-card-body">
+            <motion.div key={currentTab?.key} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
               {fieldsForTab.length === 0 ? (
-                <p className="text-gray-400 text-sm text-center py-12">
+                <p style={{ color: '#9ca3af', fontSize: '14px', textAlign: 'center', padding: '48px 0' }}>
                   {t('لا توجد حقول في هذا التبويب', 'No fields in this tab')}
                 </p>
               ) : (
-                <div className="grid grid-cols-2 gap-x-8 gap-y-6">
+                <div className="pure-form-grid">
                   {fieldsForTab.map((field: FieldConfig) => (
-                    <FormField
-                      key={field.key}
-                      field={field}
-                      value={formData[field.key] ?? ''}
-                      onChange={handleChange}
-                    />
+                    <FormField key={field.key} field={field} value={formData[field.key] ?? ''} onChange={handleChange} />
                   ))}
                 </div>
               )}
             </motion.div>
 
-            {/* Tab navigation */}
-            <div className="flex justify-between mt-6 pt-4 border-t border-gray-100">
-              <button
-                onClick={() => setActiveTab(t => Math.max(0, t - 1))}
-                disabled={activeTab === 0}
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 border border-gray-200 rounded-lg disabled:opacity-40 hover:bg-gray-50 transition-colors"
-              >
-                <ChevronRight size={16} />
-                {t('السابق', 'Previous')}
-              </button>
-              {activeTab < tabs.length - 1 && (
-                <button
-                  onClick={() => setActiveTab(t => t + 1)}
-                  className="flex items-center gap-2 px-4 py-2 text-sm bg-primary-50 text-primary-700 border border-primary-200 rounded-lg hover:bg-primary-100 transition-colors"
-                >
-                  {t('التالي', 'Next')}
-                  <ChevronLeft size={16} />
+            {/* Tab Navigation & Submit */}
+            <div className="pure-footer-actions" style={{ justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={() => setActiveTab(t => Math.max(0, t - 1))} disabled={activeTab === 0} className="pure-btn-secondary" style={{ opacity: activeTab === 0 ? 0.5 : 1 }}>
+                  <ChevronRight size={16} /> {t('السابق', 'Previous')}
                 </button>
-              )}
+                {activeTab < tabs.length - 1 && (
+                  <button onClick={() => setActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e8f5ee', color: '#1B5E3B', borderColor: '#a7f3d0' }}>
+                    {t('التالي', 'Next')} <ChevronLeft size={16} />
+                  </button>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={handleCancel} className="pure-btn-secondary">
+                  <X size={16} /> {t('إلغاء', 'Cancel')}
+                </button>
+                <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={handleSubmit} disabled={loading || submitted} className="pure-btn-primary" style={{ opacity: (loading || submitted) ? 0.7 : 1 }}>
+                  {loading ? <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.6, repeat: Infinity, ease: 'linear' }} style={{ width: '16px', height: '16px', border: '2px solid rgba(255,255,255,0.3)', borderTopColor: 'white', borderRadius: '50%' }} /> : submitted ? <span>✓</span> : <Send size={16} />}
+                  {submitted ? t('تم الإرسال!', 'Submitted!') : t('إرسال', 'Submit')}
+                </motion.button>
+              </div>
             </div>
+
           </div>
-        </div>
-
-        {/* Footer Actions */}
-        <div className="flex items-center justify-start gap-3 mt-4 pt-4 border-t border-gray-200">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleSubmit}
-            disabled={loading || submitted}
-            className="flex items-center gap-2 px-6 py-2.5 bg-primary-700 text-white rounded-xl font-medium hover:bg-primary-800 disabled:opacity-60 transition-all shadow-sm"
-          >
-            {loading ? (
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{ duration: 0.6, repeat: Infinity, ease: 'linear' }}
-                className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full"
-              />
-            ) : submitted ? (
-              <span>✓</span>
-            ) : (
-              <Send size={16} />
-            )}
-            {submitted ? t('تم الإرسال!', 'Submitted!') : t('إرسال', 'Submit')}
-          </motion.button>
-
-          <button
-            onClick={handleCancel}
-            className="flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors text-sm font-medium"
-          >
-            <X size={16} />
-            {t('إلغاء', 'Cancel')}
-          </button>
         </div>
       </div>
     </Layout>

@@ -43,33 +43,19 @@ function SideNavItem({ item, level = 0 }: { item: NavItem; level?: number }) {
 
   if (item.isSection) {
     return (
-      <div className="mt-1">
-        <button
-          onClick={handleClick}
-          className="w-full flex items-center gap-3 px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 transition-all duration-200 rounded-lg group"
-        >
-          <span className="shrink-0 opacity-70 group-hover:opacity-100 transition-opacity">
-            <NavIcon name={item.icon} size={16} />
-          </span>
-          <span className="flex-1 text-xs font-bold uppercase tracking-wide text-right">
+      <div>
+        <button onClick={handleClick} className="pure-pill">
+          <span style={{ opacity: 0.8 }}><NavIcon name={item.icon} size={20} /></span>
+          <span className="pure-pill-text" style={{ fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px' }}>
             {t(item.labelAr, item.labelEn)}
           </span>
-          <ChevronDown
-            size={14}
-            className={`shrink-0 transition-transform duration-200 opacity-60 ${expanded ? 'rotate-180' : ''}`}
-          />
+          <ChevronDown size={16} style={{ transform: expanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.3s', opacity: 0.5 }} />
         </button>
 
         <AnimatePresence>
           {expanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.2 }}
-              className="overflow-hidden"
-            >
-              <div className="mr-4 border-r border-white/10 pr-2 py-1">
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} style={{ overflow: 'hidden' }}>
+              <div className="pure-submenu">
                 {item.children?.map(child => (
                   <SideNavItem key={child.key} item={child} level={level + 1} />
                 ))}
@@ -83,25 +69,18 @@ function SideNavItem({ item, level = 0 }: { item: NavItem; level?: number }) {
 
   return (
     <motion.button
-      whileHover={{ x: -2 }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
       onClick={handleClick}
-      className={`
-        w-full flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-200
-        ${level === 0 ? 'text-sm' : 'text-xs'}
-        ${isActive
-          ? 'bg-white/15 text-white border-r-2 border-accent-400'
-          : 'text-white/75 hover:text-white hover:bg-white/10'
-        }
-      `}
+      className={isActive ? "pure-pill active" : "pure-pill"}
     >
-      {item.icon && (
-        <span className={`shrink-0 ${isActive ? 'opacity-100' : 'opacity-70'}`}>
-          <NavIcon name={item.icon} size={level === 0 ? 18 : 14} />
-        </span>
-      )}
-      <span className="flex-1 text-right font-medium">{t(item.labelAr, item.labelEn)}</span>
+      <span style={{ opacity: isActive ? 1 : 0.7 }}>
+        <NavIcon name={item.icon} size={level === 0 ? 22 : 18} />
+      </span>
+      <span className="pure-pill-text">{t(item.labelAr, item.labelEn)}</span>
+
       {item.badge !== undefined && item.badge > 0 && (
-        <span className="bg-accent-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shrink-0">
+        <span style={{ background: isActive ? '#0e3d25' : 'rgba(255,255,255,0.2)', color: isActive ? '#E8A020' : 'white', padding: '2px 8px', borderRadius: '12px', fontSize: '11px', fontWeight: 'bold' }}>
           {item.badge}
         </span>
       )}
@@ -114,95 +93,67 @@ export default function Sidebar() {
   const navigate = useNavigate();
 
   return (
-    <motion.aside
-      initial={{ x: 80 }}
-      animate={{ x: 0 }}
-      className="fixed top-0 right-0 h-screen w-64 bg-primary-700 flex flex-col z-40 overflow-hidden shadow-2xl"
-    >
-      {/* Logo */}
-      <div
-        className="flex flex-col items-center justify-center py-5 border-b border-white/15 cursor-pointer shrink-0"
-        onClick={() => navigate('/')}
-      >
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="flex flex-col items-center gap-1"
-        >
-          {/* Logo icon */}
-          <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mb-1">
-            <svg viewBox="0 0 40 40" width="28" height="28" fill="none">
-              <circle cx="20" cy="20" r="19" stroke="white" strokeWidth="2"/>
-              <path d="M10 20 Q20 8 30 20 Q20 32 10 20Z" fill="white" opacity="0.8"/>
+    <aside className="pure-sidebar">
+      {/* Logo Area */}
+      <div className="pure-logo-area" onClick={() => navigate('/')}>
+        <motion.div whileHover={{ scale: 1.05 }} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+          <div style={{ width: '64px', height: '64px', background: 'rgba(255,255,255,0.1)', backdropFilter: 'blur(8px)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid rgba(255,255,255,0.2)', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' }}>
+            <svg viewBox="0 0 40 40" width="32" height="32" fill="none">
+              <circle cx="20" cy="20" r="19" stroke="white" strokeWidth="2.5"/>
+              <path d="M10 20 Q20 8 30 20 Q20 32 10 20Z" fill="white" opacity="0.9"/>
             </svg>
           </div>
-          <div className="text-center">
-            <p className="text-white font-black text-xl tracking-wider">تنمية</p>
-            <p className="text-white/60 text-xs leading-tight">البرنامج الوطني للتنمية</p>
-            <p className="text-white/60 text-xs leading-tight">المجتمعية في المناطق</p>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ color: 'white', fontWeight: '900', fontSize: '28px', margin: '0 0 4px 0', letterSpacing: '-0.5px' }}>تنمية</p>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase', margin: 0 }}>البرنامج الوطني للتنمية</p>
           </div>
         </motion.div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto py-3 px-2 space-y-0.5">
+      <nav className="pure-nav-area no-scrollbar">
         {SIDE_NAV_ITEMS.map(item => (
           <SideNavItem key={item.key} item={item} />
         ))}
       </nav>
 
       {/* Important Links Button */}
-      <div className="border-t border-white/15 p-3 shrink-0">
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          onClick={() => setImportantLinksOpen(true)}
-          className="w-full flex items-center justify-center gap-2 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-200 text-sm font-medium"
-        >
-          <Link2 size={16} />
+      <div style={{ background: 'rgba(0,0,0,0.15)', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+        <button onClick={() => setImportantLinksOpen(true)} className="pure-bottom-btn" style={{ width: 'calc(100% - 40px)' }}>
+          <Link2 size={18} />
           {t('روابط مهمة', 'Important Links')}
-        </motion.button>
+        </button>
       </div>
 
       {/* Important Links Panel */}
       <AnimatePresence>
         {importantLinksOpen && (
           <motion.div
-            initial={{ x: '100%' }}
-            animate={{ x: 0 }}
-            exit={{ x: '100%' }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="absolute inset-0 bg-primary-800 flex flex-col z-50"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{ position: 'absolute', inset: 0, background: 'rgba(14, 61, 37, 0.98)', backdropFilter: 'blur(10px)', zIndex: 50, display: 'flex', flexDirection: 'column' }}
           >
-            <div className="flex items-center justify-between p-4 border-b border-white/20">
-              <h3 className="text-white font-bold">{t('روابط مهمة', 'Important Links')}</h3>
-              <button
-                onClick={() => setImportantLinksOpen(false)}
-                className="text-white/70 hover:text-white transition-colors"
-              >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+              <h3 style={{ color: 'white', fontWeight: 'bold', fontSize: '18px', margin: 0 }}>{t('روابط مهمة', 'Important Links')}</h3>
+              <button onClick={() => setImportantLinksOpen(false)} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', color: 'white', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <X size={20} />
               </button>
             </div>
-            <div className="flex-1 overflow-y-auto p-3 space-y-2">
+            <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {IMPORTANT_LINKS.map(link => (
-                <motion.a
-                  key={link.id}
-                  href={link.url}
-                  target={link.url.startsWith('http') ? '_blank' : '_self'}
-                  rel="noopener noreferrer"
-                  whileHover={{ x: -4, backgroundColor: 'rgba(255,255,255,0.15)' }}
-                  className="flex items-center gap-3 p-3 rounded-xl text-white/80 hover:text-white transition-all cursor-pointer"
-                >
-                  <div className="w-9 h-9 bg-white/15 rounded-lg flex items-center justify-center shrink-0">
-                    <NavIcon name={link.icon} size={18} />
+                <a key={link.id} href={link.url} target={link.url.startsWith('http') ? '_blank' : '_self'} rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '16px', borderRadius: '20px', background: 'rgba(255,255,255,0.05)', color: 'white', textDecoration: 'none' }}>
+                  <div style={{ width: '48px', height: '48px', background: 'rgba(255,255,255,0.1)', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <NavIcon name={link.icon} size={24} />
                   </div>
-                  <span className="text-sm font-medium flex-1">{t(link.titleAr, link.titleEn)}</span>
-                  {link.url.startsWith('http') && <ExternalLink size={12} className="opacity-50 shrink-0" />}
-                </motion.a>
+                  <span style={{ flex: 1, fontWeight: 'bold' }}>{t(link.titleAr, link.titleEn)}</span>
+                  {link.url.startsWith('http') && <ExternalLink size={16} style={{ opacity: 0.5 }} />}
+                </a>
               ))}
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.aside>
+    </aside>
   );
 }

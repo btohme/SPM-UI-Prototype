@@ -40,46 +40,48 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
   };
 
   return (
-    <div className="sticky top-0 bg-white border-b border-gray-200 z-20 shadow-sm -mx-8 -mt-6 mb-6">
+    <div className="sticky top-0 bg-white/80 backdrop-blur-xl border-b border-gray-200 z-20 shadow-sm -mx-8 -mt-8 mb-8">
       {/* Workspace breadcrumb */}
       {workspaceTitle && (
-        <div className="flex items-center gap-2 px-6 py-2 bg-primary-50/50 border-b border-gray-100">
-          <span className="text-xs text-gray-500">{t('مساحة العمل', 'Workspace')}:</span>
-          <span className="text-xs font-semibold text-primary-700">{workspaceTitle}</span>
+        <div className="flex items-center gap-3 px-8 py-2.5 bg-gradient-to-r from-primary-50 to-transparent border-b border-gray-100">
+          <div className="flex items-center gap-2 bg-white px-3 py-1 rounded-full shadow-sm border border-primary-100">
+            <span className="text-xs font-bold text-gray-500">{t('مساحة العمل', 'Workspace')}:</span>
+            <span className="text-xs font-extrabold text-primary-700">{workspaceTitle}</span>
+          </div>
           {workspaceCode && (
-            <span className="text-xs text-gray-400 bg-gray-100 rounded px-2 py-0.5">{workspaceCode}</span>
+            <span className="text-xs font-bold text-gray-400 bg-gray-100 rounded-md px-2 py-1 shadow-inner">{workspaceCode}</span>
           )}
         </div>
       )}
 
       {/* Nav items */}
-      <div className="flex items-center overflow-x-auto px-6 gap-1 py-1 no-scrollbar">
+      <div className="flex items-center overflow-x-auto px-8 gap-2 py-2 no-scrollbar">
         {items.map(item => {
           const active = isActive(item);
           return (
             <motion.button
               key={item.key}
-              whileHover={{ y: -1 }}
+              whileHover={{ y: -2 }}
               onClick={() => item.route && navigate(item.route)}
               className={`
-                relative flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium
-                whitespace-nowrap transition-all duration-200 shrink-0
+                relative flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-bold
+                whitespace-nowrap transition-all duration-300 shrink-0
                 ${active
-                  ? 'text-primary-700 bg-primary-50'
-                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'text-primary-700 bg-primary-50/80 shadow-sm'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
                 }
               `}
             >
               {item.icon && (
-                <span className={active ? 'text-primary-700' : 'text-gray-400'}>
-                  <HNavIcon name={item.icon} />
+                <span className={`transition-colors duration-300 ${active ? 'text-primary-600' : 'text-gray-400'}`}>
+                  <HNavIcon name={item.icon} size={18} />
                 </span>
               )}
               {t(item.labelAr, item.labelEn)}
               {active && (
                 <motion.div
                   layoutId={`horizontal-nav-indicator-${workspaceType}`}
-                  className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary-700 rounded-full"
+                  className="absolute bottom-0 start-4 end-4 h-1 bg-primary-600 rounded-t-full shadow-[0_-2px_8px_rgba(27,94,59,0.4)]"
                 />
               )}
             </motion.button>

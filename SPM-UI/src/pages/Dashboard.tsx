@@ -7,7 +7,6 @@ import {
 import { ChevronDown, ChevronUp, FolderOpen, Eye, ExternalLink, Lightbulb, Target, BarChart2, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
-import Card from '../components/ui/Card';
 import Badge from '../components/ui/Badge';
 import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
@@ -50,54 +49,35 @@ function ActionAccordion() {
     approvals: [
       { titleAr: 'طلب تغيير: إضافة وحدة الأتمتة', titleEn: 'CR: Add Automation Module', link: '/list?modulekey=ChangeRequests' },
       { titleAr: 'اعتماد نموذج إغلاق المشروع', titleEn: 'Approve Project Closure Form', link: '/list?modulekey=ProjectClosureForms' },
-      { titleAr: 'اعتماد عقد التطوير الجديد', titleEn: 'Approve New Development Contract', link: '/list?modulekey=Contracts' },
     ],
     obstacles: [
       { titleAr: 'تأخر في استلام التراخيص', titleEn: 'License Approval Delay', link: '/list?modulekey=ProjectIssues' },
-      { titleAr: 'نقص في الموارد التقنية', titleEn: 'Technical Resources Shortage', link: '/list?modulekey=ProjectIssues' },
     ],
     risks: [
       { titleAr: 'خطر التأخر في التسليم', titleEn: 'Delivery Delay Risk', link: '/list?modulekey=ProjectRisks' },
       { titleAr: 'خطر تجاوز الميزانية', titleEn: 'Budget Overrun Risk', link: '/list?modulekey=ProjectRisks' },
-      { titleAr: 'خطر نقص الكفاءات التقنية', titleEn: 'Technical Skills Shortage', link: '/list?modulekey=ProjectRisks' },
     ],
   };
 
   return (
-    <div className="space-y-2">
+    <div>
       {ACTION_ITEMS.map(item => (
-        <div key={item.key} className="border border-gray-100 rounded-xl overflow-hidden">
-          <button
-            onClick={() => setExpanded(e => e === item.key ? null : item.key)}
-            className="w-full flex items-center justify-between px-4 py-3 bg-gray-50 hover:bg-gray-100 transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              {expanded === item.key
-                ? <ChevronUp size={16} className="text-gray-500" />
-                : <ChevronDown size={16} className="text-gray-500" />
-              }
-              <span className="text-sm font-medium text-gray-700">{t(item.labelAr, item.labelEn)}</span>
+        <div key={item.key} className="pure-accordion-wrapper">
+          <button onClick={() => setExpanded(e => e === item.key ? null : item.key)} className="pure-accordion-btn">
+            <div className="pure-flex-start" style={{ gap: '8px' }}>
+              {expanded === item.key ? <ChevronUp size={16} color="#6b7280" /> : <ChevronDown size={16} color="#6b7280" />}
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>{t(item.labelAr, item.labelEn)}</span>
             </div>
-            <span className="text-xs text-gray-500">{item.count}</span>
+            <span className="pure-badge pure-badge-gray">{item.count}</span>
           </button>
           <AnimatePresence>
             {expanded === item.key && (
-              <motion.div
-                initial={{ height: 0, opacity: 0 }}
-                animate={{ height: 'auto', opacity: 1 }}
-                exit={{ height: 0, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="overflow-hidden"
-              >
-                <div className="p-3 space-y-1 bg-white">
+              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} style={{ overflow: 'hidden' }}>
+                <div style={{ padding: '8px', background: '#fff' }}>
                   {detailsByKey[item.key]?.map((d, i) => (
-                    <button
-                      key={i}
-                      onClick={() => navigate(d.link)}
-                      className="w-full flex items-center justify-between py-2 px-3 rounded-lg hover:bg-primary-50 text-right transition-colors group"
-                    >
-                      <span className="text-sm text-gray-700 group-hover:text-primary-700">{t(d.titleAr, d.titleEn)}</span>
-                      <ExternalLink size={13} className="text-gray-400 group-hover:text-primary-600" />
+                    <button key={i} onClick={() => navigate(d.link)} className="pure-list-item">
+                      <span style={{ fontSize: '13px', color: '#374151' }}>{t(d.titleAr, d.titleEn)}</span>
+                      <ExternalLink size={14} color="#9ca3af" />
                     </button>
                   ))}
                 </div>
@@ -115,11 +95,7 @@ function ProjectListCard() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<'internal' | 'development'>('internal');
   const projects = (MOCK_DATA.Projects as Record<string, unknown>[]) || [];
-  const filtered = projects.filter((p) =>
-    tab === 'internal'
-      ? String(p.categoryAr) === 'داخلي'
-      : String(p.categoryAr) === 'تنموي'
-  );
+  const filtered = projects.filter((p) => tab === 'internal' ? String(p.categoryAr) === 'داخلي' : String(p.categoryAr) === 'تنموي');
 
   const statusColor = (s: unknown) => {
     const map: Record<string, string> = { execution: '#1B5E3B', planning: '#006064', preparation: '#283593', completed: '#2E7D32', cancelled: '#B71C1C' };
@@ -128,76 +104,46 @@ function ProjectListCard() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <span className="font-bold text-gray-800">{t('المشاريع', 'Projects')}</span>
-          <span className="bg-primary-100 text-primary-700 text-xs rounded-full px-2 py-0.5 font-bold">
-            {projects.length}
-          </span>
+      <div className="pure-flex-between" style={{ marginBottom: '16px' }}>
+        <div className="pure-flex-start">
+          <span className="pure-card-title">{t('المشاريع', 'Projects')}</span>
+          <span className="pure-badge pure-badge-primary">{projects.length}</span>
         </div>
-        <button
-          onClick={() => navigate('/projects')}
-          className="text-xs text-primary-700 hover:underline flex items-center gap-1"
-        >
-          <Eye size={12} /> {t('عرض الكل', 'View All')}
+        <button onClick={() => navigate('/projects')} className="pure-btn-link">
+          <Eye size={14} /> {t('عرض الكل', 'View All')}
         </button>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-2 mb-3 border-b border-gray-100">
+      <div className="pure-tabs">
         {(['internal', 'development'] as const).map(key => (
-          <button
-            key={key}
-            onClick={() => setTab(key)}
-            className={`pb-2 text-sm font-medium border-b-2 transition-colors ${
-              tab === key
-                ? 'border-primary-700 text-primary-700'
-                : 'border-transparent text-gray-500 hover:text-gray-700'
-            }`}
-          >
+          <button key={key} onClick={() => setTab(key)} className={`pure-tab ${tab === key ? 'active' : ''}`}>
             {key === 'internal' ? t('داخلي', 'Internal') : t('تنموي', 'Development')}
-            <span className="mr-1.5 text-xs text-gray-400">
+            <span style={{ marginInlineStart: '4px', fontSize: '12px', opacity: 0.7 }}>
               ({projects.filter(p => (key === 'internal' ? String(p.categoryAr) === 'داخلي' : String(p.categoryAr) === 'تنموي')).length})
             </span>
           </button>
         ))}
       </div>
 
-      <div className="space-y-2">
+      <div>
         {filtered.slice(0, 4).map((p, i) => (
-          <motion.button
-            key={i}
-            initial={{ opacity: 0, x: 10 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: i * 0.05 }}
-            onClick={() => navigate(`/workspace/project?code=${p.code}`)}
-            className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-right group border border-transparent hover:border-gray-100"
-          >
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 text-white text-xs font-bold"
-              style={{ backgroundColor: statusColor(p.status) }}
-            >
-              <FolderOpen size={14} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-800 truncate group-hover:text-primary-700 transition-colors">
-                {t(String(p.nameAr), String(p.nameEn || p.nameAr))}
-              </p>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-xs text-accent-600 font-medium">{t('حالة الإنجاز', 'Completion')}:</span>
-                <div className="flex-1 h-1.5 bg-gray-100 rounded-full overflow-hidden max-w-20">
-                  <div
-                    className="h-full rounded-full transition-all duration-700"
-                    style={{ width: `${p.completion}%`, backgroundColor: statusColor(p.status) }}
-                  />
+          <motion.button key={i} onClick={() => navigate(`/workspace/project?code=${p.code}`)} className="pure-list-item">
+            <div className="pure-flex-start">
+              <div className="pure-list-icon" style={{ backgroundColor: statusColor(p.status) }}>
+                <FolderOpen size={16} />
+              </div>
+              <div style={{ textAlign: 'start' }}>
+                <p style={{ fontSize: '14px', fontWeight: '600', color: '#1f2937', margin: '0 0 4px 0' }}>{t(String(p.nameAr), String(p.nameEn || p.nameAr))}</p>
+                <div className="pure-flex-start" style={{ gap: '8px' }}>
+                  <span style={{ fontSize: '11px', color: '#6b7280' }}>{t('الإنجاز', 'Completion')}:</span>
+                  <div style={{ width: '80px', height: '6px', background: '#f3f4f6', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${p.completion}%`, backgroundColor: statusColor(p.status) }} />
+                  </div>
+                  <span style={{ fontSize: '11px', color: '#6b7280', fontWeight: 'bold' }}>{String(p.completion)}%</span>
                 </div>
-                <span className="text-xs text-gray-500">{String(p.completion)}%</span>
               </div>
             </div>
-            <Badge
-              label={t(String(p.status === 'execution' ? 'تنفيذ' : p.status === 'planning' ? 'تخطيط' : p.status === 'preparation' ? 'إعداد' : 'مكتمل'), String(p.status))}
-              color={statusColor(p.status)}
-            />
+            <Badge label={t(String(p.status === 'execution' ? 'تنفيذ' : p.status === 'planning' ? 'تخطيط' : p.status === 'preparation' ? 'إعداد' : 'مكتمل'), String(p.status))} color={statusColor(p.status)} />
           </motion.button>
         ))}
       </div>
@@ -211,134 +157,100 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="pure-dashboard-wrapper">
+
         {/* Stats row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+        <div className="pure-grid-stats">
           {[
-            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#1B5E3B', icon: <FolderOpen size={22} />, moduleKey: 'Projects' },
-            { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={22} />, moduleKey: 'Initiatives' },
-            { titleAr: 'الأهداف', titleEn: 'Objectives', value: 64, sub: t('هدف استراتيجي', 'Strategic'), color: '#7B1FA2', icon: <Target size={22} />, moduleKey: 'Objectives' },
-            { titleAr: 'المؤشرات', titleEn: 'KPIs', value: 156, sub: t('مؤشر أداء', 'Indicators'), color: '#E65100', icon: <BarChart2 size={22} />, moduleKey: 'KPIs' },
+            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#1B5E3B', icon: <FolderOpen size={24} />, moduleKey: 'Projects' },
+            { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={24} />, moduleKey: 'Initiatives' },
+            { titleAr: 'الأهداف', titleEn: 'Objectives', value: 64, sub: t('هدف استراتيجي', 'Strategic'), color: '#7B1FA2', icon: <Target size={24} />, moduleKey: 'Objectives' },
+            { titleAr: 'المؤشرات', titleEn: 'KPIs', value: 156, sub: t('مؤشر أداء', 'Indicators'), color: '#E65100', icon: <BarChart2 size={24} />, moduleKey: 'KPIs' },
           ].map((s, i) => (
-            <motion.div
-              key={s.titleAr}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              onClick={() => navigate(`/list?modulekey=${s.moduleKey}`)}
-              className="bg-white rounded-2xl border border-gray-100 shadow-sm cursor-pointer hover:shadow-md transition-all overflow-hidden group"
-            >
-              <div className="h-1.5 w-full" style={{ backgroundColor: s.color }} />
-              <div className="p-5">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0" style={{ backgroundColor: `${s.color}18` }}>
-                    <span style={{ color: s.color }}>{s.icon}</span>
-                  </div>
-                  <TrendingUp size={15} className="text-gray-200 group-hover:text-gray-300 transition-colors mt-1" />
+            <div key={s.titleAr} onClick={() => navigate(`/list?modulekey=${s.moduleKey}`)} className="pure-stat-card">
+              <div style={{ height: '6px', width: '100%', backgroundColor: s.color }} />
+              <div style={{ padding: '24px' }}>
+                <div className="pure-flex-between">
+                  <div className="pure-stat-icon-wrapper" style={{ backgroundColor: `${s.color}18`, color: s.color }}>{s.icon}</div>
+                  <TrendingUp size={16} color="#d1d5db" />
                 </div>
-                <p className="text-4xl font-black leading-none tracking-tight" style={{ color: s.color }}>{s.value}</p>
-                <p className="text-sm font-semibold text-gray-700 mt-2">{t(s.titleAr, s.titleEn)}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{s.sub}</p>
+                <p className="pure-stat-value" style={{ color: s.color }}>{s.value}</p>
+                <p style={{ fontSize: '15px', fontWeight: '700', color: '#374151', margin: '0 0 2px 0' }}>{t(s.titleAr, s.titleEn)}</p>
+                <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>{s.sub}</p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
 
         {/* Charts Row */}
-        <div className="grid grid-cols-3 gap-4">
-          {/* Risk Donut */}
-          <Card>
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
-              <span className="font-bold text-gray-800 text-sm">{t('المخاطر', 'Risks')}</span>
-              <span className="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">{t('حسب الخطورة', 'By Severity')}</span>
+        <div className="pure-grid-3">
+          <div className="pure-card">
+            <div className="pure-card-header">
+              <span className="pure-card-title">{t('المخاطر', 'Risks')}</span>
+              <span className="pure-badge pure-badge-gray">{t('حسب الخطورة', 'By Severity')}</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
-                <Pie
-                  data={RISK_DATA}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={55}
-                  outerRadius={82}
-                  dataKey="value"
-                  animationBegin={200}
-                >
-                  {RISK_DATA.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
+                <Pie data={RISK_DATA} cx="50%" cy="50%" innerRadius={55} outerRadius={82} dataKey="value">
+                  {RISK_DATA.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                 </Pie>
                 <Tooltip formatter={(v, _n, p) => [v, t(p.payload.name, p.payload.nameEn)]} />
               </PieChart>
             </ResponsiveContainer>
-            <div className="flex justify-center gap-4 mt-2 flex-wrap">
-              {RISK_DATA.map(d => (
-                <div key={d.name} className="flex items-center gap-1 text-xs text-gray-600">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: d.color }} />
-                  {t(d.name, d.nameEn)}
-                </div>
-              ))}
-            </div>
-          </Card>
+          </div>
 
-          {/* Completion Status Bar */}
-          <Card>
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
-              <span className="font-bold text-gray-800 text-sm">{t('حالة الإنجاز', 'Completion')}</span>
-              <span className="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">{t('المشاريع', 'Projects')}</span>
+          <div className="pure-card">
+            <div className="pure-card-header">
+              <span className="pure-card-title">{t('حالة الإنجاز', 'Completion')}</span>
+              <span className="pure-badge pure-badge-gray">{t('المشاريع', 'Projects')}</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={COMPLETION_DATA} barSize={20}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis dataKey="name" tick={{ fontSize: 8 }} />
-                <YAxis tick={{ fontSize: 9 }} />
+              <BarChart data={COMPLETION_DATA} barSize={24}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Bar dataKey="value" radius={[3, 3, 0, 0]}>
-                  {COMPLETION_DATA.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
+                <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                  {COMPLETION_DATA.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </Card>
+          </div>
 
-          {/* Phase Bar */}
-          <Card>
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
-              <span className="font-bold text-gray-800 text-sm">{t('توزيع المراحل', 'Phase Distribution')}</span>
-              <span className="text-xs text-gray-400 bg-gray-100 rounded-full px-2 py-0.5">{t('المشاريع', 'Projects')}</span>
+          <div className="pure-card">
+            <div className="pure-card-header">
+              <span className="pure-card-title">{t('توزيع المراحل', 'Phase Distribution')}</span>
+              <span className="pure-badge pure-badge-gray">{t('المشاريع', 'Projects')}</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
-              <BarChart data={PHASE_DATA} layout="vertical" barSize={12}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                <XAxis type="number" tick={{ fontSize: 9 }} />
-                <YAxis type="category" dataKey="name" tick={{ fontSize: 8 }} width={80} />
+              <BarChart data={PHASE_DATA} layout="vertical" barSize={16}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                <XAxis type="number" tick={{ fontSize: 10 }} />
+                <YAxis type="category" dataKey="name" tick={{ fontSize: 10 }} width={90} />
                 <Tooltip />
-                <Bar dataKey="value" radius={[0, 3, 3, 0]}>
-                  {PHASE_DATA.map((entry, i) => (
-                    <Cell key={i} fill={entry.color} />
-                  ))}
+                <Bar dataKey="value" radius={[0, 4, 4, 0]}>
+                  {PHASE_DATA.map((entry, i) => <Cell key={i} fill={entry.color} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
-          </Card>
+          </div>
         </div>
 
         {/* Bottom Row */}
-        <div className="grid grid-cols-5 gap-4">
-          {/* Action Items */}
-          <Card className="col-span-2">
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
-              <span className="font-bold text-gray-800">{t('الإجراء المطلوب', 'Required Actions')}</span>
-              <span className="bg-red-100 text-red-700 text-xs rounded-full px-2.5 py-0.5 font-bold">71</span>
+        <div className="pure-grid-bottom">
+          <div className="pure-card">
+            <div className="pure-card-header">
+              <span className="pure-card-title">{t('الإجراء المطلوب', 'Required Actions')}</span>
+              <span className="pure-badge pure-badge-red">71</span>
             </div>
             <ActionAccordion />
-          </Card>
+          </div>
 
-          {/* Projects */}
-          <Card className="col-span-3">
+          <div className="pure-card pure-col-span-2">
             <ProjectListCard />
-          </Card>
+          </div>
         </div>
+
       </div>
     </Layout>
   );

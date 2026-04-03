@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import Sidebar from './Sidebar';
 import TopHeader from './TopHeader';
 import { MODULE_MAP } from '../../data/modules';
+import { useApp } from '../../context/AppContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,7 +12,6 @@ interface LayoutProps {
   titleEn?: string;
 }
 
-// Get page title from location
 function getPageTitle(pathname: string, search: string) {
   const params = new URLSearchParams(search);
   const moduleKey = params.get('modulekey') || '';
@@ -32,31 +32,37 @@ function getPageTitle(pathname: string, search: string) {
 
 export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
   const location = useLocation();
+  const { language } = useApp();
   const autoTitle = getPageTitle(location.pathname, location.search);
 
   const finalTitleAr = titleAr || autoTitle.ar;
   const finalTitleEn = titleEn || autoTitle.en;
 
   return (
-    <div className="h-screen bg-gray-50 flex overflow-hidden" dir="rtl">
+    <div className="pure-layout-root" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+
+      {/* Because .pure-layout-root is a Flex container,
+        and Sidebar has a fixed width of 280px in our pure CSS,
+        it will automatically dock perfectly!
+      */}
       <Sidebar />
 
-      <div className="flex-1 mr-64 flex flex-col overflow-hidden">
+      <div className="pure-layout-column">
+
         <TopHeader titleAr={finalTitleAr} titleEn={finalTitleEn} />
 
-        <main
-          className="flex-1 overflow-y-auto px-8 py-6"
-        >
+        <main className="pure-layout-main custom-scrollbar">
           <motion.div
             key={location.pathname + location.search}
-            initial={{ opacity: 0, y: 8 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-            className="max-w-full"
+            transition={{ duration: 0.3, ease: "easeOut" }}
+            style={{ maxWidth: '100%', margin: '0 auto' }}
           >
             {children}
           </motion.div>
         </main>
+
       </div>
     </div>
   );

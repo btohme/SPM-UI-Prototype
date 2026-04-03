@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, UserCircle, Check } from 'lucide-react';
+import { X, Search, UserCircle, Check, UploadCloud, Paperclip } from 'lucide-react';
 import type { FieldConfig } from '../../types';
 import { useApp } from '../../context/AppContext';
 import { MOCK_USERS } from '../../data/mockData';
@@ -22,7 +22,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
   const label = t(field.labelAr, field.labelEn);
   const required = field.required;
 
-  const baseInputClass = `form-input ${readOnly ? 'bg-gray-50 text-gray-600 cursor-not-allowed' : ''}`;
+  const baseInputClass = `pure-input ${readOnly ? 'readonly' : ''}`;
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
@@ -44,13 +44,13 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       if (field.type === 'file') {
         const attachments = Array.isArray(value) ? value : value ? [value] : [];
         return (
-          <div className="flex flex-wrap gap-2">
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px' }}>
             {attachments.length === 0 ? (
-              <span className="text-gray-400 text-sm">{t('لا يوجد مرفقات', 'No attachments')}</span>
+              <span style={{ fontSize: '13px', color: '#9ca3af' }}>{t('لا يوجد مرفقات', 'No attachments')}</span>
             ) : (
               attachments.map((a, i) => (
-                <div key={i} className="flex items-center gap-1.5 bg-primary-50 text-primary-700 rounded-lg px-3 py-1.5 text-sm">
-                  <span className="text-blue-500">ℹ</span>
+                <div key={i} className="pure-file-badge">
+                  <span style={{ color: '#1B5E3B' }}><Paperclip size={14} /></span>
                   <span>{String(a)}</span>
                 </div>
               ))
@@ -61,14 +61,14 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       if (field.type === 'people') {
         const name = String(value || '');
         return (
-          <div className="flex items-center gap-2 py-2">
+          <div className="pure-input readonly" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 12px' }}>
             {name ? (
               <>
                 <Avatar name={name} size="sm" />
-                <span className="text-sm text-gray-800">{name}</span>
+                <span style={{ fontWeight: '700', color: '#1f2937' }}>{name}</span>
               </>
             ) : (
-              <span className="text-gray-400 text-sm">{t('لا يوجد', 'N/A')}</span>
+              <span style={{ color: '#9ca3af' }}>{t('لا يوجد', 'N/A')}</span>
             )}
           </div>
         );
@@ -76,12 +76,12 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       if (field.type === 'radio' || field.type === 'select') {
         const opt = field.options?.find(o => o.value === value);
         const displayLabel = opt ? t(opt.labelAr, opt.labelEn) : String(value || t('لا يوجد', 'N/A'));
-        return <p className="text-sm text-gray-800 py-1">{displayLabel}</p>;
+        return <div className="pure-input readonly">{displayLabel}</div>;
       }
       if (field.type === 'textarea' || field.type === 'richtext') {
-        return <p className="text-sm text-gray-800 py-1 whitespace-pre-wrap">{String(value || t('لا يوجد', 'N/A'))}</p>;
+        return <div className="pure-input readonly" style={{ minHeight: '100px', whiteSpace: 'pre-wrap' }}>{String(value || t('لا يوجد', 'N/A'))}</div>;
       }
-      return <p className="text-sm text-gray-800 py-1">{String(value ?? t('لا يوجد', 'N/A'))}</p>;
+      return <div className="pure-input readonly">{String(value ?? t('لا يوجد', 'N/A'))}</div>;
     }
 
     switch (field.type) {
@@ -102,24 +102,18 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       case 'currency':
       case 'percentage':
         return (
-          <div className="relative">
+          <div className="pure-input-wrapper">
             <input
               type="number"
-              className={baseInputClass}
+              className={`${baseInputClass} ${field.type !== 'number' ? 'pure-input-with-addon' : ''}`}
               value={String(value ?? '')}
               onChange={e => onChange(field.key, e.target.value)}
               min={field.min}
               max={field.max}
               placeholder="0"
             />
-            {field.type === 'currency' && (
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">
-                {t('ريال', 'SAR')}
-              </span>
-            )}
-            {field.type === 'percentage' && (
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm pointer-events-none">%</span>
-            )}
+            {field.type === 'currency' && <span className="pure-input-addon">{t('ريال', 'SAR')}</span>}
+            {field.type === 'percentage' && <span className="pure-input-addon">%</span>}
           </div>
         );
 
@@ -127,7 +121,8 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       case 'richtext':
         return (
           <textarea
-            className={`${baseInputClass} min-h-24 resize-y`}
+            className={baseInputClass}
+            style={{ minHeight: '120px', resize: 'vertical' }}
             value={String(value ?? '')}
             onChange={e => onChange(field.key, e.target.value)}
             placeholder={field.placeholder || `${t('أدخل', 'Enter')} ${label}`}
@@ -164,7 +159,8 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
       case 'multiselect':
         return (
           <select
-            className={`${baseInputClass} min-h-24`}
+            className={baseInputClass}
+            style={{ minHeight: '120px', padding: '8px' }}
             multiple
             value={Array.isArray(value) ? value as string[] : []}
             onChange={e => {
@@ -173,7 +169,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
             }}
           >
             {field.options?.map(opt => (
-              <option key={opt.value} value={opt.value}>
+              <option key={opt.value} value={opt.value} style={{ padding: '8px', cursor: 'pointer' }}>
                 {t(opt.labelAr, opt.labelEn)}
               </option>
             ))}
@@ -182,18 +178,19 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
 
       case 'radio':
         return (
-          <div className="flex items-center gap-6 py-2">
+          <div className="pure-radio-group">
             {field.options?.map(opt => (
-              <label key={opt.value} className="flex items-center gap-2 cursor-pointer">
+              <label key={opt.value} className="pure-radio-label">
                 <input
                   type="radio"
                   name={field.key}
                   value={opt.value}
                   checked={value === opt.value}
                   onChange={() => onChange(field.key, opt.value)}
-                  className="w-4 h-4 accent-primary-700"
+                  className="pure-radio-input"
                 />
-                <span className="text-sm text-gray-700">{t(opt.labelAr, opt.labelEn)}</span>
+                <div className="pure-radio-custom" />
+                <span>{t(opt.labelAr, opt.labelEn)}</span>
               </label>
             ))}
           </div>
@@ -201,33 +198,33 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
 
       case 'checkbox':
         return (
-          <label className="flex items-center gap-2 cursor-pointer py-1">
+          <label className="pure-checkbox-wrapper">
             <input
               type="checkbox"
               checked={Boolean(value)}
               onChange={e => onChange(field.key, e.target.checked)}
-              className="w-4 h-4 accent-primary-700"
+              className="pure-checkbox-input"
             />
-            <span className="text-sm text-gray-700">{label}</span>
+            <span style={{ fontSize: '14px', fontWeight: '700', color: '#1f2937' }}>{label}</span>
           </label>
         );
 
       case 'people':
         return (
-          <div className="relative">
+          <div style={{ position: 'relative' }}>
             <button
               type="button"
               onClick={() => setPeoplePicker(true)}
-              className={`${baseInputClass} flex items-center gap-2 text-right`}
+              className={`${baseInputClass} pure-people-btn`}
             >
               {value ? (
                 <>
                   <Avatar name={String(value)} size="xs" />
-                  <span className="text-sm text-gray-800">{String(value)}</span>
+                  <span style={{ fontWeight: '700', color: '#1f2937' }}>{String(value)}</span>
                 </>
               ) : (
-                <span className="text-gray-400 flex items-center gap-1.5">
-                  <UserCircle size={16} />
+                <span style={{ color: '#9ca3af', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <UserCircle size={18} />
                   {t('اختر شخصاً...', 'Select a person...')}
                 </span>
               )}
@@ -236,24 +233,25 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
             <AnimatePresence>
               {peoplePicker && (
                 <motion.div
-                  initial={{ opacity: 0, y: 6 }}
+                  initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 6 }}
-                  className="absolute z-30 top-full mt-1 w-full bg-white rounded-xl border border-gray-200 shadow-xl"
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  className="pure-people-dropdown"
                 >
-                  <div className="p-2 border-b border-gray-100">
-                    <div className="flex items-center gap-2 bg-gray-50 rounded-lg px-3 py-2">
-                      <Search size={14} className="text-gray-400" />
+                  <div className="pure-people-search-box">
+                    <div className="pure-people-search-inner">
+                      <Search size={16} color="#9ca3af" />
                       <input
                         autoFocus
-                        className="flex-1 bg-transparent text-sm outline-none text-gray-700 placeholder-gray-400"
+                        className="pure-people-search-input"
                         placeholder={t('ابحث عن شخص...', 'Search person...')}
                         value={peopleSearch}
                         onChange={e => setPeopleSearch(e.target.value)}
                       />
                     </div>
                   </div>
-                  <div className="max-h-48 overflow-y-auto">
+                  <div className="pure-people-list custom-scrollbar">
                     {filteredUsers.map(u => (
                       <button
                         key={u.id}
@@ -263,15 +261,15 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
                           setPeoplePicker(false);
                           setPeopleSearch('');
                         }}
-                        className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-primary-50 text-right transition-colors"
+                        className="pure-people-option"
                       >
                         <Avatar name={t(u.nameAr, u.nameEn)} size="sm" />
-                        <div>
-                          <p className="text-sm font-medium text-gray-800">{t(u.nameAr, u.nameEn)}</p>
-                          <p className="text-xs text-gray-500">{u.email}</p>
+                        <div style={{ flex: 1 }}>
+                          <p style={{ fontWeight: '700', color: '#1f2937', margin: '0 0 2px 0' }}>{t(u.nameAr, u.nameEn)}</p>
+                          <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>{u.email}</p>
                         </div>
                         {String(value) === t(u.nameAr, u.nameEn) && (
-                          <Check size={14} className="text-primary-700 mr-auto" />
+                          <Check size={16} color="#1B5E3B" style={{ marginInlineStart: 'auto' }} />
                         )}
                       </button>
                     ))}
@@ -279,7 +277,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
                   <button
                     type="button"
                     onClick={() => { setPeoplePicker(false); setPeopleSearch(''); }}
-                    className="w-full text-xs text-gray-400 py-2 hover:bg-gray-50 border-t border-gray-100"
+                    style={{ width: '100%', padding: '12px', background: '#f9fafb', border: 'none', borderTop: '1px solid #f3f4f6', fontWeight: 'bold', color: '#6b7280', cursor: 'pointer' }}
                   >
                     {t('إغلاق', 'Close')}
                   </button>
@@ -291,60 +289,52 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
 
       case 'file':
         return (
-          <div className="space-y-2">
-            <label className="flex flex-col items-center justify-center w-full h-24 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 cursor-pointer hover:border-primary-400 hover:bg-primary-50/30 transition-colors">
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-2xl">📎</span>
-                <span className="text-sm text-gray-500">{t('اسحب وأفلت أو انقر للرفع', 'Drag & drop or click to upload')}</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <label className="pure-file-dropzone">
+              <div className="pure-file-icon-btn">
+                <UploadCloud size={20} />
               </div>
-              <input
-                type="file"
-                className="hidden"
-                multiple={field.multiple}
-                onChange={handleFileChange}
-              />
+              <span style={{ fontSize: '14px', fontWeight: '700', color: '#4b5563', marginBottom: '4px' }}>{t('اسحب وأفلت أو انقر للرفع', 'Drag & drop or click to upload')}</span>
+              <span style={{ fontSize: '12px', color: '#9ca3af' }}>PNG, JPG, PDF up to 10MB</span>
+              <input type="file" style={{ display: 'none' }} multiple={field.multiple} onChange={handleFileChange} />
             </label>
             {files.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {files.map((f, i) => (
-                  <div key={i} className="flex items-center gap-1.5 bg-primary-50 text-primary-700 rounded-lg px-3 py-1.5 text-sm">
-                    <span>📄</span>
-                    <span className="max-w-32 truncate">{f.name}</span>
-                    <button type="button" onClick={() => removeFile(i)} className="text-red-400 hover:text-red-600">
-                      <X size={12} />
+                  <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} key={i} className="pure-file-badge">
+                    <span style={{ color: '#1B5E3B' }}><Paperclip size={14} /></span>
+                    <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
+                    <button type="button" onClick={() => removeFile(i)} className="pure-file-remove">
+                      <X size={14} />
                     </button>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             )}
           </div>
         );
 
       default:
         return (
-          <input
-            type="text"
-            className={baseInputClass}
-            value={String(value ?? '')}
-            onChange={e => onChange(field.key, e.target.value)}
-          />
+          <input type="text" className={baseInputClass} value={String(value ?? '')} onChange={e => onChange(field.key, e.target.value)} />
         );
     }
   };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 5 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`space-y-1 ${field.columnSpan === 2 ? 'col-span-2' : 'col-span-1'}`}
+      transition={{ duration: 0.3 }}
+      style={{ gridColumn: field.columnSpan === 2 ? 'span 2' : 'span 1', display: 'flex', flexDirection: 'column' }}
     >
       {field.type !== 'checkbox' && (
-        <label className="text-sm font-medium text-gray-700 flex items-center gap-1">
+        <label className="pure-form-label">
           {label}
-          {required && <span className="text-red-500">*</span>}
+          {required && <span className="pure-form-label-required">*</span>}
           {field.maxLength && !readOnly && (
-            <span className="text-gray-400 text-xs mr-auto">
-              {t(`الحد الأقصى لعدد الحروف هو ${field.maxLength} حرف`, `Max ${field.maxLength} characters`)}
+            <span className="pure-form-label-hint">
+              {t(`الحد الأقصى ${field.maxLength}`, `Max ${field.maxLength}`)}
             </span>
           )}
         </label>

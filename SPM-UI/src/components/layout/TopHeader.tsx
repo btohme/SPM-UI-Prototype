@@ -23,83 +23,44 @@ export default function TopHeader({ titleAr, titleEn }: { titleAr?: string; titl
   }, []);
 
   return (
-    <header className="h-16 bg-primary-700 flex items-center justify-between px-8 z-30 shadow-md shrink-0 w-full">
-      {/* Right: Title */}
-      <div className="flex items-center gap-3">
-        {titleAr && (
-          <h1 className="text-white font-bold text-lg">
-            {t(titleAr, titleEn || titleAr)}
-          </h1>
-        )}
+    <header className="pure-top-header">
+      <div>
+        {titleAr && <h1 className="pure-header-title">{t(titleAr, titleEn || titleAr)}</h1>}
       </div>
 
-      {/* Left: Actions */}
-      <div className="flex items-center gap-2">
-        {/* Language Switcher */}
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-white/15 text-white text-sm transition-colors"
-        >
-          <Globe size={16} />
-          <span className="font-medium">{language === 'ar' ? 'English' : 'عربي'}</span>
+      <div className="pure-header-actions">
+        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')} className="pure-lang-btn">
+          <Globe size={18} />
+          <span>{language === 'ar' ? 'English' : 'عربي'}</span>
         </motion.button>
 
-        {/* Notifications */}
-        <NotificationDropdown />
+        <div style={{ color: '#4b5563', cursor: 'pointer' }}><NotificationDropdown /></div>
 
-        {/* User Menu */}
-        <div ref={userRef} className="relative">
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            onClick={() => setUserMenuOpen(o => !o)}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-lg hover:bg-white/15 text-white transition-colors"
-          >
-            <div className="flex items-center gap-2">
-              <Avatar name={t(currentUser.nameAr, currentUser.nameEn)} size="sm" color="#E8A020" />
-              <div className="text-right">
-                <p className="text-sm font-semibold leading-tight">{t(currentUser.nameAr, currentUser.nameEn)}</p>
-                <p className="text-xs text-white/60 leading-tight">{currentUser.role}</p>
+        <div ref={userRef} className="pure-user-menu-wrapper">
+          <motion.button whileHover={{ scale: 1.02 }} onClick={() => setUserMenuOpen(o => !o)} className="pure-user-btn">
+            <div className="pure-user-info">
+              <Avatar name={t(currentUser.nameAr, currentUser.nameEn)} size="md" color="#E8A020" />
+              <div className="pure-user-text-wrapper">
+                <p className="pure-user-name">{t(currentUser.nameAr, currentUser.nameEn)}</p>
+                <p className="pure-user-role">{currentUser.role}</p>
               </div>
             </div>
-            <ChevronDown
-              size={14}
-              className={`text-white/60 transition-transform duration-200 ${userMenuOpen ? 'rotate-180' : ''}`}
-            />
+            <ChevronDown size={16} style={{ color: '#9ca3af', transform: userMenuOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }} />
           </motion.button>
 
           <AnimatePresence>
             {userMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, y: 6 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 6 }}
-                transition={{ duration: 0.15 }}
-                className="absolute top-full mt-1 left-0 w-52 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50"
-              >
-                <div className="p-4 bg-primary-50 border-b border-gray-100">
-                  <p className="font-semibold text-gray-900 text-sm">{t(currentUser.nameAr, currentUser.nameEn)}</p>
-                  <p className="text-xs text-gray-500">{currentUser.email}</p>
-                  <p className="text-xs text-primary-600 mt-0.5">{currentUser.role}</p>
+              <motion.div initial={{ opacity: 0, y: 10, scale: 0.95 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 10, scale: 0.95 }} className="pure-dropdown-menu">
+                <div className="pure-dropdown-header">
+                  <p className="pure-dropdown-name">{t(currentUser.nameAr, currentUser.nameEn)}</p>
+                  <p className="pure-dropdown-email">{currentUser.email}</p>
+                  <span className="pure-dropdown-role-badge">{currentUser.role}</span>
                 </div>
-                <div className="py-1">
-                  <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-right transition-colors">
-                    <User size={15} className="text-gray-400" />
-                    {t('الملف الشخصي', 'Profile')}
-                  </button>
-                  <button
-                    onClick={() => navigate('/list?modulekey=Configurations')}
-                    className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 text-right transition-colors"
-                  >
-                    <Settings size={15} className="text-gray-400" />
-                    {t('الإعدادات', 'Settings')}
-                  </button>
-                  <div className="border-t border-gray-100 mt-1 pt-1">
-                    <button className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 text-right transition-colors">
-                      <LogOut size={15} />
-                      {t('تسجيل الخروج', 'Sign Out')}
-                    </button>
+                <div className="pure-dropdown-body">
+                  <button className="pure-dropdown-item"><User size={18} style={{ color: '#9ca3af' }} />{t('الملف الشخصي', 'Profile')}</button>
+                  <button onClick={() => navigate('/list?modulekey=Configurations')} className="pure-dropdown-item"><Settings size={18} style={{ color: '#9ca3af' }} />{t('الإعدادات', 'Settings')}</button>
+                  <div style={{ borderTop: '1px solid #f3f4f6', marginTop: '8px', paddingTop: '8px' }}>
+                    <button className="pure-dropdown-item danger"><LogOut size={18} />{t('تسجيل الخروج', 'Sign Out')}</button>
                   </div>
                 </div>
               </motion.div>
