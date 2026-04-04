@@ -76,7 +76,7 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
       if (MOCK_DATA[node.moduleKey]) {
         const dataIndex = MOCK_DATA[node.moduleKey].findIndex((i: any) => String(i.id || i.code) === editingItemId);
         if (dataIndex > -1) {
-          MOCK_DATA[node.moduleKey][dataIndex] = { ...MOCK_DATA[node.moduleKey][dataIndex], ...updatedItem };
+          MOCK_DATA[node.moduleKey][dataIndex] = { ...(MOCK_DATA[node.moduleKey][dataIndex] as Record<string, unknown>), ...updatedItem };
         }
       }
 
@@ -315,7 +315,6 @@ export default function SetupHub() {
                     setSearchQuery(e.target.value);
                     if (e.target.value) setGlobalExpand(true);
                   }}
-                  style={{ padding: '8px 16px 8px 40px' }}
                 />
               </div>
 
