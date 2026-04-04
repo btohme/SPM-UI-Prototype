@@ -345,6 +345,29 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'completion',  labelAr: 'الإنجاز',         labelEn: 'Completion',   type: 'progress' },
       { key: 'status',      labelAr: 'الحالة',          labelEn: 'Status',       type: 'badge',  statusColors: { active: '#2E7D52', draft: '#78909C', inactive: '#B71C1C' } },
     ],
+
+    // 👇 ADD THIS NEW BLOCK RIGHT HERE 👇
+    setupHub: {
+      enabled: true,
+      hierarchy: [
+        {
+          moduleKey: 'StrategicPillars',
+          foreignKey: 'strategyAr',
+          children: [
+            {
+              moduleKey: 'Objectives',
+              foreignKey: 'strategyAr', // Matches the field key in Objectives module
+              children: [
+                {
+                  moduleKey: 'KPIs',
+                  foreignKey: 'linkedObjectiveAr' // Matches the field key in KPIs module
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   },
 
   // ── Tasks ─────────────────────────────────────────────────────────────────

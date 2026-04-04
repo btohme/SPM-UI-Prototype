@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp, Eye, Edit, Trash2, Plus, ChevronLeft, FileDown } from 'lucide-react';
+import { ChevronDown, ChevronUp, Eye, Edit, Trash2, Plus, ChevronLeft, FileDown, Layers } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Badge from './Badge';
 import Avatar from './Avatar';
 import { useApp } from '../../context/AppContext';
 import type { ColumnConfig } from '../../types';
-
+import { getModuleConfig } from '../../data/moduleConfigs';
 interface DataTableProps { moduleKey: string; columns: ColumnConfig[]; data: Record<string, unknown>[]; loading?: boolean; workspaceParam?: string; onAdd?: () => void; showExport?: boolean; filterComponent?: React.ReactNode; }
 
 function renderCell(col: ColumnConfig, value: unknown, t: (ar: string, en: string) => string) {
@@ -33,6 +33,7 @@ function renderCell(col: ColumnConfig, value: unknown, t: (ar: string, en: strin
 
 export default function DataTable({ moduleKey, columns, data, loading = false, workspaceParam = '', onAdd, showExport = true, filterComponent }: DataTableProps) {
   const { t, language } = useApp(); const navigate = useNavigate();
+  const config = getModuleConfig(moduleKey);
   const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
   const [sortCol, setSortCol] = useState(''); const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [page, setPage] = useState(1); const PER_PAGE = 10;
@@ -111,6 +112,15 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
                         ))}
                         <td>
                           <div className="pure-table-actions">
+                            {config.setupHub?.enabled && (
+                              <button
+                                onClick={() => navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${itemId || String(item.id)}`)}
+                                className="pure-btn-base pure-btn-sz-sm pure-btn-hub"
+                              >
+                                <Layers size={16} />
+                                {t('فتح مركز الإعداد', 'Open Setup Hub')}
+                              </button>
+                            )}
                             <button onClick={() => navigate(buildRoute('view', id))} className="pure-table-action-btn view"><Eye size={16} /></button>
                             <button onClick={() => navigate(buildRoute('edit', id))} className="pure-table-action-btn edit"><Edit size={16} /></button>
                             <button className="pure-table-action-btn delete"><Trash2 size={16} /></button>

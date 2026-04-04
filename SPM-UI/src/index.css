@@ -965,6 +965,13 @@ html, body {
 .pure-btn-ghost:hover:not(:disabled) { background: #f3f4f6; }
 .pure-btn-accent { background: #E8A020; color: #fff; box-shadow: 0 2px 4px rgba(232, 160, 32, 0.2); }
 .pure-btn-accent:hover:not(:disabled) { background: #d9901a; }
+.pure-btn-hub {
+  background: #faf5ff; /* bg-purple-50 */
+  color: #7e22ce;      /* text-purple-700 */
+}
+.pure-btn-hub:hover:not(:disabled) {
+  background: #f3e8ff; /* hover:bg-purple-100 */
+}
 .pure-btn-sz-xs { padding: 4px 8px; font-size: 12px; border-radius: 6px; }
 .pure-btn-sz-sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; }
 .pure-btn-sz-md { padding: 10px 20px; font-size: 14px; }

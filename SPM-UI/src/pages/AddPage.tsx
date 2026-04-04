@@ -32,13 +32,24 @@ export default function AddPage() {
 
   const handleSubmit = async () => {
     setLoading(true);
+    // Simulate network request
     await new Promise(res => setTimeout(res, 1200));
     setLoading(false);
     setSubmitted(true);
+
+    // Get the code the user entered, or generate a temporary one for the mock
+    const newItemCode = formData.code ? String(formData.code) : `${config.codePrefix}-999`;
+
     setTimeout(() => {
-      let listRoute = `/list?modulekey=${moduleKey}`;
-      if (workspaceParam) listRoute += `&${workspaceParam}`;
-      navigate(listRoute);
+      // THE FIX: Check if this module has a Setup Hub configured!
+      if (config.setupHub?.enabled) {
+        navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${newItemCode}`);
+      } else {
+        // Normal behavior for standard modules
+        let listRoute = `/list?modulekey=${moduleKey}`;
+        if (workspaceParam) listRoute += `&${workspaceParam}`;
+        navigate(listRoute);
+      }
     }, 1500);
   };
 

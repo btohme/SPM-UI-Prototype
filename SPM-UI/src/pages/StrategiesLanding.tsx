@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Layers, ChevronDown, Target, BarChart2, TrendingUp } from 'lucide-react';
+import { Layers, ChevronDown, Target, BarChart2, TrendingUp, Plus } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import Badge from '../components/ui/Badge';
 import { useApp } from '../context/AppContext';
@@ -20,11 +20,17 @@ export default function StrategiesLanding() {
       <div className="pure-dashboard-wrapper">
 
         {/* Header */}
-        <div>
-          <h2 className="pure-title-main">{t('الاستراتيجيات', 'Strategies')}</h2>
-          <p className="pure-subtitle">{t('إطار الأهداف والمؤشرات الاستراتيجية', 'Strategic objectives and KPI framework')}</p>
-        </div>
+        <div className="pure-flex-between">
 
+          <div>
+            <h2 className="pure-title-main">{t('الاستراتيجيات', 'Strategies')}</h2>
+            <p className="pure-subtitle">{t('إطار الأهداف والمؤشرات الاستراتيجية', 'Strategic objectives and KPI framework')}</p>
+          </div>
+          <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => navigate('/add?modulekey=Strategies')} className="pure-btn-primary">
+            <Plus size={18} />
+            {t('إضافة استراتيجية', 'Add Strategy')}
+          </motion.button>
+        </div>
         {/* Top KPIs */}
         <div className="pure-grid-3">
           {[

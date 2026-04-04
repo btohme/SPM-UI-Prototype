@@ -10,6 +10,7 @@ import ViewPage from './pages/ViewPage';
 import EditPage from './pages/EditPage';
 import ProjectWorkspace from './pages/ProjectWorkspace';
 import InitiativeWorkspace from './pages/InitiativeWorkspace';
+import SetupHub from './pages/SetupHub';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/workspace/project" element={<ProjectWorkspace />} />
           <Route path="/workspace/initiative" element={<InitiativeWorkspace />} />
           <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/setup-hub" element={<SetupHub />} />
         </Routes>
       </AppProvider>
     </BrowserRouter>

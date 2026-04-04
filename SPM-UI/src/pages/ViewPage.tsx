@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Edit, Trash2, X, FileDown, ChevronLeft } from 'lucide-react';
+import { Edit, Trash2, X, FileDown, ChevronLeft, Layers } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import FormField from '../components/forms/FormField';
 import { useApp } from '../context/AppContext';
@@ -60,9 +60,20 @@ export default function ViewPage() {
             <ChevronLeft size={14} color="#d1d5db" />
             <span className="pure-breadcrumb-current">{t('تفاصيل', 'Details')}</span>
           </nav>
-          <button className="pure-btn-secondary">
-            <FileDown size={15} /> {t('تصدير PDF', 'Export PDF')}
-          </button>
+          <div className="flex items-center gap-3">
+            {config.setupHub?.enabled && (
+              <button
+                onClick={() => navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${itemId || String(item.id)}`)}
+                className="pure-btn-base pure-btn-sz-sm pure-btn-hub"
+              >
+                <Layers size={16} />
+                {t('فتح مركز الإعداد', 'Open Setup Hub')}
+              </button>
+            )}
+              <button className="pure-btn-secondary">
+                <FileDown size={15} /> {t('تصدير PDF', 'Export PDF')}
+              </button>
+            </div>
         </div>
 
         <div className="pure-content-card">

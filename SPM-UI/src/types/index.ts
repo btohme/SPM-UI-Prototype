@@ -149,8 +149,16 @@ export interface ModuleConfig {
   tabs: TabConfig[];
   fields: FieldConfig[];
   columns: ColumnConfig[];
+  setupHub?: {
+    enabled: boolean;
+    hierarchy: HubHierarchy[];
+  };
 }
-
+export interface HubHierarchy {
+  moduleKey: string;       // e.g., 'StrategicPillars'
+  foreignKey: string;      // e.g., 'strategyId' (How it links to the parent)
+  children?: HubHierarchy[]; // Recursive nesting for N-levels!
+}
 // ─── Base Record ───────────────────────────────────────────────────────────
 export interface BaseRecord {
   id: string;
