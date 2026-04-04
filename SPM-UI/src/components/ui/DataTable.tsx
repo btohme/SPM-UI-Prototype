@@ -114,7 +114,7 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
                           <div className="pure-table-actions">
                             {config.setupHub?.enabled && (
                               <button
-                                onClick={() => navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${itemId || String(item.id)}`)}
+                                onClick={() => navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${id}`)}
                                 className="pure-btn-base pure-btn-sz-sm pure-btn-hub"
                               >
                                 <Layers size={16} />
