@@ -4,6 +4,7 @@ import type { ModuleDefinition, NavItem } from '../types';
 export const MODULES: ModuleDefinition[] = [
   // ── Global Modules ──
   { key: 'Strategies',         nameAr: 'الاستراتيجيات',          nameEn: 'Strategies',          icon: 'Target',          workspace: 'global', codePrefix: 'ST',  color: '#1B5E3B' },
+  { key: 'SubStrategy',   nameAr: 'الأعمدة الاستراتيجية',   nameEn: 'Sub Strategy',   icon: 'Columns',         workspace: 'global', codePrefix: 'SP',  color: '#4E7D51' },
   { key: 'StrategicPillars',   nameAr: 'الركائز الاستراتيجية',   nameEn: 'Strategic Pillars',   icon: 'Columns',         workspace: 'global', codePrefix: 'SP',  color: '#2E7D52' },
   { key: 'Objectives',         nameAr: 'الأهداف',                 nameEn: 'Objectives',          icon: 'Crosshair',       workspace: 'global', codePrefix: 'OB',  color: '#1B5E3B' },
   { key: 'KPIs',               nameAr: 'المؤشرات',                nameEn: 'KPIs',                icon: 'BarChart2',       workspace: 'global', codePrefix: 'KP',  color: '#0277BD' },

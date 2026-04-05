@@ -351,20 +351,24 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       enabled: true,
       hierarchy: [
         {
-          moduleKey: 'StrategicPillars',
+          moduleKey: 'SubStrategy',
           foreignKey: 'strategyAr',
-          children: [
-            {
-              moduleKey: 'Objectives',
-              foreignKey: 'strategyAr', // Matches the field key in Objectives module
-              children: [
-                {
-                  moduleKey: 'KPIs',
-                  foreignKey: 'linkedObjectiveAr' // Matches the field key in KPIs module
-                }
-              ]
-            }
-          ]
+          children: [{
+            moduleKey: 'StrategicPillars',
+            foreignKey: 'strategyAr',
+            children: [
+              {
+                moduleKey: 'Objectives',
+                foreignKey: 'strategyAr', // Matches the field key in Objectives module
+                children: [
+                  {
+                    moduleKey: 'KPIs',
+                    foreignKey: 'linkedObjectiveAr' // Matches the field key in KPIs module
+                  }
+                ]
+              }
+            ]
+          }]
         }
       ]
     }
