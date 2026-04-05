@@ -619,7 +619,6 @@ const [, setRefreshTrigger] = useState(0);
       isTourStep2={tourStep === 2 && idx === 0}
       onNextTourStep={() => setTourStep(3)}
       onSkipTour={() => setTourStep(0)}
-      parentName={parentName}
     />
   ) : null
 ))}
