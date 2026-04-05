@@ -14,10 +14,10 @@ import { showToast } from '../components/ui/Toast';
 // --- Recursive Component for Children ---
 function HierarchyNode({
   node, parentId, level = 1, globalExpand, searchQuery, onDataChange,
-  isTourStep2 = false, onNextTourStep, onSkipTour, parentName
+  isTourStep2 = false, onNextTourStep, onSkipTour
 }: {
   node: HubHierarchy; parentId: string; level?: number; globalExpand: boolean; searchQuery: string; onDataChange: () => void;
-  isTourStep2?: boolean; onNextTourStep?: () => void; onSkipTour?: () => void; parentName?: string;
+  isTourStep2?: boolean; onNextTourStep?: () => void; onSkipTour?: () => void;
 }) {
   const { t, language } = useApp();
   const config = getModuleConfig(node.moduleKey);
@@ -286,8 +286,7 @@ export default function SetupHub() {
   const config = getModuleConfig(moduleKey);
   const hierarchy = config.setupHub?.hierarchy || [];
 
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
+const [, setRefreshTrigger] = useState(0);
   const allItems = (MOCK_DATA[moduleKey] as Record<string, unknown>[]) || [];
   const parentItem = allItems.find(i => String(i.id) === itemId || String(i.code) === itemId) || { nameAr: '', nameEn: '', code: itemId };
 
@@ -422,7 +421,7 @@ export default function SetupHub() {
 
   const getHierarchyPath = () => {
     const path = [config];
-    let currentLevel = hierarchy[0];
+    let currentLevel: HubHierarchy | undefined = hierarchy[0];
     while (currentLevel) {
       path.push(getModuleConfig(currentLevel.moduleKey));
       currentLevel = currentLevel.children?.[0];
