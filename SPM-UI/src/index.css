@@ -1131,3 +1131,40 @@ html, body {
     0 1px 3px rgba(0, 0, 0, 0.1),
     0 1px 2px rgba(0, 0, 0, 0.06) !important; /* Snappier, multi-layered shadow */
 }
+/* =========================================
+   UI CONTRAST & DEFINITION PATCH
+   ========================================= */
+
+/* 1. Deepen the main background to make white cards pop */
+body,
+.pure-layout-main {
+  background-color: #f3f4f6 !important;
+}
+
+/* 2. Crisp borders and sharper, layered drop-shadows for all containers */
+.pure-card,
+.pure-ui-card,
+.pure-stat-card,
+.pure-table-container,
+.pure-dashboard-wrapper > div > .pure-card {
+  background-color: #ffffff !important;
+  border: 1px solid #d1d5db !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.1),
+    0 1px 2px rgba(0, 0, 0, 0.06) !important;
+}
+
+/* 3. Add a subtle hover lift to interactive cards to reinforce depth */
+.pure-ui-card.hoverable:hover,
+.pure-item-card:hover {
+  border-color: #9ca3af !important;
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* 4. Ensure inputs and form fields don't wash out against the cards */
+.pure-input {
+  border: 1px solid #d1d5db !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02) !important;
+}

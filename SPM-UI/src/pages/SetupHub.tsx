@@ -18,13 +18,11 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
   const [items, setItems] = useState<Record<string, unknown>[]>([]);
   const [expandedItems, setExpandedRows] = useState<Set<string>>(new Set());
 
-  // THE FIX: Added tracking for Add vs Edit mode
   const [isModalOpen, setModalOpen] = useState(false);
   const [editingItemId, setEditingItemId] = useState<string | null>(null);
   const [formData, setFormData] = useState<Record<string, unknown>>({});
   const [activeTab, setActiveTab] = useState(0);
 
-  // Load initial mock data
   useEffect(() => {
     const allData = (MOCK_DATA[node.moduleKey] as Record<string, unknown>[]) || [];
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -32,7 +30,6 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     setItems(linkedData);
   }, [node, parentId, node.moduleKey]);
 
-  // Sync with global expand/collapse
   useEffect(() => {
     if (globalExpand) {
       setExpandedRows(new Set(items.map((_, idx) => String(items[idx].id || items[idx].code || idx))));
@@ -50,7 +47,6 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     });
   };
 
-  // Open modal for ADDING
   const handleOpenAddModal = () => {
     setActiveTab(0);
     setFormData({});
@@ -58,39 +54,29 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     setModalOpen(true);
   };
 
-  // Open modal for EDITING
   const handleOpenEditModal = (item: Record<string, unknown>) => {
     setActiveTab(0);
-    setFormData({ ...item }); // Pre-fill with existing data
+    setFormData({ ...item });
     setEditingItemId(String(item.id || item.code));
     setModalOpen(true);
   };
 
-  // Handle Save (Smart enough to know if it's an Add or Edit)
   const handleSave = () => {
     if (editingItemId) {
-      // --- EDIT MODE ---
       const updatedItem = { ...formData, [node.foreignKey]: parentId };
-
-      // Update MOCK_DATA
       if (MOCK_DATA[node.moduleKey]) {
         const dataIndex = MOCK_DATA[node.moduleKey].findIndex((i: any) => String(i.id || i.code) === editingItemId);
         if (dataIndex > -1) {
-          MOCK_DATA[node.moduleKey][dataIndex] = { ...(MOCK_DATA[node.moduleKey][dataIndex] as Record<string, unknown>), ...updatedItem };
+          MOCK_DATA[node.moduleKey][dataIndex] = { ...MOCK_DATA[node.moduleKey][dataIndex], ...updatedItem };
         }
       }
-
-      // Update local state
       setItems(prev => prev.map(i => String(i.id || i.code) === editingItemId ? { ...i, ...updatedItem } : i));
-
     } else {
-      // --- ADD MODE ---
       const newItem = { ...formData, id: Date.now().toString(), code: `${config.codePrefix}-NEW`, [node.foreignKey]: parentId };
       if (!MOCK_DATA[node.moduleKey]) MOCK_DATA[node.moduleKey] = [];
       MOCK_DATA[node.moduleKey].push(newItem);
       setItems(prev => [...prev, newItem]);
     }
-
     setModalOpen(false);
     setEditingItemId(null);
     setFormData({});
@@ -114,60 +100,72 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
 
   return (
     <div style={{ marginTop: '16px' }}>
-      <div className="pure-flex-between" style={{ marginBottom: '12px', paddingInlineStart: `${(level - 1) * 20}px` }}>
+      <div className="pure-flex-between" style={{ marginBottom: '12px' }}>
         <div className="pure-flex-start">
           <LevelIcon size={18} color={indentColor} />
-          <h4 style={{ fontSize: '15px', fontWeight: '700', color: '#374151', margin: 0 }}>
+          <h4 style={{ fontSize: '15px', fontWeight: '800', color: '#111827', margin: 0 }}>
             {t(config.nameAr, config.nameEn)}
           </h4>
-          <span className="pure-badge pure-badge-gray">{filteredItems.length}</span>
+          <span className="pure-badge pure-badge-gray" style={{ background: '#e5e7eb', color: '#374151' }}>{filteredItems.length}</span>
         </div>
-        <button onClick={handleOpenAddModal} className="pure-btn-link" style={{ color: indentColor }}>
+        <button onClick={handleOpenAddModal} className="pure-btn-primary" style={{ padding: '6px 12px', fontSize: '12px', background: indentColor }}>
           <Plus size={14} /> {t('إضافة', 'Add')} {t(config.nameAr, config.nameEn)}
         </button>
       </div>
 
       {items.length === 0 ? (
-        <div style={{ padding: '16px', border: '1px dashed #d1d5db', borderRadius: '12px', textAlign: 'center', marginInlineStart: `${(level - 1) * 20}px` }}>
-          <p style={{ color: '#9ca3af', fontSize: '13px', margin: 0 }}>
+        <div style={{ padding: '16px', border: '2px dashed #d1d5db', borderRadius: '12px', textAlign: 'center', backgroundColor: '#f9fafb' }}>
+          <p style={{ color: '#6b7280', fontSize: '13px', margin: 0, fontWeight: '600' }}>
             {t('لا توجد بيانات مرتبطة بعد.', 'No linked data yet.')}
           </p>
         </div>
       ) : filteredItems.length === 0 ? (
-        <div style={{ marginInlineStart: `${(level - 1) * 20}px`, padding: '8px', color: '#9ca3af', fontSize: '12px', fontStyle: 'italic' }}>
+        <div style={{ padding: '8px', color: '#9ca3af', fontSize: '12px', fontStyle: 'italic' }}>
           {t('لا توجد نتائج تطابق البحث.', 'No results match the search.')}
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginInlineStart: `${(level - 1) * 20}px` }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
           {filteredItems.map((item, idx) => {
             const id = String(item.id || item.code || idx);
             const isExpanded = expandedItems.has(id);
             const hasChildren = node.children && node.children.length > 0;
 
             return (
-              <div key={id} className="pure-card" style={{ padding: '16px', borderLeft: `4px solid ${indentColor}` }}>
+              // THE HYBRID ENCLOSURE: Full border, thick start line, tinted background, inset shadow
+              <div key={id} style={{
+                padding: '16px',
+                border: '1px solid #d1d5db',
+                borderInlineStart: `5px solid ${indentColor}`,
+                borderRadius: '12px',
+                backgroundColor: `${indentColor}0A`, // 0A hex = ~4% tint of the level's color!
+                boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.04)'
+              }}>
                 <div className="pure-flex-between">
                   <div>
-                    <p style={{ fontWeight: '700', color: '#1f2937', fontSize: '14px', margin: '0 0 4px 0' }}>
+                    <p style={{ fontWeight: '800', color: '#111827', fontSize: '15px', margin: '0 0 4px 0' }}>
                       {t(String(item.nameAr || item.titleAr || ''), String(item.nameEn || item.nameAr || ''))}
                     </p>
-                    <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>
-                      {t('الكود', 'Code')}: {String(item.code || '---')}
+                    <p style={{ fontSize: '12px', color: '#4b5563', margin: 0, fontWeight: '600' }}>
+                      {t('الكود', 'Code')}: <span style={{ fontFamily: 'monospace', background: '#e5e7eb', padding: '2px 6px', borderRadius: '4px' }}>{String(item.code || '---')}</span>
                     </p>
                   </div>
 
                   <div className="pure-flex-start" style={{ gap: '12px' }}>
-                    {/* THE FIX: The new inline Edit Button */}
                     <button
                       onClick={(e) => { e.stopPropagation(); handleOpenEditModal(item); }}
                       className="pure-table-action-btn edit"
+                      style={{ background: '#ffffff', border: '1px solid #e5e7eb', boxShadow: '0 1px 2px rgba(0,0,0,0.05)' }}
                       title={t('تعديل', 'Edit')}
                     >
                       <Edit size={16} />
                     </button>
 
                     {hasChildren && (
-                      <button onClick={() => toggleExpand(id)} className="pure-btn-secondary" style={{ padding: '6px 12px', fontSize: '12px' }}>
+                      <button
+                        onClick={() => toggleExpand(id)}
+                        className="pure-btn-secondary"
+                        style={{ padding: '6px 12px', fontSize: '12px', background: '#ffffff', borderColor: '#d1d5db', color: '#374151' }}
+                      >
                         {t('المحتوى المرتبط', 'Linked Content')}
                         {isExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                       </button>
@@ -178,11 +176,21 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
                 <AnimatePresence>
                   {isExpanded && hasChildren && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: 'hidden' }}>
-                      <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #f3f4f6' }}>
+
+                      {/* THE CARD-IN-CARD: Children render inside a crisp white box to pop against the tint */}
+                      <div style={{
+                        marginTop: '16px',
+                        padding: '20px',
+                        border: '1px solid #d1d5db',
+                        borderRadius: '12px',
+                        backgroundColor: '#ffffff',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
+                      }}>
                         {node.children!.map((childNode, childIdx) => (
                           <HierarchyNode key={childIdx} node={childNode} parentId={id} level={level + 1} globalExpand={globalExpand} searchQuery={searchQuery} />
                         ))}
                       </div>
+
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -196,7 +204,6 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
       <Modal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
-        // THE FIX: Dynamic Title based on Add vs Edit
         titleAr={editingItemId ? `تعديل ${config.nameAr}` : `إضافة ${config.nameAr}`}
         titleEn={editingItemId ? `Edit ${config.nameEn}` : `Add ${config.nameEn}`}
         size="xl"
@@ -214,7 +221,7 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
             </div>
             <div style={{ display: 'flex', gap: '12px' }}>
               <button onClick={() => setModalOpen(false)} className="pure-btn-secondary">{t('إلغاء', 'Cancel')}</button>
-              <button onClick={handleSave} className="pure-btn-primary">
+              <button onClick={handleSave} className="pure-btn-primary" style={{ background: indentColor }}>
                 <Save size={16} /> {editingItemId ? t('حفظ التعديلات', 'Save Changes') : t('حفظ وربط', 'Save & Link')}
               </button>
             </div>
