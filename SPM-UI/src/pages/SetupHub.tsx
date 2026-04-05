@@ -11,8 +11,8 @@ import { MOCK_DATA, persistData } from '../data/mockData';
 import type { HubHierarchy } from '../types';
 import { showToast } from '../components/ui/Toast';
 
-// --- Recursive Component ---
-function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }: { node: HubHierarchy; parentId: string; level?: number; globalExpand: boolean; searchQuery: string }) {
+// --- Recursive Component for Children ---
+function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery, onDataChange }: { node: HubHierarchy; parentId: string; level?: number; globalExpand: boolean; searchQuery: string; onDataChange: () => void }) {
   const { t } = useApp();
   const config = getModuleConfig(node.moduleKey);
 
@@ -29,7 +29,7 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const linkedData = allData.filter((item: any) => item[node.foreignKey] === parentId);
     setItems(linkedData);
-  }, [node, parentId, node.moduleKey]);
+  }, [node, parentId, node.moduleKey, onDataChange]);
 
   useEffect(() => {
     if (globalExpand) {
@@ -66,14 +66,16 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     if (editingItemId) {
       const updatedItem = { ...formData, [node.foreignKey]: parentId };
       if (MOCK_DATA[node.moduleKey]) {
-        const dataIndex = MOCK_DATA[node.moduleKey].findIndex((i: any) => String(i.id || i.code) === editingItemId);
+        // THE BUG FIX: Check both ID and Code explicitly
+        const dataIndex = MOCK_DATA[node.moduleKey].findIndex((i: any) => String(i.id) === editingItemId || String(i.code) === editingItemId);
         if (dataIndex > -1) {
           MOCK_DATA[node.moduleKey][dataIndex] = { ...MOCK_DATA[node.moduleKey][dataIndex], ...updatedItem };
         }
       }
-      setItems(prev => prev.map(i => String(i.id || i.code) === editingItemId ? { ...i, ...updatedItem } : i));
+      setItems(prev => prev.map(i => (String(i.id) === editingItemId || String(i.code) === editingItemId) ? { ...i, ...updatedItem } : i));
     } else {
-      const newItem = { ...formData, id: Date.now().toString(), code: `${config.codePrefix}-NEW`, [node.foreignKey]: parentId };
+      const uniqueId = Math.floor(1000 + Math.random() * 9000);
+      const newItem = { ...formData, id: Date.now().toString(), code: `${config.codePrefix}-NEW-${uniqueId}`, [node.foreignKey]: parentId };
       if (!MOCK_DATA[node.moduleKey]) MOCK_DATA[node.moduleKey] = [];
       MOCK_DATA[node.moduleKey].push(newItem);
       setItems(prev => [...prev, newItem]);
@@ -83,6 +85,7 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
     setModalOpen(false);
     setEditingItemId(null);
     setFormData({});
+    onDataChange();
   };
 
   const tabs = config.tabs || [];
@@ -134,13 +137,12 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
             const hasChildren = node.children && node.children.length > 0;
 
             return (
-              // THE HYBRID ENCLOSURE: Full border, thick start line, tinted background, inset shadow
               <div key={id} style={{
                 padding: '16px',
                 border: '1px solid #d1d5db',
                 borderInlineStart: `5px solid ${indentColor}`,
                 borderRadius: '12px',
-                backgroundColor: `${indentColor}0A`, // 0A hex = ~4% tint of the level's color!
+                backgroundColor: `${indentColor}0A`,
                 boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02), 0 2px 4px rgba(0,0,0,0.04)'
               }}>
                 <div className="pure-flex-between">
@@ -179,8 +181,6 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
                 <AnimatePresence>
                   {isExpanded && hasChildren && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} style={{ overflow: 'hidden' }}>
-
-                      {/* THE CARD-IN-CARD: Children render inside a crisp white box to pop against the tint */}
                       <div style={{
                         marginTop: '16px',
                         padding: '20px',
@@ -190,10 +190,9 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
                         boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
                       }}>
                         {node.children!.map((childNode, childIdx) => (
-                          <HierarchyNode key={childIdx} node={childNode} parentId={id} level={level + 1} globalExpand={globalExpand} searchQuery={searchQuery} />
+                          <HierarchyNode key={childIdx} node={childNode} parentId={id} level={level + 1} globalExpand={globalExpand} searchQuery={searchQuery} onDataChange={onDataChange} />
                         ))}
                       </div>
-
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -203,7 +202,6 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
         </div>
       )}
 
-      {/* The XL Tabbed Modal */}
       <Modal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
@@ -256,7 +254,7 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
 
 // --- Main Page Wrapper ---
 export default function SetupHub() {
-  const { t } = useApp();
+  const { t, language } = useApp();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -266,15 +264,56 @@ export default function SetupHub() {
   const config = getModuleConfig(moduleKey);
   const hierarchy = config.setupHub?.hierarchy || [];
 
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
   const allItems = (MOCK_DATA[moduleKey] as Record<string, unknown>[]) || [];
-  const parentItem = allItems.find(i => String(i.id) === itemId || String(i.code) === itemId) || { nameAr: 'مسودة استراتيجية جديدة', nameEn: 'New Strategy Draft', code: itemId };
+  const parentItem = allItems.find(i => String(i.id) === itemId || String(i.code) === itemId) || { nameAr: '', nameEn: '', code: itemId };
 
   const [globalExpand, setGlobalExpand] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // --- PARENT EDIT STATE ---
+  const [isParentModalOpen, setParentModalOpen] = useState(false);
+  const [parentFormData, setParentFormData] = useState<Record<string, unknown>>({});
+  const [parentActiveTab, setParentActiveTab] = useState(0);
+
+  const handleOpenParentEdit = () => {
+    setParentActiveTab(0);
+    setParentFormData({ ...parentItem });
+    setParentModalOpen(true);
+  };
+
+  const handleSaveParent = () => {
+    if (MOCK_DATA[moduleKey]) {
+      // THE BUG FIX: Check explicitly for ID or Code!
+      const dataIndex = MOCK_DATA[moduleKey].findIndex((i: any) => String(i.id) === itemId || String(i.code) === itemId);
+      if (dataIndex > -1) {
+        MOCK_DATA[moduleKey][dataIndex] = { ...MOCK_DATA[moduleKey][dataIndex], ...parentFormData };
+        persistData();
+        showToast('تم تعديل البيانات بنجاح', 'Parent updated successfully');
+        setRefreshTrigger(r => r + 1);
+      }
+    }
+    setParentModalOpen(false);
+  };
+
+  const getHierarchyPath = () => {
+    const path = [config];
+    let currentLevel = hierarchy[0];
+    while (currentLevel) {
+      path.push(getModuleConfig(currentLevel.moduleKey));
+      currentLevel = currentLevel.children?.[0];
+    }
+    return path;
+  };
+
   if (!config.setupHub?.enabled) {
     return <Layout><p style={{ padding: '48px', textAlign: 'center' }}>{t('هذه الوحدة لا تدعم الإعداد المتقدم.', 'This module does not support advanced setup.')}</p></Layout>;
   }
+
+  const parentTabs = config.tabs || [];
+  const currentParentTab = parentTabs[parentActiveTab];
+  const parentFieldsForTab = config.fields.filter(f => f.tab === currentParentTab?.key);
 
   return (
     <Layout>
@@ -288,7 +327,6 @@ export default function SetupHub() {
           <span className="pure-breadcrumb-current">{t('مركز الإعداد', 'Setup Hub')}</span>
         </nav>
 
-        {/* Master Parent Banner */}
         <div className="pure-hero-banner primary" style={{ marginBottom: '24px' }}>
           <div>
             <div className="pure-flex-start" style={{ marginBottom: '8px' }}>
@@ -296,18 +334,58 @@ export default function SetupHub() {
                 {String(parentItem.code)}
               </span>
             </div>
-            <h2 className="pure-hero-title">
-              {t(
-                (String(parentItem.nameAr || parentItem.titleAr) === 'undefined' || !parentItem.nameAr && !parentItem.titleAr)
-                  ? String(parentItem.code || 'مسودة جديدة')
-                  : String(parentItem.nameAr || parentItem.titleAr),
 
-                (String(parentItem.nameEn || parentItem.titleEn) === 'undefined' || !parentItem.nameEn && !parentItem.titleEn)
-                  ? String(parentItem.code || 'New Draft')
-                  : String(parentItem.nameEn || parentItem.titleEn)
-              )}
-            </h2>
+            <div className="pure-flex-start">
+              <h2 className="pure-hero-title" style={{ margin: 0 }}>
+                {t(
+                  (String(parentItem.nameAr || parentItem.titleAr) === 'undefined' || !parentItem.nameAr && !parentItem.titleAr)
+                    ? String(parentItem.code || 'مسودة جديدة')
+                    : String(parentItem.nameAr || parentItem.titleAr),
+
+                  (String(parentItem.nameEn || parentItem.titleEn) === 'undefined' || !parentItem.nameEn && !parentItem.titleEn)
+                    ? String(parentItem.code || 'New Draft')
+                    : String(parentItem.nameEn || parentItem.titleEn)
+                )}
+              </h2>
+              <button
+                onClick={handleOpenParentEdit}
+                style={{
+                  background: 'rgba(255,255,255,0.15)', border: 'none', color: '#ffffff',
+                  padding: '6px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', transition: '0.2s'
+                }}
+                onMouseOver={e => e.currentTarget.style.background = 'rgba(255,255,255,0.25)'}
+                onMouseOut={e => e.currentTarget.style.background = 'rgba(255,255,255,0.15)'}
+                title={t('تعديل البيانات الأساسية', 'Edit Main Data')}
+              >
+                <Edit size={16} />
+              </button>
+            </div>
+
             <p className="pure-hero-subtitle">{t('قم ببناء الهيكل المرتبط أدناه.', 'Build the related hierarchy below.')}</p>
+
+            <div className="pure-flex-start" style={{ marginTop: '16px', gap: '8px', flexWrap: 'wrap' }}>
+              {getHierarchyPath().map((step, index, arr) => (
+                <div key={step.key} className="pure-flex-start" style={{ gap: '8px' }}>
+                  <div style={{
+                    background: index === 0 ? '#ffffff' : 'rgba(255,255,255,0.15)',
+                    color: index === 0 ? '#1B5E3B' : '#ffffff',
+                    border: '1px solid rgba(255,255,255,0.3)',
+                    padding: '4px 12px',
+                    borderRadius: '999px',
+                    fontSize: '12px',
+                    fontWeight: '700'
+                  }}>
+                    {t(step.nameAr, step.nameEn)}
+                  </div>
+                  {index < arr.length - 1 && (
+                    <div style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      {language === 'ar' ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
           </div>
           <div style={{ textAlign: 'center' }}>
              <button onClick={() => navigate(`/list?modulekey=${moduleKey}`)} className="pure-btn-primary" style={{ background: '#ffffff', color: '#1B5E3B' }}>
@@ -350,9 +428,56 @@ export default function SetupHub() {
           </div>
 
           {hierarchy.map((node, idx) => (
-            <HierarchyNode key={idx} node={node} parentId={String(parentItem.id || parentItem.code)} globalExpand={globalExpand} searchQuery={searchQuery} />
+            <HierarchyNode key={idx} node={node} parentId={String(parentItem.id || parentItem.code)} globalExpand={globalExpand} searchQuery={searchQuery} onDataChange={() => setRefreshTrigger(r => r + 1)} />
           ))}
         </div>
+
+        <Modal
+          open={isParentModalOpen}
+          onClose={() => setParentModalOpen(false)}
+          titleAr={`تعديل ${config.nameAr}`}
+          titleEn={`Edit ${config.nameEn}`}
+          size="xl"
+          footer={
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={() => setParentActiveTab(t => Math.max(0, t - 1))} disabled={parentActiveTab === 0} className="pure-btn-secondary" style={{ opacity: parentActiveTab === 0 ? 0.5 : 1 }}>
+                  <ChevronRight size={16} /> {t('السابق', 'Previous')}
+                </button>
+                {parentActiveTab < parentTabs.length - 1 && (
+                  <button onClick={() => setParentActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e8f5ee', color: '#1B5E3B', borderColor: '#a7f3d0' }}>
+                    {t('التالي', 'Next')} <ChevronLeft size={16} />
+                  </button>
+                )}
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button onClick={() => setParentModalOpen(false)} className="pure-btn-secondary">{t('إلغاء', 'Cancel')}</button>
+                <button onClick={handleSaveParent} className="pure-btn-primary">
+                  <Save size={16} /> {t('حفظ التعديلات', 'Save Changes')}
+                </button>
+              </div>
+            </div>
+          }
+        >
+          <div style={{ margin: '-24px -24px 24px -24px' }}>
+            <div className="pure-tabs-header custom-scrollbar">
+              {parentTabs.map((tab, idx) => (
+                <button key={tab.key} onClick={() => setParentActiveTab(idx)} className={`pure-tab-btn ${parentActiveTab === idx ? 'active' : ''}`}>{t(tab.labelAr, tab.labelEn)}</button>
+              ))}
+            </div>
+          </div>
+          <motion.div key={currentParentTab?.key} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}>
+            {parentFieldsForTab.length === 0 ? (
+              <p style={{ color: '#9ca3af', fontSize: '14px', textAlign: 'center', padding: '48px 0' }}>{t('لا توجد حقول في هذا التبويب', 'No fields in this tab')}</p>
+            ) : (
+              <div className="pure-form-grid">
+                {parentFieldsForTab.map(field => (
+                  <FormField key={field.key} field={field} value={parentFormData[field.key] ?? ''} onChange={(k, v) => setParentFormData(p => ({ ...p, [k]: v }))} />
+                ))}
+              </div>
+            )}
+          </motion.div>
+        </Modal>
 
       </div>
     </Layout>
