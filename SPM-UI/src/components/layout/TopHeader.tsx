@@ -5,7 +5,7 @@ import { Globe, ChevronDown, LogOut, Settings, User } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 import NotificationDropdown from '../ui/NotificationDropdown';
 import Avatar from '../ui/Avatar';
-
+import GlobalQuickCreate from '../ui/GlobalQuickCreate';
 export default function TopHeader({ titleAr, titleEn }: { titleAr?: string; titleEn?: string }) {
   const { t, language, setLanguage, currentUser } = useApp();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -29,6 +29,12 @@ export default function TopHeader({ titleAr, titleEn }: { titleAr?: string; titl
       </div>
 
       <div className="pure-header-actions">
+<div className="pure-flex-end" style={{ gap: '16px', alignItems: 'center' }}>
+   {/* Inject the Quick Create Button Here */}
+   <GlobalQuickCreate />
+
+   {/* Your existing notification icon, language switcher, etc. */}
+</div>
         <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => setLanguage(language === 'ar' ? 'en' : 'ar')} className="pure-lang-btn">
           <Globe size={18} />
           <span>{language === 'ar' ? 'English' : 'عربي'}</span>
