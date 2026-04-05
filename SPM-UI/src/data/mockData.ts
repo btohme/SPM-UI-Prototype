@@ -14,7 +14,7 @@ export const MOCK_USERS = [
   { id: 'u10', nameAr: 'سارة الأحمد', nameEn: 'Sara Al-Ahmad', email: 'sara@tanmia.sa', role: 'مدير مشروع', avatar: '' },
 ];
 
-export const MOCK_DATA: Record<string, unknown[]> = {
+export const INITIAL_DATA: Record<string, unknown[]> = {
 
   // ─── Strategies ──────────────────────────────────────────────────────────
   Strategies: [
@@ -251,7 +251,23 @@ export const MOCK_DATA: Record<string, unknown[]> = {
     { id: 'NO-002', code: 'NO-26-000002', titleAr: 'طلب موافقة على طلب تغيير', titleEn: 'Change Request Approval Needed', type: 'approval', recipientAr: 'لیساندرا تالي', recipientEn: 'Lisandra Talley', sentDate: '2026-04-02', status: 'sent', isRead: false },
   ],
 };
+const STORAGE_KEY = 'SPM_PROTOTYPE_DATA';
+// Initialize MOCK_DATA from LocalStorage, or fallback to INITIAL_DATA
+const storedData = localStorage.getItem(STORAGE_KEY);
+export const MOCK_DATA = storedData ? JSON.parse(storedData) : JSON.parse(JSON.stringify(INITIAL_DATA));
 
+// 3. Export a helper function to save changes to LocalStorage
+export const persistData = () => {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(MOCK_DATA));
+};
+
+// 4. Export a helper to reset the prototype
+export const resetPrototypeData = () => {
+  if (window.confirm('هل أنت متأكد من إعادة تعيين جميع البيانات إلى حالتها الافتراضية؟ / Are you sure you want to reset all demo data?')) {
+    localStorage.removeItem(STORAGE_KEY);
+    window.location.href = '/'; // Reload the app to the home page
+  }
+};
 // ─── Notification Alerts ──────────────────────────────────────────────────
 export const NOTIFICATION_ALERTS = [
   { id: 'n1', type: 'task' as const, titleAr: 'مهمة جديدة مُعيّنة لك', titleEn: 'New Task Assigned to You', messageAr: 'تم تعيين مهمة "مراجعة تقرير المخاطر" لك', messageEn: 'Task "Review Risk Report" assigned to you', isRead: false, createdAt: '2026-04-03T07:30:00', priority: 'high' as const },

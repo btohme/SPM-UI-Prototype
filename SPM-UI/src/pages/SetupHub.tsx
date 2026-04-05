@@ -7,8 +7,9 @@ import Modal from '../components/ui/Modal';
 import FormField from '../components/forms/FormField';
 import { useApp } from '../context/AppContext';
 import { getModuleConfig } from '../data/moduleConfigs';
-import { MOCK_DATA } from '../data/mockData';
+import { MOCK_DATA, persistData } from '../data/mockData';
 import type { HubHierarchy } from '../types';
+import { showToast } from '../components/ui/Toast';
 
 // --- Recursive Component ---
 function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }: { node: HubHierarchy; parentId: string; level?: number; globalExpand: boolean; searchQuery: string }) {
@@ -77,6 +78,8 @@ function HierarchyNode({ node, parentId, level = 1, globalExpand, searchQuery }:
       MOCK_DATA[node.moduleKey].push(newItem);
       setItems(prev => [...prev, newItem]);
     }
+    persistData();
+    showToast('تم حفظ البيانات بنجاح', 'Data saved successfully');
     setModalOpen(false);
     setEditingItemId(null);
     setFormData({});
@@ -293,7 +296,17 @@ export default function SetupHub() {
                 {String(parentItem.code)}
               </span>
             </div>
-            <h2 className="pure-hero-title">{t(String(parentItem.nameAr), String(parentItem.nameEn || parentItem.nameAr))}</h2>
+            <h2 className="pure-hero-title">
+              {t(
+                (String(parentItem.nameAr || parentItem.titleAr) === 'undefined' || !parentItem.nameAr && !parentItem.titleAr)
+                  ? String(parentItem.code || 'مسودة جديدة')
+                  : String(parentItem.nameAr || parentItem.titleAr),
+
+                (String(parentItem.nameEn || parentItem.titleEn) === 'undefined' || !parentItem.nameEn && !parentItem.titleEn)
+                  ? String(parentItem.code || 'New Draft')
+                  : String(parentItem.nameEn || parentItem.titleEn)
+              )}
+            </h2>
             <p className="pure-hero-subtitle">{t('قم ببناء الهيكل المرتبط أدناه.', 'Build the related hierarchy below.')}</p>
           </div>
           <div style={{ textAlign: 'center' }}>

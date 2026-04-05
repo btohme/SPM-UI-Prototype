@@ -7,6 +7,8 @@ import FormField from '../components/forms/FormField';
 import { useApp } from '../context/AppContext';
 import { getModuleConfig } from '../data/moduleConfigs';
 import type { FieldConfig } from '../types';
+import { MOCK_DATA, persistData } from '../data/mockData';
+import { showToast } from '../components/ui/Toast';
 
 export default function AddPage() {
   const { t } = useApp();
@@ -34,14 +36,26 @@ export default function AddPage() {
     setLoading(true);
     // Simulate network request
     await new Promise(res => setTimeout(res, 1200));
+
+    // THE FIX: Generate a UNIQUE code for drafts so they don't collide in LocalStorage!
+    const uniqueId = Math.floor(1000 + Math.random() * 9000);
+    const newItemCode = formData.code ? String(formData.code) : `${config.codePrefix}-NEW-${uniqueId}`;
+
+    // Add to MOCK_DATA array
+    if (!MOCK_DATA[moduleKey]) MOCK_DATA[moduleKey] = [];
+    MOCK_DATA[moduleKey].push({
+      ...formData,
+      id: Date.now().toString(),
+      code: newItemCode
+    });
+
+    // Persist and Toast
+    persistData();
+    showToast('تم الإنشاء بنجاح', 'Created successfully');
     setLoading(false);
     setSubmitted(true);
 
-    // Get the code the user entered, or generate a temporary one for the mock
-    const newItemCode = formData.code ? String(formData.code) : `${config.codePrefix}-999`;
-
     setTimeout(() => {
-      // THE FIX: Check if this module has a Setup Hub configured!
       if (config.setupHub?.enabled) {
         navigate(`/setup-hub?modulekey=${moduleKey}&itemid=${newItemCode}`);
       } else {

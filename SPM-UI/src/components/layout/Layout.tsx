@@ -7,6 +7,7 @@ import HorizontalNav from './HorizontalNav';
 import { MODULE_MAP, PROJECT_WORKSPACE_NAV, INITIATIVE_WORKSPACE_NAV } from '../../data/modules';
 import { useApp } from '../../context/AppContext';
 import { MOCK_DATA } from '../../data/mockData';
+import ToastContainer from '../ui/Toast';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -74,6 +75,7 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
 
   return (
     <div className="pure-layout-root" dir={language === 'ar' ? 'rtl' : 'ltr'}>
+      <ToastContainer />
       <Sidebar />
 
       <div className="pure-layout-column">
