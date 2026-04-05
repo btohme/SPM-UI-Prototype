@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Layers, Target, BarChart2, Save, CheckCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Search, Maximize2, Minimize2, Edit, HelpCircle } from 'lucide-react';
+import { Plus, Layers, Target, BarChart2, Save, CheckCircle, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Search, Maximize2, Minimize2, Edit, HelpCircle, Download, Upload } from 'lucide-react';
 import Layout from '../components/layout/Layout';
 import Modal from '../components/ui/Modal';
 import FormField from '../components/forms/FormField';
@@ -120,7 +120,6 @@ function HierarchyNode({
           <span className="pure-badge pure-badge-gray" style={{ background: '#e5e7eb', color: '#374151' }}>{filteredItems.length}</span>
         </div>
 
-        {/* TOUR STEP 2: Highlight the Add Button */}
         <div style={{ position: 'relative' }}>
           <button
             onClick={handleOpenAddModal}
@@ -131,7 +130,8 @@ function HierarchyNode({
           </button>
 
           {isTourStep2 && (
-            <div className="pure-tour-tooltip" style={{ top: '130%', left: language === 'ar' ? 0 : 'auto', right: language === 'ar' ? 'auto' : 0 }}>                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('إضافة مستوى جديد', 'Add New Level')}</h4>
+             <div className="pure-tour-tooltip" style={{ top: '130%', left: language === 'ar' ? 0 : 'auto', right: language === 'ar' ? 'auto' : 0 }}>
+                <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('إضافة مستوى جديد', 'Add New Level')}</h4>
                 <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: '#4b5563', lineHeight: '1.5' }}>
                   {t(`اضغط هنا لإضافة أول [${config.nameAr}]. بمجرد الإضافة، يمكنك النقر عليها لإضافة العناصر الفرعية.`, `Click here to add your first [${config.nameEn}]. Once added, you can click it to add child items.`)}
                 </p>
@@ -144,8 +144,6 @@ function HierarchyNode({
         </div>
       </div>
 
-
-      {/* ... (rest of the child list and modal rendering exactly as before) ... */}
       {items.length === 0 ? (
         <div style={{ padding: '16px', border: '2px dashed #d1d5db', borderRadius: '12px', textAlign: 'center', backgroundColor: '#f9fafb' }}>
           <p style={{ color: '#6b7280', fontSize: '13px', margin: 0, fontWeight: '600' }}>
@@ -209,9 +207,11 @@ function HierarchyNode({
                         marginTop: '16px', padding: '20px', border: '1px solid #d1d5db',
                         borderRadius: '12px', backgroundColor: '#ffffff', boxShadow: '0 2px 4px rgba(0,0,0,0.03)'
                       }}>
-                        {node.children!.map((childNode, childIdx) => (
-                          <HierarchyNode key={childIdx} node={childNode} parentId={id} level={level + 1} globalExpand={globalExpand} searchQuery={searchQuery} onDataChange={onDataChange} />
-                        ))}
+                        {node.children?.map((childNode, childIdx) => (
+  childNode ? (
+    <HierarchyNode key={childIdx} node={childNode} parentId={id} level={level + 1} globalExpand={globalExpand} searchQuery={searchQuery} onDataChange={onDataChange} />
+  ) : null
+))}
                       </div>
                     </motion.div>
                   )}
@@ -222,7 +222,7 @@ function HierarchyNode({
         </div>
       )}
 
-      {/* Edit Modal (Truncated for brevity, stays exactly the same) */}
+      {/* Edit Modal */}
       <Modal
         open={isModalOpen}
         onClose={() => setModalOpen(false)}
@@ -278,6 +278,7 @@ export default function SetupHub() {
   const { t, language } = useApp();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const moduleKey = searchParams.get('modulekey') || '';
   const itemId = searchParams.get('itemid') || '';
@@ -292,15 +293,12 @@ export default function SetupHub() {
 
   const [globalExpand, setGlobalExpand] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-
-  // --- TOUR STATE & DYNAMIC NAMING ---
-  const [tourStep, setTourStep] = useState(0); // 0 = inactive
+  const [tourStep, setTourStep] = useState(0);
 
   const parentName = t(config.nameAr, config.nameEn);
   const childConfig = hierarchy[0] ? getModuleConfig(hierarchy[0].moduleKey) : null;
   const childName = childConfig ? t(childConfig.nameAr, childConfig.nameEn) : t('عنصر', 'Item');
 
-  // --- PARENT EDIT STATE ---
   const [isParentModalOpen, setParentModalOpen] = useState(false);
   const [parentFormData, setParentFormData] = useState<Record<string, unknown>>({});
   const [parentActiveTab, setParentActiveTab] = useState(0);
@@ -324,6 +322,104 @@ export default function SetupHub() {
     setParentModalOpen(false);
   };
 
+  // --- EXPORT LOGIC ---
+  const buildExportData = (hierarchyNodes: HubHierarchy[], currentParentId: string): any[] => {
+    const nodes: any[] = [];
+    for (const node of hierarchyNodes) {
+      const allModuleData = (MOCK_DATA[node.moduleKey] as any[]) || [];
+      const items = allModuleData.filter(i => String(i[node.foreignKey]) === currentParentId);
+
+      for (const item of items) {
+        // Exclude internal IDs so they don't clash when importing
+        const { id, code, [node.foreignKey]: omitFk, ...cleanData } = item;
+        nodes.push({
+          moduleKey: node.moduleKey,
+          data: cleanData,
+          children: node.children ? buildExportData(node.children, String(item.id || item.code)) : []
+        });
+      }
+    }
+    return nodes;
+  };
+
+  const handleExport = () => {
+    const exportPayload = {
+      sourceModule: moduleKey,
+      exportDate: new Date().toISOString(),
+      nodes: buildExportData(hierarchy, String(parentItem.id || parentItem.code))
+    };
+
+    const blob = new Blob([JSON.stringify(exportPayload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Hierarchy_Template_${parentItem.code || 'Export'}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('تم تصدير الهيكل بنجاح', 'Hierarchy exported successfully');
+  };
+
+  // --- IMPORT LOGIC ---
+  const processImportData = (importNodes: any[], currentParentId: string, hierarchyConfig: HubHierarchy[]) => {
+    for (const importNode of importNodes) {
+      const configNode = hierarchyConfig.find(n => n.moduleKey === importNode.moduleKey);
+      if (!configNode) continue;
+
+      const configDef = getModuleConfig(importNode.moduleKey);
+      // Generate entirely new IDs for the imported clones
+      const uniqueId = Math.floor(10000 + Math.random() * 90000);
+      const newId = Date.now().toString() + uniqueId;
+      const newCode = `${configDef.codePrefix}-NEW-${uniqueId}`;
+
+      const newItem = {
+        ...importNode.data,
+        id: newId,
+        code: newCode,
+        [configNode.foreignKey]: currentParentId
+      };
+
+      if (!MOCK_DATA[importNode.moduleKey]) MOCK_DATA[importNode.moduleKey] = [];
+      MOCK_DATA[importNode.moduleKey].push(newItem);
+
+      // Recursively import children, linking them to this newly created parent ID
+      if (importNode.children && importNode.children.length > 0 && configNode.children) {
+        processImportData(importNode.children, newId, configNode.children);
+      }
+    }
+  };
+
+  const handleImport = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const parsed = JSON.parse(event.target?.result as string);
+
+        // Strict Validation: Ensure they aren't importing a Project into a Strategy
+        if (parsed.sourceModule !== moduleKey) {
+          window.alert(t(
+            `خطأ: لا يمكن استيراد هذا الملف. تم تصديره من [${parsed.sourceModule}] ولا يتوافق مع [${moduleKey}].`,
+            `Error: Cannot import this file. It was exported from [${parsed.sourceModule}] and is incompatible with [${moduleKey}].`
+          ));
+          return;
+        }
+
+        processImportData(parsed.nodes, String(parentItem.id || parentItem.code), hierarchy);
+        persistData();
+        setRefreshTrigger(r => r + 1);
+        showToast('تم استيراد الهيكل بنجاح', 'Hierarchy imported successfully');
+      } catch (err) {
+        window.alert(t('حدث خطأ أثناء قراءة الملف. تأكد من أنه ملف JSON صالح.', 'Error reading file. Ensure it is a valid JSON.'));
+      }
+    };
+    reader.readAsText(file);
+    if (fileInputRef.current) fileInputRef.current.value = ''; // Reset input
+  };
+
   const getHierarchyPath = () => {
     const path = [config];
     let currentLevel = hierarchy[0];
@@ -344,12 +440,10 @@ export default function SetupHub() {
 
   return (
     <Layout>
-      {/* Background Dimmer for Tour */}
       {tourStep > 0 && <div className="pure-tour-overlay" onClick={() => setTourStep(0)} />}
 
       <div className="pure-page-container">
 
-        {/* Header with Breadcrumb and Contextual Help */}
         <div className="pure-flex-between" style={{ marginBottom: '16px' }}>
           <nav className="pure-breadcrumb" style={{ margin: 0 }}>
             <button onClick={() => navigate(`/list?modulekey=${moduleKey}`)} className="pure-breadcrumb-link">
@@ -365,7 +459,8 @@ export default function SetupHub() {
           </button>
         </div>
 
-        <div className="pure-hero-banner primary" style={{ marginBottom: '24px', overflow: 'visible' }}>          <div>
+        <div className="pure-hero-banner primary" style={{ marginBottom: '24px', overflow: 'visible' }}>
+          <div>
             <div className="pure-flex-start" style={{ marginBottom: '8px' }}>
               <span style={{ fontSize: '12px', background: 'rgba(255,255,255,0.2)', padding: '2px 10px', borderRadius: '999px', fontFamily: 'monospace' }}>
                 {String(parentItem.code)}
@@ -398,7 +493,6 @@ export default function SetupHub() {
 
             <p className="pure-hero-subtitle">{t('قم ببناء الهيكل المرتبط أدناه.', 'Build the related hierarchy below.')}</p>
 
-            {/* TOUR STEP 1: Highlight the Legend Brief */}
             <div
               className={`pure-flex-start ${tourStep === 1 ? 'tour-highlight' : ''}`}
               style={{
@@ -411,7 +505,6 @@ export default function SetupHub() {
               {getHierarchyPath().map((step, index, arr) => (
                 <div key={step.key} className="pure-flex-start" style={{ gap: '8px' }}>
                   <div style={{
-                    /* Color adapts safely depending on if it's highlighted over white, or normal over green */
                     background: index === 0 ? (tourStep === 1 ? '#e8f5ee' : '#ffffff') : (tourStep === 1 ? '#f3f4f6' : 'rgba(255,255,255,0.15)'),
                     color: index === 0 ? '#1B5E3B' : (tourStep === 1 ? '#374151' : '#ffffff'),
                     border: tourStep === 1 ? '1px solid #d1d5db' : '1px solid rgba(255,255,255,0.3)',
@@ -430,7 +523,6 @@ export default function SetupHub() {
                 </div>
               ))}
 
-              {/* Tooltip for Step 1 */}
               {tourStep === 1 && (
                  <div className="pure-tour-tooltip" style={{ top: '115%', left: language === 'ar' ? 'auto' : 0, right: language === 'ar' ? 0 : 'auto' }}>
                     <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('خريطة الهيكل', 'Hierarchy Map')}</h4>
@@ -447,7 +539,6 @@ export default function SetupHub() {
 
           </div>
 
-          {/* TOUR STEP 3: Highlight the Finish Setup Button */}
           <div style={{ textAlign: 'center', position: 'relative' }}>
              <button
                 onClick={() => navigate(`/list?modulekey=${moduleKey}`)}
@@ -458,9 +549,10 @@ export default function SetupHub() {
              </button>
 
              {tourStep === 3 && (
-                <div className="pure-tour-tooltip" style={{ top: '130%', left: '50%', marginLeft: '-140px' }}>                  <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('حفظ وإنهاء', 'Save & Finish')}</h4>
+               <div className="pure-tour-tooltip" style={{ top: '130%', left: '50%', marginLeft: '-140px' }}>
+                  <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('حفظ وإنهاء', 'Save & Finish')}</h4>
                   <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: '#4b5563', lineHeight: '1.5' }}>
-                    {t(`عند الانتهاء من بناء الهيكل، اضغط هنا لبدء إجراء العمل لإعتماد هيكلية [${parentName}]. يمكنك دائماً العودة إلى هنا عبر أيقونة الإعداد من القائمة.`, `When you finish building the structure, click here to start the workflow to approve the [${parentName}] structure. You can always return here via the Setup icon in the menu.`)}
+                    {t(`عند الانتهاء من بناء الهيكل، اضغط هنا للعودة إلى قائمة [${parentName}]. يمكنك دائماً العودة إلى هنا عبر أيقونة الإعداد من القائمة.`, `When you finish building, click here to return to the [${parentName}] list. You can always return here via the Setup icon in the list.`)}
                   </p>
                   <div className="pure-flex-between" style={{ justifyContent: 'flex-end' }}>
                      <button onClick={() => setTourStep(0)} className="pure-btn-primary" style={{ padding: '4px 12px', fontSize: '12px' }}>{t('إنهاء الجولة', 'End Tour')}</button>
@@ -471,12 +563,26 @@ export default function SetupHub() {
         </div>
 
         <div className="pure-content-card" style={{ padding: '24px', overflow: 'visible' }}>
-          <div className="pure-flex-between" style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '16px', marginBottom: '16px' }}>
+
+          <div className="pure-flex-between" style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '16px', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111827', margin: 0 }}>
               {t('منشئ الهيكل', 'Hierarchy Builder')}
             </h3>
 
-            <div className="pure-flex-start" style={{ gap: '12px' }}>
+            <div className="pure-flex-start" style={{ gap: '12px', flexWrap: 'wrap' }}>
+
+              {/* THE NEW EXPORT/IMPORT BUTTONS */}
+              <div className="pure-flex-start" style={{ gap: '8px', marginInlineEnd: '12px', borderInlineEnd: '1px solid #e5e7eb', paddingInlineEnd: '12px' }}>
+                <button onClick={handleExport} className="pure-btn-secondary" style={{ padding: '8px 12px' }} title={t('تصدير القالب', 'Export Template')}>
+                  <Download size={16} />
+                </button>
+                <button onClick={() => fileInputRef.current?.click()} className="pure-btn-secondary" style={{ padding: '8px 12px' }} title={t('استيراد قالب', 'Import Template')}>
+                  <Upload size={16} />
+                </button>
+                {/* Hidden File Input */}
+                <input type="file" accept=".json" ref={fileInputRef} style={{ display: 'none' }} onChange={handleImport} />
+              </div>
+
               <div className="pure-input-wrapper" style={{ width: '250px' }}>
                 <Search size={16} className="pure-input-addon" />
                 <input
@@ -503,24 +609,23 @@ export default function SetupHub() {
           </div>
 
           {hierarchy.map((node, idx) => (
-            <HierarchyNode
-              key={idx}
-              node={node}
-              parentId={String(parentItem.id || parentItem.code)}
-              globalExpand={globalExpand}
-              searchQuery={searchQuery}
-              onDataChange={() => setRefreshTrigger(r => r + 1)}
-
-              /* Pass Tour Props down to the first root node */
-              isTourStep2={tourStep === 2 && idx === 0}
-              onNextTourStep={() => setTourStep(3)}
-              onSkipTour={() => setTourStep(0)}
-              parentName={parentName}
-            />
-          ))}
+  node ? (
+    <HierarchyNode
+      key={idx}
+      node={node}
+      parentId={String(parentItem.id || parentItem.code)}
+      globalExpand={globalExpand}
+      searchQuery={searchQuery}
+      onDataChange={() => setRefreshTrigger(r => r + 1)}
+      isTourStep2={tourStep === 2 && idx === 0}
+      onNextTourStep={() => setTourStep(3)}
+      onSkipTour={() => setTourStep(0)}
+      parentName={parentName}
+    />
+  ) : null
+))}
         </div>
 
-        {/* Parent Edit Modal */}
         <Modal
           open={isParentModalOpen}
           onClose={() => setParentModalOpen(false)}
