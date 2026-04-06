@@ -45,7 +45,7 @@ export default function TopHeader({ titleAr, titleEn }: { titleAr?: string; titl
         <div ref={userRef} className="pure-user-menu-wrapper">
           <motion.button whileHover={{ scale: 1.02 }} onClick={() => setUserMenuOpen(o => !o)} className="pure-user-btn">
             <div className="pure-user-info">
-              <Avatar name={t(currentUser.nameAr, currentUser.nameEn)} size="md" color="#E8A020" />
+              <Avatar name={t(currentUser.nameAr, currentUser.nameEn)} size="md" color="#f29221" />
               <div className="pure-user-text-wrapper">
                 <p className="pure-user-name">{t(currentUser.nameAr, currentUser.nameEn)}</p>
                 <p className="pure-user-role">{currentUser.role}</p>

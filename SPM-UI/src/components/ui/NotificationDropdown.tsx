@@ -59,7 +59,7 @@ export default function NotificationDropdown() {
                         <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 4px 0' }}>{t(n.messageAr, n.messageEn)}</p>
                         <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>{new Date(n.createdAt).toLocaleDateString('ar-SA')}</p>
                       </div>
-                      {!n.isRead && <div style={{ width: '8px', height: '8px', background: '#1B5E3B', borderRadius: '50%', marginTop: '6px' }} />}
+                      {!n.isRead && <div style={{ width: '8px', height: '8px', background: '#147a6d', borderRadius: '50%', marginTop: '6px' }} />}
                     </motion.button>
                   );
                 })

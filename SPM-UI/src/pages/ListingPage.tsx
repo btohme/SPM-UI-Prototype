@@ -73,8 +73,8 @@ export default function ListingPage() {
             <div className="pure-flex-start" style={{ fontSize: '14px', color: '#6b7280' }}>
               {projectCode && (
                 <span className="pure-flex-start" style={{ gap: '4px' }}>
-                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#1B5E3B' }} />
-                  {t('مشروع', 'Project')}: <span style={{ color: '#1B5E3B', fontWeight: '600' }}>{projectCode}</span>
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#147a6d' }} />
+                  {t('مشروع', 'Project')}: <span style={{ color: '#147a6d', fontWeight: '600' }}>{projectCode}</span>
                 </span>
               )}
               {initiativeCode && (

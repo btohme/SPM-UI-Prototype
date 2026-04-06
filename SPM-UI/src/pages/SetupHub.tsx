@@ -98,7 +98,7 @@ function HierarchyNode({
   const fieldsForTab = config.fields.filter(f => f.tab === currentTab?.key);
 
   const LevelIcon = level === 1 ? Layers : level === 2 ? Target : BarChart2;
-  const indentColor = level === 1 ? '#1B5E3B' : level === 2 ? '#0277BD' : '#E8A020';
+  const indentColor = level === 1 ? '#147a6d' : level === 2 ? '#0277BD' : '#f29221';
 
   const filteredItems = items.filter(item => {
     if (!searchQuery) return true;
@@ -236,7 +236,7 @@ function HierarchyNode({
                 <ChevronRight size={16} /> {t('السابق', 'Previous')}
               </button>
               {activeTab < tabs.length - 1 && (
-                <button onClick={() => setActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e8f5ee', color: '#1B5E3B', borderColor: '#a7f3d0' }}>
+                <button onClick={() => setActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e6f2f0', color: '#147a6d', borderColor: '#a7f3d0' }}>
                   {t('التالي', 'Next')} <ChevronLeft size={16} />
                 </button>
               )}
@@ -504,8 +504,8 @@ const [, setRefreshTrigger] = useState(0);
               {getHierarchyPath().map((step, index, arr) => (
                 <div key={step.key} className="pure-flex-start" style={{ gap: '8px' }}>
                   <div style={{
-                    background: index === 0 ? (tourStep === 1 ? '#e8f5ee' : '#ffffff') : (tourStep === 1 ? '#f3f4f6' : 'rgba(255,255,255,0.15)'),
-                    color: index === 0 ? '#1B5E3B' : (tourStep === 1 ? '#374151' : '#ffffff'),
+                    background: index === 0 ? (tourStep === 1 ? '#e6f2f0' : '#ffffff') : (tourStep === 1 ? '#f3f4f6' : 'rgba(255,255,255,0.15)'),
+                    color: index === 0 ? '#147a6d' : (tourStep === 1 ? '#374151' : '#ffffff'),
                     border: tourStep === 1 ? '1px solid #d1d5db' : '1px solid rgba(255,255,255,0.3)',
                     padding: '4px 12px',
                     borderRadius: '999px',
@@ -542,7 +542,7 @@ const [, setRefreshTrigger] = useState(0);
              <button
                 onClick={() => navigate(`/list?modulekey=${moduleKey}`)}
                 className={`pure-btn-primary ${tourStep === 3 ? 'tour-highlight' : ''}`}
-                style={{ background: tourStep === 3 ? '#111827' : '#ffffff', color: tourStep === 3 ? '#ffffff' : '#1B5E3B' }}
+                style={{ background: tourStep === 3 ? '#111827' : '#ffffff', color: tourStep === 3 ? '#ffffff' : '#147a6d' }}
               >
                <CheckCircle size={18} /> {t('إنهاء الإعداد', 'Finish Setup')}
              </button>
@@ -637,7 +637,7 @@ const [, setRefreshTrigger] = useState(0);
                   <ChevronRight size={16} /> {t('السابق', 'Previous')}
                 </button>
                 {parentActiveTab < parentTabs.length - 1 && (
-                  <button onClick={() => setParentActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e8f5ee', color: '#1B5E3B', borderColor: '#a7f3d0' }}>
+                  <button onClick={() => setParentActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e6f2f0', color: '#147a6d', borderColor: '#a7f3d0' }}>
                     {t('التالي', 'Next')} <ChevronLeft size={16} />
                   </button>
                 )}

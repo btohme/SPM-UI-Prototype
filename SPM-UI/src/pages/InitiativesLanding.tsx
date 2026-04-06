@@ -12,7 +12,7 @@ import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
 
 const STATUS_COLORS: Record<string, string> = {
-  'in-progress': '#1B5E3B', completed: '#2E7D32', delayed: '#B71C1C', planned: '#283593', cancelled: '#455A64',
+  'in-progress': '#147a6d', completed: '#2E7D32', delayed: '#B71C1C', planned: '#283593', cancelled: '#455A64',
 };
 
 export default function InitiativesLanding() {
@@ -56,7 +56,7 @@ export default function InitiativesLanding() {
         {/* Stats */}
         <div className="pure-grid-4">
           {[
-            { label: t('إجمالي المبادرات', 'Total Initiatives'), value: stats.total, color: '#1B5E3B', icon: <Lightbulb size={20} /> },
+            { label: t('إجمالي المبادرات', 'Total Initiatives'), value: stats.total, color: '#147a6d', icon: <Lightbulb size={20} /> },
             { label: t('قيد التنفيذ', 'Active'), value: stats.active, color: '#006064', icon: <TrendingUp size={20} /> },
             { label: t('مكتملة', 'Completed'), value: stats.completed, color: '#2E7D32', icon: <CheckCircle size={20} /> },
             { label: t('متأخرة', 'Delayed'), value: stats.delayed, color: '#B71C1C', icon: <AlertTriangle size={20} /> },
@@ -84,7 +84,7 @@ export default function InitiativesLanding() {
               <RadarChart data={radarData}>
                 <PolarGrid />
                 <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10 }} />
-                <Radar name="score" dataKey="A" stroke="#1B5E3B" fill="#1B5E3B" fillOpacity={0.3} />
+                <Radar name="score" dataKey="A" stroke="#147a6d" fill="#147a6d" fillOpacity={0.3} />
                 <Tooltip />
               </RadarChart>
             </ResponsiveContainer>
@@ -101,7 +101,7 @@ export default function InitiativesLanding() {
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Bar dataKey="value" radius={[6, 6, 0, 0]}>
-                  {barData.map((_, i) => <Cell key={i} fill={['#283593', '#1B5E3B', '#B71C1C', '#2E7D32'][i]} />)}
+                  {barData.map((_, i) => <Cell key={i} fill={['#283593', '#147a6d', '#B71C1C', '#2E7D32'][i]} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

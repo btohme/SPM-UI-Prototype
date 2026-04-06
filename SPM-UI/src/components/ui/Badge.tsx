@@ -8,7 +8,7 @@ interface BadgeProps {
   dot?: boolean;
 }
 
-export default function Badge({ label, color = '#1B5E3B', size = 'sm', variant = 'soft', dot = false }: BadgeProps) {
+export default function Badge({ label, color = '#147a6d', size = 'sm', variant = 'soft', dot = false }: BadgeProps) {
   const sizeClasses = { sm: 'text-xs px-2 py-0.5', md: 'text-sm px-3 py-1', lg: 'text-base px-4 py-1.5' };
 
   const getStyle = () => {

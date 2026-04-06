@@ -125,7 +125,7 @@ export default function AddPage() {
                   <ChevronRight size={16} /> {t('السابق', 'Previous')}
                 </button>
                 {activeTab < tabs.length - 1 && (
-                  <button onClick={() => setActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e8f5ee', color: '#1B5E3B', borderColor: '#a7f3d0' }}>
+                  <button onClick={() => setActiveTab(t => t + 1)} className="pure-btn-secondary" style={{ background: '#e6f2f0', color: '#147a6d', borderColor: '#a7f3d0' }}>
                     {t('التالي', 'Next')} <ChevronLeft size={16} />
                   </button>
                 )}

@@ -3,10 +3,10 @@ import type { ModuleDefinition, NavItem } from '../types';
 // ─── All Modules Registry ─────────────────────────────────────────────────
 export const MODULES: ModuleDefinition[] = [
   // ── Global Modules ──
-  { key: 'Strategies',         nameAr: 'الاستراتيجيات',          nameEn: 'Strategies',          icon: 'Target',          workspace: 'global', codePrefix: 'ST',  color: '#1B5E3B' },
+  { key: 'Strategies',         nameAr: 'الاستراتيجيات',          nameEn: 'Strategies',          icon: 'Target',          workspace: 'global', codePrefix: 'ST',  color: '#147a6d' },
   { key: 'SubStrategy',   nameAr: 'الأعمدة الاستراتيجية',   nameEn: 'Sub Strategy',   icon: 'Columns',         workspace: 'global', codePrefix: 'SP',  color: '#4E7D51' },
   { key: 'StrategicPillars',   nameAr: 'الركائز الاستراتيجية',   nameEn: 'Strategic Pillars',   icon: 'Columns',         workspace: 'global', codePrefix: 'SP',  color: '#2E7D52' },
-  { key: 'Objectives',         nameAr: 'الأهداف',                 nameEn: 'Objectives',          icon: 'Crosshair',       workspace: 'global', codePrefix: 'OB',  color: '#1B5E3B' },
+  { key: 'Objectives',         nameAr: 'الأهداف',                 nameEn: 'Objectives',          icon: 'Crosshair',       workspace: 'global', codePrefix: 'OB',  color: '#147a6d' },
   { key: 'KPIs',               nameAr: 'المؤشرات',                nameEn: 'KPIs',                icon: 'BarChart2',       workspace: 'global', codePrefix: 'KP',  color: '#0277BD' },
   { key: 'KPIResults',         nameAr: 'نتائج المؤشرات',          nameEn: 'KPI Results',         icon: 'TrendingUp',      workspace: 'global', codePrefix: 'KR',  color: '#0277BD' },
   { key: 'KPIEquations',       nameAr: 'معادلات المؤشرات',        nameEn: 'KPI Equations',       icon: 'Calculator',      workspace: 'global', codePrefix: 'KE',  color: '#0277BD' },
@@ -16,7 +16,7 @@ export const MODULES: ModuleDefinition[] = [
   { key: 'KPIWhatIfAnalysis',  nameAr: 'تحليل What-If للمؤشرات', nameEn: 'KPI What-If Analysis',icon: 'FlaskConical',    workspace: 'global', codePrefix: 'KW',  color: '#0277BD' },
   { key: 'Portfolios',         nameAr: 'الحوافظ',                 nameEn: 'Portfolios',          icon: 'Briefcase',       workspace: 'global', codePrefix: 'PF',  color: '#4A148C' },
   { key: 'Programs',           nameAr: 'البرامج',                 nameEn: 'Programs',            icon: 'Layout',          workspace: 'global', codePrefix: 'PR',  color: '#1A237E' },
-  { key: 'Projects',           nameAr: 'المشاريع',                nameEn: 'Projects',            icon: 'FolderOpen',      workspace: 'global', codePrefix: 'SC',  color: '#1B5E3B' },
+  { key: 'Projects',           nameAr: 'المشاريع',                nameEn: 'Projects',            icon: 'FolderOpen',      workspace: 'global', codePrefix: 'SC',  color: '#147a6d' },
   { key: 'Initiatives',        nameAr: 'المبادرات',               nameEn: 'Initiatives',         icon: 'Rocket',          workspace: 'global', codePrefix: 'IN',  color: '#006064' },
   { key: 'Benefits',           nameAr: 'الفوائد',                 nameEn: 'Benefits',            icon: 'Gift',            workspace: 'global', codePrefix: 'BN',  color: '#4CAF50' },
   { key: 'Stakeholders',       nameAr: 'أصحاب المصلحة',           nameEn: 'Stakeholders',        icon: 'Users',           workspace: 'global', codePrefix: 'SH',  color: '#37474F' },
@@ -38,8 +38,8 @@ export const MODULES: ModuleDefinition[] = [
   // ── Project Workspace Modules ──
   { key: 'ProjectRisks',       nameAr: 'مخاطر المشروع',           nameEn: 'Project Risks',       icon: 'ShieldAlert',     workspace: 'project', codePrefix: 'PRI', color: '#B71C1C' },
   { key: 'ProjectIssues',      nameAr: 'قضايا المشروع',           nameEn: 'Project Issues',      icon: 'AlertOctagon',    workspace: 'project', codePrefix: 'PIS', color: '#E65100' },
-  { key: 'ProjectMilestones',  nameAr: 'معالم المشروع',           nameEn: 'Project Milestones',  icon: 'Flag',            workspace: 'project', codePrefix: 'PML', color: '#1B5E3B' },
-  { key: 'ProjectDeliverables',nameAr: 'مخرجات المشروع',          nameEn: 'Project Deliverables',icon: 'Package',         workspace: 'project', codePrefix: 'PDL', color: '#1B5E3B' },
+  { key: 'ProjectMilestones',  nameAr: 'معالم المشروع',           nameEn: 'Project Milestones',  icon: 'Flag',            workspace: 'project', codePrefix: 'PML', color: '#147a6d' },
+  { key: 'ProjectDeliverables',nameAr: 'مخرجات المشروع',          nameEn: 'Project Deliverables',icon: 'Package',         workspace: 'project', codePrefix: 'PDL', color: '#147a6d' },
   { key: 'ProjectDeliverablesSupportBenefits', nameAr: 'مخرجات داعمة للفوائد', nameEn: 'Project Deliverables Support Benefits', icon: 'PackageCheck', workspace: 'project', codePrefix: 'PDB', color: '#4CAF50' },
   { key: 'ProjectMOMs',        nameAr: 'محاضر اجتماعات المشروع',  nameEn: 'Project MOMs',        icon: 'ClipboardList',   workspace: 'project', codePrefix: 'PMO', color: '#0277BD' },
   { key: 'ProjectMOMsAttendees', nameAr: 'حضور محاضر المشروع',   nameEn: 'Project MOMs Attendees', icon: 'UserCheck',    workspace: 'project', codePrefix: 'PMA', color: '#0277BD' },
@@ -47,7 +47,7 @@ export const MODULES: ModuleDefinition[] = [
   { key: 'ChangeRequests',     nameAr: 'طلبات التغيير',           nameEn: 'Change Requests',     icon: 'GitBranch',       workspace: 'project', codePrefix: 'CR',  color: '#6A1B9A' },
   { key: 'CommunicationPlans', nameAr: 'خطط التواصل',             nameEn: 'Communication Plans', icon: 'MessageSquare',   workspace: 'project', codePrefix: 'CP',  color: '#0277BD' },
   { key: 'Contracts',          nameAr: 'العقود',                  nameEn: 'Contracts',           icon: 'FileCheck',       workspace: 'project', codePrefix: 'CO',  color: '#37474F' },
-  { key: 'Deliveries',         nameAr: 'التسليمات',               nameEn: 'Deliveries',          icon: 'Truck',           workspace: 'project', codePrefix: 'DL',  color: '#1B5E3B' },
+  { key: 'Deliveries',         nameAr: 'التسليمات',               nameEn: 'Deliveries',          icon: 'Truck',           workspace: 'project', codePrefix: 'DL',  color: '#147a6d' },
   { key: 'COCs',               nameAr: 'شهادات الإنجاز',          nameEn: 'COCs',                icon: 'Award',           workspace: 'project', codePrefix: 'CC',  color: '#F57F17' },
   { key: 'ProjectDependencies',nameAr: 'تبعيات المشروع',          nameEn: 'Project Dependencies',icon: 'GitMerge',        workspace: 'project', codePrefix: 'PD',  color: '#4A148C' },
   { key: 'ProjectUpdatesRegister', nameAr: 'سجل تحديثات المشروع', nameEn: 'Project Updates Register', icon: 'RefreshCw', workspace: 'project', codePrefix: 'PUR', color: '#0277BD' },
@@ -61,7 +61,7 @@ export const MODULES: ModuleDefinition[] = [
   { key: 'InitiativeMOMs',     nameAr: 'محاضر اجتماعات المبادرة', nameEn: 'Initiative MOMs',     icon: 'ClipboardList',   workspace: 'initiative', codePrefix: 'IMO', color: '#0277BD' },
   { key: 'InitiativeMOMsAttendees', nameAr: 'حضور محاضر المبادرة', nameEn: 'Initiative MOMs Attendees', icon: 'UserCheck', workspace: 'initiative', codePrefix: 'IMA', color: '#0277BD' },
   { key: 'InitiativeMOMsTasks',nameAr: 'مهام محاضر المبادرة',     nameEn: 'Initiative MOMs Tasks',icon: 'ListChecks',     workspace: 'initiative', codePrefix: 'IMT', color: '#F57F17' },
-  { key: 'InitiativesSupportObjectives', nameAr: 'مبادرات داعمة للأهداف', nameEn: 'Initiatives Support Objectives', icon: 'Target', workspace: 'initiative', codePrefix: 'ISO', color: '#1B5E3B' },
+  { key: 'InitiativesSupportObjectives', nameAr: 'مبادرات داعمة للأهداف', nameEn: 'Initiatives Support Objectives', icon: 'Target', workspace: 'initiative', codePrefix: 'ISO', color: '#147a6d' },
   { key: 'InitiativeUpdatesRegister', nameAr: 'سجل تحديثات المبادرة', nameEn: 'Initiative Updates Register', icon: 'RefreshCw', workspace: 'initiative', codePrefix: 'IUR', color: '#0277BD' },
   { key: 'InitiativeClosureForms', nameAr: 'نماذج إغلاق المبادرة', nameEn: 'Initiative Closure Forms', icon: 'FileX',   workspace: 'initiative', codePrefix: 'ICF', color: '#546E7A' },
 ];

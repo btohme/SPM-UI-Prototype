@@ -14,7 +14,7 @@ import { MOCK_DATA } from '../data/mockData';
 // ─── Chart Data ────────────────────────────────────────────────────────────
 const RISK_DATA = [
   { name: 'منخفض', nameEn: 'Low',    value: 35, color: '#2E7D52' },
-  { name: 'متوسط', nameEn: 'Medium', value: 40, color: '#E8A020' },
+  { name: 'متوسط', nameEn: 'Medium', value: 40, color: '#f29221' },
   { name: 'مرتفع', nameEn: 'High',   value: 25, color: '#B71C1C' },
 ];
 
@@ -27,10 +27,10 @@ const COMPLETION_DATA = [
 ];
 
 const PHASE_DATA = [
-  { name: 'إنشاء مبلغ الشروع', nameEn: 'Project Initiation', value: 2, color: '#E8A020' },
+  { name: 'إنشاء مبلغ الشروع', nameEn: 'Project Initiation', value: 2, color: '#f29221' },
   { name: 'الإعداد',            nameEn: 'Preparation',        value: 8, color: '#283593' },
   { name: 'التخطيط',           nameEn: 'Planning',           value: 12, color: '#006064' },
-  { name: 'التنفيذ',           nameEn: 'Execution',          value: 51, color: '#1B5E3B' },
+  { name: 'التنفيذ',           nameEn: 'Execution',          value: 51, color: '#147a6d' },
   { name: 'الأقفال',           nameEn: 'Closure',            value: 3, color: '#37474F' },
 ];
 
@@ -98,7 +98,7 @@ function ProjectListCard() {
   const filtered = projects.filter((p) => tab === 'internal' ? String(p.categoryAr) === 'داخلي' : String(p.categoryAr) === 'تنموي');
 
   const statusColor = (s: unknown) => {
-    const map: Record<string, string> = { execution: '#1B5E3B', planning: '#006064', preparation: '#283593', completed: '#2E7D32', cancelled: '#B71C1C' };
+    const map: Record<string, string> = { execution: '#147a6d', planning: '#006064', preparation: '#283593', completed: '#2E7D32', cancelled: '#B71C1C' };
     return map[String(s)] || '#78909C';
   };
 
@@ -162,7 +162,7 @@ export default function Dashboard() {
         {/* Stats row */}
         <div className="pure-grid-stats">
           {[
-            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#1B5E3B', icon: <FolderOpen size={24} />, moduleKey: 'Projects' },
+            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#147a6d', icon: <FolderOpen size={24} />, moduleKey: 'Projects' },
             { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={24} />, moduleKey: 'Initiatives' },
             { titleAr: 'الأهداف', titleEn: 'Objectives', value: 64, sub: t('هدف استراتيجي', 'Strategic'), color: '#7B1FA2', icon: <Target size={24} />, moduleKey: 'Objectives' },
             { titleAr: 'المؤشرات', titleEn: 'KPIs', value: 156, sub: t('مؤشر أداء', 'Indicators'), color: '#E65100', icon: <BarChart2 size={24} />, moduleKey: 'KPIs' },

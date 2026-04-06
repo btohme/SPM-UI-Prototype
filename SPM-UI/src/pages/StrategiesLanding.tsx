@@ -34,7 +34,7 @@ export default function StrategiesLanding() {
         {/* Top KPIs */}
         <div className="pure-grid-3">
           {[
-            { label: t('الاستراتيجيات', 'Strategies'), value: strategies.length, color: '#1B5E3B', icon: <Layers size={20} /> },
+            { label: t('الاستراتيجيات', 'Strategies'), value: strategies.length, color: '#147a6d', icon: <Layers size={20} /> },
             { label: t('الأهداف', 'Objectives'), value: objectives.length, color: '#006064', icon: <Target size={20} /> },
             { label: t('مؤشرات الأداء', 'KPIs'), value: kpis.length, color: '#283593', icon: <BarChart2 size={20} /> },
           ].map((s, i) => (
@@ -64,8 +64,8 @@ export default function StrategiesLanding() {
 
                 {/* Header Row */}
                 <button style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '16px', padding: '20px', background: isOpen ? '#f9fafb' : 'transparent', border: 'none', cursor: 'pointer', transition: 'background 0.2s' }} onClick={() => setExpanded(isOpen ? null : String(str.id))}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#e8f5ee', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Layers size={18} color="#1B5E3B" />
+                  <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#e6f2f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <Layers size={18} color="#147a6d" />
                   </div>
                   <div style={{ flex: 1, textAlign: 'start' }}>
                     <p style={{ fontWeight: '700', color: '#111827', fontSize: '14px', margin: '0 0 2px 0' }}>{t(String(str.nameAr), String(str.nameEn || str.nameAr))}</p>
@@ -84,13 +84,13 @@ export default function StrategiesLanding() {
                     <div style={{ width: '96px' }}>
                       <div className="pure-flex-between" style={{ marginBottom: '4px' }}>
                         <span style={{ fontSize: '11px', color: '#9ca3af' }}>{t('الإنجاز', 'Progress')}</span>
-                        <span style={{ fontSize: '11px', fontWeight: '700', color: '#1B5E3B' }}>{avgCompletion}%</span>
+                        <span style={{ fontSize: '11px', fontWeight: '700', color: '#147a6d' }}>{avgCompletion}%</span>
                       </div>
                       <div style={{ height: '6px', background: '#f3f4f6', borderRadius: '999px', overflow: 'hidden' }}>
-                        <motion.div initial={{ width: 0 }} animate={{ width: `${avgCompletion}%` }} transition={{ duration: 0.8, delay: 0.2 }} style={{ height: '100%', background: '#1B5E3B', borderRadius: '999px' }} />
+                        <motion.div initial={{ width: 0 }} animate={{ width: `${avgCompletion}%` }} transition={{ duration: 0.8, delay: 0.2 }} style={{ height: '100%', background: '#147a6d', borderRadius: '999px' }} />
                       </div>
                     </div>
-                    <Badge label={t(str.pillar === 'economic' ? 'اقتصادي' : str.pillar === 'social' ? 'اجتماعي' : str.pillar === 'digital' ? 'رقمي' : String(str.pillar || ''), String(str.pillar || ''))} color="#1B5E3B" />
+                    <Badge label={t(str.pillar === 'economic' ? 'اقتصادي' : str.pillar === 'social' ? 'اجتماعي' : str.pillar === 'digital' ? 'رقمي' : String(str.pillar || ''), String(str.pillar || ''))} color="#147a6d" />
                     <motion.div animate={{ rotate: isOpen ? 180 : 0 }} transition={{ duration: 0.2 }}>
                       <ChevronDown size={18} color="#9ca3af" />
                     </motion.div>
@@ -163,7 +163,7 @@ export default function StrategiesLanding() {
                   <p style={{ fontSize: '12px', color: '#9ca3af', margin: 0 }}>{String(kpi.code)}</p>
                 </div>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#1B5E3B', margin: '0 0 2px 0' }}>{String(kpi.currentValue || 0)}</p>
+                  <p style={{ fontSize: '14px', fontWeight: '700', color: '#147a6d', margin: '0 0 2px 0' }}>{String(kpi.currentValue || 0)}</p>
                   <p style={{ fontSize: '11px', color: '#9ca3af', margin: 0 }}>/ {String(kpi.targetValue || 100)}</p>
                 </div>
               </motion.button>

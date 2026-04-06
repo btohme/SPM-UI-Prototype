@@ -50,7 +50,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
             ) : (
               attachments.map((a, i) => (
                 <div key={i} className="pure-file-badge">
-                  <span style={{ color: '#1B5E3B' }}><Paperclip size={14} /></span>
+                  <span style={{ color: '#147a6d' }}><Paperclip size={14} /></span>
                   <span>{String(a)}</span>
                 </div>
               ))
@@ -269,7 +269,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
                           <p style={{ fontSize: '12px', color: '#6b7280', margin: 0 }}>{u.email}</p>
                         </div>
                         {String(value) === t(u.nameAr, u.nameEn) && (
-                          <Check size={16} color="#1B5E3B" style={{ marginInlineStart: 'auto' }} />
+                          <Check size={16} color="#147a6d" style={{ marginInlineStart: 'auto' }} />
                         )}
                       </button>
                     ))}
@@ -302,7 +302,7 @@ export default function FormField({ field, value, onChange, readOnly = false }: 
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                 {files.map((f, i) => (
                   <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} key={i} className="pure-file-badge">
-                    <span style={{ color: '#1B5E3B' }}><Paperclip size={14} /></span>
+                    <span style={{ color: '#147a6d' }}><Paperclip size={14} /></span>
                     <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
                     <button type="button" onClick={() => removeFile(i)} className="pure-file-remove">
                       <X size={14} />

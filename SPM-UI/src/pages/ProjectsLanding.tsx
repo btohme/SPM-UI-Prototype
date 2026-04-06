@@ -12,7 +12,7 @@ import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
 
 const PHASE_COLORS: Record<string, string> = {
-  execution: '#1B5E3B', planning: '#006064', preparation: '#283593',
+  execution: '#147a6d', planning: '#006064', preparation: '#283593',
   completed: '#2E7D32', cancelled: '#B71C1C', monitoring: '#F57F17',
 };
 
@@ -54,7 +54,7 @@ export default function ProjectsLanding() {
         {/* Stats */}
         <div className="pure-grid-4">
           {[
-            { label: t('إجمالي المشاريع', 'Total Projects'), value: stats.total, color: '#1B5E3B', icon: <FolderOpen size={20} /> },
+            { label: t('إجمالي المشاريع', 'Total Projects'), value: stats.total, color: '#147a6d', icon: <FolderOpen size={20} /> },
             { label: t('قيد التنفيذ', 'In Execution'), value: stats.execution, color: '#006064', icon: <TrendingUp size={20} /> },
             { label: t('مكتملة', 'Completed'), value: stats.completed, color: '#2E7D32', icon: <CheckCircle size={20} /> },
             { label: t('تحتاج انتباه', 'Needs Attention'), value: stats.delayed, color: '#B71C1C', icon: <AlertTriangle size={20} /> },
@@ -86,8 +86,8 @@ export default function ProjectsLanding() {
                 <YAxis tick={{ fontSize: 11 }} />
                 <Tooltip />
                 <Legend />
-                <Line type="monotone" dataKey="planned" stroke="#1B5E3B" strokeWidth={2} dot={{ r: 4 }} name={t('مخطط', 'Planned')} />
-                <Line type="monotone" dataKey="actual" stroke="#E8A020" strokeWidth={2} dot={{ r: 4 }} name={t('فعلي', 'Actual')} />
+                <Line type="monotone" dataKey="planned" stroke="#147a6d" strokeWidth={2} dot={{ r: 4 }} name={t('مخطط', 'Planned')} />
+                <Line type="monotone" dataKey="actual" stroke="#f29221" strokeWidth={2} dot={{ r: 4 }} name={t('فعلي', 'Actual')} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -103,7 +103,7 @@ export default function ProjectsLanding() {
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
                 <Bar dataKey="value" radius={[4, 4, 0, 0]}>
-                  {[0, 1, 2, 3].map(i => <Cell key={i} fill={['#283593', '#006064', '#1B5E3B', '#2E7D32'][i]} />)}
+                  {[0, 1, 2, 3].map(i => <Cell key={i} fill={['#283593', '#006064', '#147a6d', '#2E7D32'][i]} />)}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>

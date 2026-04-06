@@ -72,7 +72,7 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
         <div className="pure-hnav-breadcrumb">
           <div className="pure-hnav-badge">
             <span style={{ fontSize: '12px', fontWeight: '700', color: '#6b7280' }}>{t('مساحة العمل', 'Workspace')}:</span>
-            <span style={{ fontSize: '12px', fontWeight: '900', color: '#1B5E3B' }}>{workspaceTitle}</span>
+            <span style={{ fontSize: '12px', fontWeight: '900', color: '#147a6d' }}>{workspaceTitle}</span>
           </div>
           {workspaceCode && (
             <span className="pure-hnav-code">{workspaceCode}</span>
@@ -92,7 +92,7 @@ export default function HorizontalNav({ items, workspaceTitle, workspaceCode, wo
               className={`pure-hnav-item ${active ? 'active' : ''}`}
             >
               {item.icon && (
-                <span style={{ color: active ? '#1B5E3B' : '#9ca3af', transition: 'color 0.3s' }}>
+                <span style={{ color: active ? '#147a6d' : '#9ca3af', transition: 'color 0.3s' }}>
                   <HNavIcon name={item.icon} size={18} />
                 </span>
               )}

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 interface StatCardProps { titleAr: string; titleEn: string; value: number | string; subtitle?: string; icon?: React.ReactNode; color?: string; trend?: 'up' | 'down' | 'neutral'; trendValue?: string; onClick?: () => void; gradient?: [string, string]; delay?: number; moduleKey?: string; }
 
-export default function StatCard({ titleAr, titleEn, value, subtitle, icon, color = '#1B5E3B', trend, trendValue, onClick, gradient, delay = 0, moduleKey }: StatCardProps) {
+export default function StatCard({ titleAr, titleEn, value, subtitle, icon, color = '#147a6d', trend, trendValue, onClick, gradient, delay = 0, moduleKey }: StatCardProps) {
   const { t } = useApp(); const navigate = useNavigate();
   const handleClick = () => { if (onClick) onClick(); else if (moduleKey) navigate(`/list?modulekey=${moduleKey}`); };
   const TrendIcon = trend === 'up' ? TrendingUp : trend === 'down' ? TrendingDown : Minus;

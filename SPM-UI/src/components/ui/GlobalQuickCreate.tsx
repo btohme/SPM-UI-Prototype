@@ -88,8 +88,8 @@ const hubModules = (Object.values(MODULE_CONFIGS) as any[]).filter(m => m && m.s
         onClick={() => setIsOpen(true)}
         className="pure-btn-primary pure-btn-sz-sm"
         style={{
-            background: 'linear-gradient(135deg, #1B5E3B 0%, #144b2f 100%)',
-            boxShadow: '0 2px 4px rgba(27, 94, 59, 0.2)',
+            background: 'linear-gradient(135deg, #147a6d 0%, #144b2f 100%)',
+            boxShadow: '0 2px 4px rgba(20, 122, 109, 0.2)',
             marginInlineEnd: '16px',
             display: 'flex',       /* FIX: Enforce flex layout inside the button */
             alignItems: 'center',  /* FIX: Vertically center the lightning bolt and text */

@@ -12,7 +12,7 @@ import { useApp } from '../context/AppContext';
 import { MOCK_DATA } from '../data/mockData';
 
 const RISK_COLORS = ['#B71C1C', '#E65100', '#F57F17'];
-const STATUS_PIE = ['#1B5E3B', '#F57F17', '#B71C1C', '#283593', '#455A64'];
+const STATUS_PIE = ['#147a6d', '#F57F17', '#B71C1C', '#283593', '#455A64'];
 
 export default function ProjectWorkspace() {
   const { t } = useApp();
@@ -81,7 +81,7 @@ export default function ProjectWorkspace() {
             { label: t('المخاطر', 'Risks'), value: risks.length, color: '#B71C1C', icon: <AlertTriangle size={18} />, key: 'ProjectRisks' },
             { label: t('الإشكاليات', 'Issues'), value: issues.length, color: '#E65100', icon: <Activity size={18} />, key: 'ProjectIssues' },
             { label: t('المعالم', 'Milestones'), value: milestones.length, color: '#283593', icon: <Flag size={18} />, key: 'ProjectMilestones' },
-            { label: t('المهام', 'Tasks'), value: tasks.length, color: '#1B5E3B', icon: <CheckCircle size={18} />, key: 'Tasks' },
+            { label: t('المهام', 'Tasks'), value: tasks.length, color: '#147a6d', icon: <CheckCircle size={18} />, key: 'Tasks' },
             { label: t('الاجتماعات', 'MOMs'), value: moms.length, color: '#006064', icon: <Users size={18} />, key: 'ProjectMOMs' },
           ].map((s, i) => (
             <motion.div key={i} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.08 }} onClick={() => navigate(`/list?modulekey=${s.key}&projectCode=${code}`)} className="pure-stat-card">
@@ -124,8 +124,8 @@ export default function ProjectWorkspace() {
                 <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                 <YAxis tick={{ fontSize: 10 }} />
                 <Tooltip />
-                <Bar dataKey="planned" fill="#1B5E3B" radius={[3, 3, 0, 0]} name={t('مخطط', 'Planned')} />
-                <Bar dataKey="actual" fill="#E8A020" radius={[3, 3, 0, 0]} name={t('فعلي', 'Actual')} />
+                <Bar dataKey="planned" fill="#147a6d" radius={[3, 3, 0, 0]} name={t('مخطط', 'Planned')} />
+                <Bar dataKey="actual" fill="#f29221" radius={[3, 3, 0, 0]} name={t('فعلي', 'Actual')} />
               </BarChart>
             </ResponsiveContainer>
           </div>

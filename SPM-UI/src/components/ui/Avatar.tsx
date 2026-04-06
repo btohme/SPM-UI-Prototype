@@ -5,7 +5,7 @@ interface AvatarProps {
   color?: string;
 }
 
-const COLORS = ['#1B5E3B', '#0277BD', '#6A1B9A', '#E65100', '#2E7D32', '#B71C1C', '#006064', '#37474F', '#880E4F', '#4A148C'];
+const COLORS = ['#147a6d', '#0277BD', '#6A1B9A', '#E65100', '#2E7D32', '#B71C1C', '#006064', '#37474F', '#880E4F', '#4A148C'];
 
 function getColor(name: string): string {
   const sum = name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);

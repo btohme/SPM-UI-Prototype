@@ -12,7 +12,7 @@ interface DataTableProps { moduleKey: string; columns: ColumnConfig[]; data: Rec
 function renderCell(col: ColumnConfig, value: unknown, t: (ar: string, en: string) => string) {
   const raw = String(value ?? '');
   switch (col.type) {
-    case 'badge': return <Badge label={raw || t('لا يوجد', 'N/A')} color={raw ? col.statusColors?.[raw] || '#78909C' : '#E8A020'} />;
+    case 'badge': return <Badge label={raw || t('لا يوجد', 'N/A')} color={raw ? col.statusColors?.[raw] || '#78909C' : '#f29221'} />;
     case 'people': return <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Avatar name={raw || 'U'} size="xs" /><span style={{ fontSize: '14px' }}>{raw || t('لا يوجد', 'N/A')}</span></div>;
     case 'date': return <span style={{ fontSize: '14px', color: '#4b5563' }}>{(!raw || raw === 'null') ? t('لا يوجد', 'N/A') : new Date(raw).toLocaleDateString('ar-SA')}</span>;
     case 'number': return <span style={{ fontSize: '14px', fontWeight: '500' }}>{Number(value ?? 0).toLocaleString('ar-SA')}</span>;
@@ -107,7 +107,7 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
                         <td style={{ color: '#6b7280', fontWeight: '600' }}>{(page - 1) * PER_PAGE + idx + 1}</td>
                         {columns.map(col => (
                           <td key={col.key}>
-                            {col.type === 'link' ? <button onClick={() => navigate(buildRoute('view', id))} style={{ background: 'none', border: 'none', color: '#1B5E3B', fontWeight: 'bold', cursor: 'pointer' }}>{String(row[col.key] ?? '')}</button> : renderCell(col, row[col.key], t)}
+                            {col.type === 'link' ? <button onClick={() => navigate(buildRoute('view', id))} style={{ background: 'none', border: 'none', color: '#147a6d', fontWeight: 'bold', cursor: 'pointer' }}>{String(row[col.key] ?? '')}</button> : renderCell(col, row[col.key], t)}
                           </td>
                         ))}
                         <td>
@@ -135,7 +135,7 @@ export default function DataTable({ moduleKey, columns, data, loading = false, w
                       <AnimatePresence>
                         {expanded && (
                           <motion.tr initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
-                            <td colSpan={columns.length + 3} style={{ background: 'rgba(27, 94, 59, 0.02)', padding: '16px 32px' }}>
+                            <td colSpan={columns.length + 3} style={{ background: 'rgba(20, 122, 109, 0.02)', padding: '16px 32px' }}>
                               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                                 {Object.entries(row).filter(([k]) => !['id'].includes(k)).slice(0, 8).map(([k, v]) => (
                                   <div key={k}><span style={{ display: 'block', fontSize: '11px', color: '#9ca3af', marginBottom: '2px' }}>{k}</span><span style={{ fontSize: '13px', fontWeight: '600', color: '#1f2937' }}>{v == null || v === '' ? '-' : String(v)}</span></div>

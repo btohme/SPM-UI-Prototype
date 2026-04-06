@@ -26,7 +26,7 @@ export default function ToastContainer() {
     <div className="pure-toast-container">
       {toasts.map(t => (
         <div key={t.id} className="pure-toast">
-          <CheckCircle size={20} color="#1B5E3B" />
+          <CheckCircle size={20} color="#147a6d" />
           <div>
             <p style={{ margin: 0, fontSize: '14px', fontWeight: 'bold', color: '#111827' }}>{t.msgAr}</p>
             <p style={{ margin: 0, fontSize: '12px', color: '#6b7280' }}>{t.msgEn}</p>

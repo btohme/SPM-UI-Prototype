@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-export function LoadingSpinner({ size = 32, color = '#1B5E3B' }: { size?: number; color?: string }) {
+export function LoadingSpinner({ size = 32, color = '#147a6d' }: { size?: number; color?: string }) {
   return (
     <motion.div animate={{ rotate: 360 }} transition={{ duration: 0.8, repeat: Infinity, ease: 'linear' }}
       style={{ width: size, height: size, borderTopColor: color, borderRadius: '50%', border: '4px solid #e5e7eb', borderTopStyle: 'solid' }}
@@ -12,7 +12,7 @@ export function LoadingPage({ messageAr = 'جاري التحميل...' }: { mess
   return (
     <div className="pure-loading-overlay">
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
-        <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#1B5E3B', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
+        <motion.div animate={{ scale: [1, 1.1, 1] }} transition={{ duration: 1.5, repeat: Infinity }} style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#147a6d', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }}>
           <span style={{ color: 'white', fontWeight: 'bold', fontSize: '24px' }}>ت</span>
         </motion.div>
         <LoadingSpinner size={40} />
@@ -45,7 +45,7 @@ export function SkeletonCard() {
 export function TableSkeleton({ rows = 6 }: { rows?: number }) {
   return (
     <div className="pure-table-container">
-      <div style={{ background: '#1B5E3B', height: '40px' }} />
+      <div style={{ background: '#147a6d', height: '40px' }} />
       {Array.from({ length: rows }).map((_, i) => <SkeletonRow key={i} />)}
     </div>
   );
