@@ -8,7 +8,7 @@ import { MODULE_MAP, PROJECT_WORKSPACE_NAV, INITIATIVE_WORKSPACE_NAV } from '../
 import { useApp } from '../../context/AppContext';
 import { MOCK_DATA } from '../../data/mockData';
 import ToastContainer from '../ui/Toast';
-
+import AICopilot from '../ui/AICopilot';
 interface LayoutProps {
   children: React.ReactNode;
   titleAr?: string;
@@ -104,6 +104,7 @@ export default function Layout({ children, titleAr, titleEn }: LayoutProps) {
           </motion.div>
         </main>
       </div>
+      <AICopilot />
     </div>
   );
 }
