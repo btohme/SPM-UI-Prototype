@@ -268,7 +268,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     workspace: null,
     codePrefix: 'KP',
     tabs: [
-      { key: 'main',       labelAr: 'البيانات الرئيسية',   labelEn: 'Main Data'         },
+      { key: 'main',       labelAr: 'البيانات الاساسية',   labelEn: 'Main Data'         },
       { key: 'measurement',labelAr: 'بيانات القياس',        labelEn: 'Measurement Data'  },
       { key: 'operational',labelAr: 'البيانات التشغيلية',   labelEn: 'Operational Data'  },
       { key: 'source',     labelAr: 'مصدر البيانات',        labelEn: 'Data Source'       },
