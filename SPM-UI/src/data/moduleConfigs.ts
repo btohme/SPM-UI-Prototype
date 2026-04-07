@@ -320,7 +320,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     workspace: null,
     codePrefix: 'ST',
     tabs: [
-      { key: 'main',   labelAr: 'البيانات الرئيسية', labelEn: 'Main Data'  },
+      { key: 'main',   labelAr: 'البيانات الاساسية', labelEn: 'Main Data'  },
       // { key: 'pillars',labelAr: 'الركائز',            labelEn: 'Pillars'    },
       // { key: 'kpis',   labelAr: 'المؤشرات',          labelEn: 'KPIs'       },
       { key: 'docs',   labelAr: 'الوثائق',           labelEn: 'Documents'  },
