@@ -357,7 +357,7 @@ const [, setRefreshTrigger] = useState(0);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('تم تصدير الهيكل بنجاح', 'Hierarchy exported successfully');
+    showToast('تم تصدير القالب بنجاح', 'Hierarchy exported successfully');
   };
 
   // --- IMPORT LOGIC ---
@@ -410,7 +410,7 @@ const [, setRefreshTrigger] = useState(0);
         processImportData(parsed.nodes, String(parentItem.id || parentItem.code), hierarchy);
         persistData();
         setRefreshTrigger(r => r + 1);
-        showToast('تم استيراد الهيكل بنجاح', 'Hierarchy imported successfully');
+        showToast('تم استيراد القالب بنجاح', 'Hierarchy imported successfully');
       } catch (err) {
         window.alert(t('حدث خطأ أثناء قراءة الملف. تأكد من أنه ملف JSON صالح.', 'Error reading file. Ensure it is a valid JSON.'));
       }
@@ -490,7 +490,7 @@ const [, setRefreshTrigger] = useState(0);
               </button>
             </div>
 
-            <p className="pure-hero-subtitle">{t('قم ببناء الهيكل المرتبط أدناه.', 'Build the related hierarchy below.')}</p>
+            <p className="pure-hero-subtitle">{t('قم ببناء القالب المرتبط أدناه.', 'Build the related hierarchy below.')}</p>
 
             <div
               className={`pure-flex-start ${tourStep === 1 ? 'tour-highlight' : ''}`}
@@ -524,7 +524,7 @@ const [, setRefreshTrigger] = useState(0);
 
               {tourStep === 1 && (
                  <div className="pure-tour-tooltip" style={{ top: '115%', left: language === 'ar' ? 'auto' : 0, right: language === 'ar' ? 0 : 'auto' }}>
-                    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('خريطة الهيكل', 'Hierarchy Map')}</h4>
+                    <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('خريطة القالب', 'Hierarchy Map')}</h4>
                     <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: '#4b5563', lineHeight: '1.5' }}>
                       {t(`توضح هذه الخريطة تسلسل البيانات. ستبدأ من [${parentName}] وتتفرع للأسفل لتعبئة [${childName}].`, `This map shows the data sequence. You start from [${parentName}] and branch down to [${childName}].`)}
                     </p>
@@ -551,7 +551,7 @@ const [, setRefreshTrigger] = useState(0);
                <div className="pure-tour-tooltip" style={{ top: '130%', left: '50%', marginLeft: '-140px' }}>
                   <h4 style={{ margin: '0 0 8px 0', fontSize: '14px', fontWeight: 'bold' }}>{t('حفظ وإنهاء', 'Save & Finish')}</h4>
                   <p style={{ margin: '0 0 12px 0', fontSize: '12px', color: '#4b5563', lineHeight: '1.5' }}>
-                    {t(`عند الانتهاء من بناء الهيكل، اضغط هنا للعودة إلى قائمة [${parentName}]. يمكنك دائماً العودة إلى هنا عبر أيقونة الإعداد من القائمة.`, `When you finish building, click here to return to the [${parentName}] list. You can always return here via the Setup icon in the list.`)}
+                    {t(`عند الانتهاء من بناء القالب، اضغط هنا للعودة إلى قائمة [${parentName}]. يمكنك دائماً العودة إلى هنا عبر أيقونة الإعداد من القائمة.`, `When you finish building, click here to return to the [${parentName}] list. You can always return here via the Setup icon in the list.`)}
                   </p>
                   <div className="pure-flex-between" style={{ justifyContent: 'flex-end' }}>
                      <button onClick={() => setTourStep(0)} className="pure-btn-primary" style={{ padding: '4px 12px', fontSize: '12px' }}>{t('إنهاء الجولة', 'End Tour')}</button>
@@ -565,7 +565,7 @@ const [, setRefreshTrigger] = useState(0);
 
           <div className="pure-flex-between" style={{ borderBottom: '1px solid #e5e7eb', paddingBottom: '16px', marginBottom: '16px', flexWrap: 'wrap', gap: '12px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: '800', color: '#111827', margin: 0 }}>
-              {t('منشئ الهيكل', 'Hierarchy Builder')}
+              {t('منشئ القالب', 'Hierarchy Builder')}
             </h3>
 
             <div className="pure-flex-start" style={{ gap: '12px', flexWrap: 'wrap' }}>

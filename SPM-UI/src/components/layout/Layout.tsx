@@ -20,7 +20,7 @@ function getPageTitle(pathname: string, search: string) {
   const moduleKey = params.get('modulekey') || '';
   const mod = MODULE_MAP[moduleKey];
 
-  if (pathname === '/') return { ar: 'مسؤول النظام', en: 'System Admin' };
+  if (pathname === '/') return { ar: 'فريق الاستراتيجية', en: 'Strategy Team' };
   if (pathname === '/projects') return { ar: 'المشاريع', en: 'Projects' };
   if (pathname === '/initiatives') return { ar: 'المبادرات', en: 'Initiatives' };
   if (pathname === '/strategies') return { ar: 'الاستراتيجيات', en: 'Strategies' };

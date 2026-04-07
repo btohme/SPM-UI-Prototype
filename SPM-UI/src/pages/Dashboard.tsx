@@ -1,10 +1,12 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+// import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   PieChart, Pie, Cell, Tooltip, ResponsiveContainer,
   BarChart, Bar, XAxis, YAxis, CartesianGrid,
 } from 'recharts';
-import { ChevronDown, ChevronUp, FolderOpen, Eye, ExternalLink, Lightbulb, Target, BarChart2, TrendingUp } from 'lucide-react';
+import { FolderOpen, Eye, Lightbulb, Target, BarChart2, TrendingUp } from 'lucide-react';
+// import { ChevronDown, ChevronUp, FolderOpen, Eye, ExternalLink, Lightbulb, Target, BarChart2, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import Badge from '../components/ui/Badge';
@@ -34,68 +36,68 @@ const PHASE_DATA = [
   { name: 'الأقفال',           nameEn: 'Closure',            value: 3, color: '#37474F' },
 ];
 
-const ACTION_ITEMS = [
-  { key: 'approvals', labelAr: 'اعتمادات', labelEn: 'Approvals', count: 5 },
-  { key: 'obstacles', labelAr: 'عوائق', labelEn: 'Obstacles', count: 3 },
-  { key: 'risks',     labelAr: 'مخاطر', labelEn: 'Risks', count: 8 },
-];
+// const ACTION_ITEMS = [
+//   { key: 'approvals', labelAr: 'اعتمادات', labelEn: 'Approvals', count: 5 },
+//   { key: 'obstacles', labelAr: 'عوائق', labelEn: 'Obstacles', count: 3 },
+//   { key: 'risks',     labelAr: 'مخاطر', labelEn: 'Risks', count: 8 },
+// ];
 
-function ActionAccordion() {
-  const { t } = useApp();
-  const [expanded, setExpanded] = useState<string | null>(null);
-  const navigate = useNavigate();
+// function ActionAccordion() {
+//   const { t } = useApp();
+//   const [expanded, setExpanded] = useState<string | null>(null);
+//   const navigate = useNavigate();
 
-  const detailsByKey: Record<string, { titleAr: string; titleEn: string; link: string }[]> = {
-    approvals: [
-      { titleAr: 'طلب تغيير: إضافة وحدة الأتمتة', titleEn: 'CR: Add Automation Module', link: '/list?modulekey=ChangeRequests' },
-      { titleAr: 'اعتماد نموذج إغلاق المشروع', titleEn: 'Approve Project Closure Form', link: '/list?modulekey=ProjectClosureForms' },
-    ],
-    obstacles: [
-      { titleAr: 'تأخر في استلام التراخيص', titleEn: 'License Approval Delay', link: '/list?modulekey=ProjectIssues' },
-    ],
-    risks: [
-      { titleAr: 'خطر التأخر في التسليم', titleEn: 'Delivery Delay Risk', link: '/list?modulekey=ProjectRisks' },
-      { titleAr: 'خطر تجاوز الميزانية', titleEn: 'Budget Overrun Risk', link: '/list?modulekey=ProjectRisks' },
-    ],
-  };
+//   const detailsByKey: Record<string, { titleAr: string; titleEn: string; link: string }[]> = {
+//     approvals: [
+//       { titleAr: 'طلب تغيير: إضافة وحدة الأتمتة', titleEn: 'CR: Add Automation Module', link: '/list?modulekey=ChangeRequests' },
+//       { titleAr: 'اعتماد نموذج إغلاق المشروع', titleEn: 'Approve Project Closure Form', link: '/list?modulekey=ProjectClosureForms' },
+//     ],
+//     obstacles: [
+//       { titleAr: 'تأخر في استلام التراخيص', titleEn: 'License Approval Delay', link: '/list?modulekey=ProjectIssues' },
+//     ],
+//     risks: [
+//       { titleAr: 'خطر التأخر في التسليم', titleEn: 'Delivery Delay Risk', link: '/list?modulekey=ProjectRisks' },
+//       { titleAr: 'خطر تجاوز الميزانية', titleEn: 'Budget Overrun Risk', link: '/list?modulekey=ProjectRisks' },
+//     ],
+//   };
 
-  return (
-    <div>
-      {ACTION_ITEMS.map(item => (
-        <div key={item.key} className="pure-accordion-wrapper">
-          <button onClick={() => setExpanded(e => e === item.key ? null : item.key)} className="pure-accordion-btn">
-            <div className="pure-flex-start" style={{ gap: '8px' }}>
-              {expanded === item.key ? <ChevronUp size={16} color="#6b7280" /> : <ChevronDown size={16} color="#6b7280" />}
-              <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>{t(item.labelAr, item.labelEn)}</span>
-            </div>
-            <span className="pure-badge pure-badge-gray">{item.count}</span>
-          </button>
-          <AnimatePresence>
-            {expanded === item.key && (
-              <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} style={{ overflow: 'hidden' }}>
-                <div style={{ padding: '8px', background: '#fff' }}>
-                  {detailsByKey[item.key]?.map((d, i) => (
-                    <button key={i} onClick={() => navigate(d.link)} className="pure-list-item">
-                      <span style={{ fontSize: '13px', color: '#374151' }}>{t(d.titleAr, d.titleEn)}</span>
-                      <ExternalLink size={14} color="#9ca3af" />
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      ))}
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       {ACTION_ITEMS.map(item => (
+//         <div key={item.key} className="pure-accordion-wrapper">
+//           <button onClick={() => setExpanded(e => e === item.key ? null : item.key)} className="pure-accordion-btn">
+//             <div className="pure-flex-start" style={{ gap: '8px' }}>
+//               {expanded === item.key ? <ChevronUp size={16} color="#6b7280" /> : <ChevronDown size={16} color="#6b7280" />}
+//               <span style={{ fontSize: '14px', fontWeight: '600', color: '#374151' }}>{t(item.labelAr, item.labelEn)}</span>
+//             </div>
+//             <span className="pure-badge pure-badge-gray">{item.count}</span>
+//           </button>
+//           <AnimatePresence>
+//             {expanded === item.key && (
+//               <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} style={{ overflow: 'hidden' }}>
+//                 <div style={{ padding: '8px', background: '#fff' }}>
+//                   {detailsByKey[item.key]?.map((d, i) => (
+//                     <button key={i} onClick={() => navigate(d.link)} className="pure-list-item">
+//                       <span style={{ fontSize: '13px', color: '#374151' }}>{t(d.titleAr, d.titleEn)}</span>
+//                       <ExternalLink size={14} color="#9ca3af" />
+//                     </button>
+//                   ))}
+//                 </div>
+//               </motion.div>
+//             )}
+//           </AnimatePresence>
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
 function ProjectListCard() {
   const { t } = useApp();
   const navigate = useNavigate();
   const [tab, setTab] = useState<'internal' | 'development'>('internal');
   const projects = (MOCK_DATA.Projects as Record<string, unknown>[]) || [];
-  const filtered = projects.filter((p) => tab === 'internal' ? String(p.categoryAr) === 'داخلي' : String(p.categoryAr) === 'تنموي');
+  const filtered = projects.filter((p) => tab === 'internal' ? String(p.categoryAr) === 'استراتيجي' : String(p.categoryAr) === 'تشغيلي');
 
   const statusColor = (s: unknown) => {
     const map: Record<string, string> = { execution: '#147a6d', planning: '#006064', preparation: '#283593', completed: '#2E7D32', cancelled: '#B71C1C' };
@@ -117,9 +119,9 @@ function ProjectListCard() {
       <div className="pure-tabs">
         {(['internal', 'development'] as const).map(key => (
           <button key={key} onClick={() => setTab(key)} className={`pure-tab ${tab === key ? 'active' : ''}`}>
-            {key === 'internal' ? t('داخلي', 'Internal') : t('تنموي', 'Development')}
+            {key === 'internal' ? t('استراتيجي', 'Internal') : t('تشغيلي', 'Development')}
             <span style={{ marginInlineStart: '4px', fontSize: '12px', opacity: 0.7 }}>
-              ({projects.filter(p => (key === 'internal' ? String(p.categoryAr) === 'داخلي' : String(p.categoryAr) === 'تنموي')).length})
+              ({projects.filter(p => (key === 'internal' ? String(p.categoryAr) === 'استراتيجي' : String(p.categoryAr) === 'تشغيلي')).length})
             </span>
           </button>
         ))}
@@ -162,10 +164,10 @@ export default function Dashboard() {
         {/* Stats row */}
         <div className="pure-grid-stats">
           {[
-            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#147a6d', icon: <FolderOpen size={24} />, moduleKey: 'Projects' },
-            { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={24} />, moduleKey: 'Initiatives' },
             { titleAr: 'الأهداف', titleEn: 'Objectives', value: 64, sub: t('هدف استراتيجي', 'Strategic'), color: '#7B1FA2', icon: <Target size={24} />, moduleKey: 'Objectives' },
             { titleAr: 'المؤشرات', titleEn: 'KPIs', value: 156, sub: t('مؤشر أداء', 'Indicators'), color: '#E65100', icon: <BarChart2 size={24} />, moduleKey: 'KPIs' },
+            { titleAr: 'المبادرات', titleEn: 'Initiatives', value: 89, sub: t('مبادرة نشطة', 'Active'), color: '#0277BD', icon: <Lightbulb size={24} />, moduleKey: 'Initiatives' },
+            { titleAr: 'المشاريع', titleEn: 'Projects', value: 420, sub: t('مشروع مسجل', 'Registered'), color: '#147a6d', icon: <FolderOpen size={24} />, moduleKey: 'Projects' },
           ].map((s) => (
             <div key={s.titleAr} onClick={() => navigate(`/list?modulekey=${s.moduleKey}`)} className="pure-stat-card">
               <div style={{ height: '6px', width: '100%', backgroundColor: s.color }} />
@@ -187,7 +189,7 @@ export default function Dashboard() {
           <div className="pure-card">
             <div className="pure-card-header">
               <span className="pure-card-title">{t('المخاطر', 'Risks')}</span>
-              <span className="pure-badge pure-badge-gray">{t('حسب الخطورة', 'By Severity')}</span>
+              <span className="pure-badge pure-badge-gray">{t('حسب التأثير', 'By Severity')}</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
               <PieChart>
@@ -219,7 +221,7 @@ export default function Dashboard() {
 
           <div className="pure-card">
             <div className="pure-card-header">
-              <span className="pure-card-title">{t('توزيع المراحل', 'Phase Distribution')}</span>
+              <span className="pure-card-title">{t('المراحل', 'Phase Distribution')}</span>
               <span className="pure-badge pure-badge-gray">{t('المشاريع', 'Projects')}</span>
             </div>
             <ResponsiveContainer width="100%" height={200}>
@@ -238,13 +240,13 @@ export default function Dashboard() {
 
         {/* Bottom Row */}
         <div className="pure-grid-bottom">
-          <div className="pure-card">
+          {/* <div className="pure-card">
             <div className="pure-card-header">
               <span className="pure-card-title">{t('الإجراء المطلوب', 'Required Actions')}</span>
               <span className="pure-badge pure-badge-red">71</span>
             </div>
             <ActionAccordion />
-          </div>
+          </div> */}
 
           <div className="pure-card pure-col-span-2">
             <ProjectListCard />

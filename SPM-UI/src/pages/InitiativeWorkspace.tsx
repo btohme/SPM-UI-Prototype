@@ -79,7 +79,7 @@ export default function InitiativeWorkspace() {
         <div className="pure-grid-5">
           {[
             { label: t('المخاطر', 'Risks'), value: risks.length, color: '#B71C1C', icon: <AlertTriangle size={18} />, key: 'InitiativeRisks' },
-            { label: t('الإشكاليات', 'Issues'), value: issues.length, color: '#E65100', icon: <Activity size={18} />, key: 'InitiativeIssues' },
+            { label: t('التحديات', 'Issues'), value: issues.length, color: '#E65100', icon: <Activity size={18} />, key: 'InitiativeIssues' },
             { label: t('المعالم', 'Milestones'), value: milestones.length, color: '#283593', icon: <Flag size={18} />, key: 'InitiativeMilestones' },
             { label: t('المهام', 'Tasks'), value: tasks.length, color: '#147a6d', icon: <CheckCircle size={18} />, key: 'Tasks' },
             { label: t('أصحاب المصلحة', 'Stakeholders'), value: stakeholders.length, color: '#006064', icon: <Users size={18} />, key: 'Stakeholders' },

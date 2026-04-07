@@ -5,7 +5,7 @@ import { useApp } from '../../context/AppContext';
 import type { NotificationType } from '../../types';
 
 const TYPE_ICONS: Record<NotificationType, { icon: any, color: string }> = { task: { icon: ClipboardCheck, color: '#F57F17' }, risk: { icon: AlertTriangle, color: '#B71C1C' }, issue: { icon: AlertOctagon, color: '#E65100' }, notification: { icon: Info, color: '#0277BD' }, announcement: { icon: Megaphone, color: '#6A1B9A' } };
-const TYPE_LABELS: Record<NotificationType, { ar: string; en: string }> = { task: { ar: 'المهام', en: 'Tasks' }, risk: { ar: 'المخاطر', en: 'Risks' }, issue: { ar: 'القضايا', en: 'Issues' }, notification: { ar: 'الإشعارات', en: 'Notifications' }, announcement: { ar: 'الإعلانات', en: 'Announcements' } };
+const TYPE_LABELS: Record<NotificationType, { ar: string; en: string }> = { task: { ar: 'المهام', en: 'Tasks' }, risk: { ar: 'المخاطر', en: 'Risks' }, issue: { ar: 'التحديات', en: 'Issues' }, notification: { ar: 'الإشعارات', en: 'Notifications' }, announcement: { ar: 'الإعلانات', en: 'Announcements' } };
 type Tab = NotificationType | 'all'; const TABS: Tab[] = ['all', 'task', 'risk', 'issue', 'notification', 'announcement'];
 
 export default function NotificationDropdown() {

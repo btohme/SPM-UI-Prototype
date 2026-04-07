@@ -6,12 +6,12 @@ const AppContext = createContext<AppContextType | null>(null);
 
 const CURRENT_USER: User = {
   id: 'u9',
-  nameAr: 'باشار توحمة',
-  nameEn: 'Bachar Tohme',
-  email: 'bachar@tanmia.sa',
-  role: 'مسؤول النظام',
+  nameAr: 'سامي موسى',
+  nameEn: 'Sami Moussa',
+  email: 'sami@hrsd.sa',
+  role: 'فريق الاستراتيجية',
   avatar: '',
-  department: 'إدارة التقنية',
+  department: 'إدارة الاستراتيجية',
 };
 
 export function AppProvider({ children }: { children: React.ReactNode }) {

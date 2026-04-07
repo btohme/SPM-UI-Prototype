@@ -79,7 +79,7 @@ export default function ProjectWorkspace() {
         <div className="pure-grid-5">
           {[
             { label: t('المخاطر', 'Risks'), value: risks.length, color: '#B71C1C', icon: <AlertTriangle size={18} />, key: 'ProjectRisks' },
-            { label: t('الإشكاليات', 'Issues'), value: issues.length, color: '#E65100', icon: <Activity size={18} />, key: 'ProjectIssues' },
+            { label: t('التحديات', 'Issues'), value: issues.length, color: '#E65100', icon: <Activity size={18} />, key: 'ProjectIssues' },
             { label: t('المعالم', 'Milestones'), value: milestones.length, color: '#283593', icon: <Flag size={18} />, key: 'ProjectMilestones' },
             { label: t('المهام', 'Tasks'), value: tasks.length, color: '#147a6d', icon: <CheckCircle size={18} />, key: 'Tasks' },
             { label: t('الاجتماعات', 'MOMs'), value: moms.length, color: '#006064', icon: <Users size={18} />, key: 'ProjectMOMs' },
@@ -99,7 +99,7 @@ export default function ProjectWorkspace() {
         <div className="pure-grid-3">
           <div className="pure-card">
             <div className="pure-card-header">
-              <span className="pure-card-title">{t('حالة المهام', 'Task Status')}</span>
+              <span className="pure-card-title">{t('حالة المهام الرئيسية', 'Task Status')}</span>
               <span className="pure-badge pure-badge-gray">{tasks.length} {t('مهمة', 'tasks')}</span>
             </div>
             <ResponsiveContainer width="100%" height={190}>

@@ -54,8 +54,8 @@ const YES_NO_OPTIONS: SelectOption[] = [
 ];
 
 const CATEGORY_OPTIONS: SelectOption[] = [
-  { value: 'internal',    labelAr: 'داخلي',   labelEn: 'Internal'    },
-  { value: 'development', labelAr: 'تنموي',   labelEn: 'Development' },
+  { value: 'internal',    labelAr: 'استراتيجي',   labelEn: 'Internal'    },
+  { value: 'development', labelAr: 'تشغيلي',   labelEn: 'Development' },
   { value: 'technical',   labelAr: 'تقني',    labelEn: 'Technical'   },
   { value: 'social',      labelAr: 'اجتماعي', labelEn: 'Social'      },
 ];
@@ -140,7 +140,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     codePrefix: 'SC',
     tabs: [
       { key: 'details',      labelAr: 'التفاصيل',            labelEn: 'Details'           },
-      { key: 'org',          labelAr: 'الهيكل التنظيمي',     labelEn: 'Org Structure'     },
+      { key: 'org',          labelAr: 'القالب التنظيمي',     labelEn: 'Org Structure'     },
       { key: 'approvals',    labelAr: 'المشاريع الاعتمادية', labelEn: 'Approvals'         },
       { key: 'world',        labelAr: 'بيانات للعالم',       labelEn: 'World Data'        },
       { key: 'outputs',      labelAr: 'بيانات الخرجات',      labelEn: 'Output Data'       },
@@ -189,7 +189,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     codePrefix: 'IN',
     tabs: [
       { key: 'details',      labelAr: 'التفاصيل',            labelEn: 'Details'        },
-      { key: 'org',          labelAr: 'الهيكل التنظيمي',     labelEn: 'Org Structure'  },
+      { key: 'org',          labelAr: 'القالب التنظيمي',     labelEn: 'Org Structure'  },
       { key: 'linkage',      labelAr: 'الربط الاستراتيجي',   labelEn: 'Strategic Link' },
       { key: 'outputs',      labelAr: 'بيانات الخرجات',      labelEn: 'Output Data'    },
       { key: 'risks',        labelAr: 'بيانات الخاطر',       labelEn: 'Risk Data'      },
@@ -321,16 +321,16 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     codePrefix: 'ST',
     tabs: [
       { key: 'main',   labelAr: 'البيانات الرئيسية', labelEn: 'Main Data'  },
-      { key: 'pillars',labelAr: 'الركائز',            labelEn: 'Pillars'    },
-      { key: 'kpis',   labelAr: 'المؤشرات',          labelEn: 'KPIs'       },
+      // { key: 'pillars',labelAr: 'الركائز',            labelEn: 'Pillars'    },
+      // { key: 'kpis',   labelAr: 'المؤشرات',          labelEn: 'KPIs'       },
       { key: 'docs',   labelAr: 'الوثائق',           labelEn: 'Documents'  },
     ],
     fields: [
       { key: 'nameAr',      labelAr: 'اسم الاستراتيجية',   labelEn: 'Strategy Name',   type: 'text',     required: true,  tab: 'main',   columnSpan: 1 },
-      { key: 'pillarAr',    labelAr: 'الركيزة',             labelEn: 'Pillar',          type: 'select',   required: false, tab: 'main',   columnSpan: 1, options: [] },
+      // { key: 'pillarAr',    labelAr: 'الركيزة',             labelEn: 'Pillar',          type: 'select',   required: false, tab: 'main',   columnSpan: 1, options: [] },
+      { key: 'status',      labelAr: 'الحالة',              labelEn: 'Status',          type: 'select',   required: true,  tab: 'main',   columnSpan: 1, options: STATUS_OPTIONS },
       { key: 'fromYear',    labelAr: 'من سنة',              labelEn: 'From Year',       type: 'select',   required: true,  tab: 'main',   columnSpan: 1, options: YEAR_OPTIONS },
       { key: 'toYear',      labelAr: 'إلى سنة',             labelEn: 'To Year',         type: 'select',   required: true,  tab: 'main',   columnSpan: 1, options: YEAR_OPTIONS },
-      { key: 'status',      labelAr: 'الحالة',              labelEn: 'Status',          type: 'select',   required: true,  tab: 'main',   columnSpan: 1, options: STATUS_OPTIONS },
       { key: 'ownerAr',     labelAr: 'المسؤول',             labelEn: 'Owner',           type: 'people',   required: true,  tab: 'main',   columnSpan: 1 },
       { key: 'descriptionAr',labelAr: 'الوصف',             labelEn: 'Description',     type: 'textarea', required: false, tab: 'main',   columnSpan: 2 },
       { key: 'attachments', labelAr: 'المرفقات',            labelEn: 'Attachments',     type: 'file',     required: false, tab: 'docs',   columnSpan: 2, multiple: true },
@@ -346,14 +346,11 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'status',      labelAr: 'الحالة',          labelEn: 'Status',       type: 'badge',  statusColors: { active: '#2E7D52', draft: '#78909C', inactive: '#B71C1C' } },
     ],
 
-    // 👇 ADD THIS NEW BLOCK RIGHT HERE 👇
     setupHub: {
       enabled: true,
       hierarchy: [
         {
-          moduleKey: 'SubStrategy',
-          foreignKey: 'strategyAr',
-          children: [{
+
             moduleKey: 'StrategicPillars',
             foreignKey: 'strategyAr',
             children: [
@@ -366,8 +363,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
                     foreignKey: 'linkedObjectiveAr' // Matches the field key in KPIs module
                   }
                 ]
-              }
-            ]
+
           }]
         }
       ]
@@ -574,7 +570,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
   // ── Portfolios ────────────────────────────────────────────────────────────
   Portfolios: {
     key: 'Portfolios',
-    nameAr: 'الحوافظ',
+    nameAr: 'المحافظ',
     nameEn: 'Portfolios',
     icon: 'Briefcase',
     workspace: null,
@@ -584,7 +580,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'items', labelAr: 'العناصر',            labelEn: 'Items'     },
     ],
     fields: [
-      { key: 'nameAr',      labelAr: 'اسم الحافظة',   labelEn: 'Portfolio Name',  type: 'text',     required: true,  tab: 'main', columnSpan: 1 },
+      { key: 'nameAr',      labelAr: 'اسم المحفظة',   labelEn: 'Portfolio Name',  type: 'text',     required: true,  tab: 'main', columnSpan: 1 },
       { key: 'ownerAr',     labelAr: 'المسؤول',       labelEn: 'Owner',           type: 'people',   required: true,  tab: 'main', columnSpan: 1 },
       { key: 'fromYear',    labelAr: 'من سنة',        labelEn: 'From Year',       type: 'select',   required: true,  tab: 'main', columnSpan: 1, options: YEAR_OPTIONS },
       { key: 'toYear',      labelAr: 'إلى سنة',       labelEn: 'To Year',         type: 'select',   required: true,  tab: 'main', columnSpan: 1, options: YEAR_OPTIONS },
@@ -593,7 +589,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     ],
     columns: [
       { key: 'code',        labelAr: 'الكود',         labelEn: 'Code',         type: 'text',     sortable: true, width: '130px' },
-      { key: 'nameAr',      labelAr: 'الحافظة',       labelEn: 'Portfolio',    type: 'text',     sortable: true },
+      { key: 'nameAr',      labelAr: 'المحفظة',       labelEn: 'Portfolio',    type: 'text',     sortable: true },
       { key: 'ownerAr',     labelAr: 'المسؤول',       labelEn: 'Owner',        type: 'people' },
       { key: 'programsCount',labelAr: 'البرامج',      labelEn: 'Programs',     type: 'number' },
       { key: 'projectsCount',labelAr: 'المشاريع',     labelEn: 'Projects',     type: 'number' },
@@ -617,7 +613,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     ],
     fields: [
       { key: 'nameAr',      labelAr: 'اسم البرنامج',    labelEn: 'Program Name',  type: 'text',     required: true,  tab: 'main', columnSpan: 1 },
-      { key: 'portfolioAr', labelAr: 'الحافظة',         labelEn: 'Portfolio',     type: 'select',   required: false, tab: 'main', columnSpan: 1, options: [] },
+      { key: 'portfolioAr', labelAr: 'المحفظة',         labelEn: 'Portfolio',     type: 'select',   required: false, tab: 'main', columnSpan: 1, options: [] },
       { key: 'ownerAr',     labelAr: 'المسؤول',         labelEn: 'Owner',         type: 'people',   required: true,  tab: 'main', columnSpan: 1 },
       { key: 'fromDate',    labelAr: 'تاريخ البدء',     labelEn: 'Start Date',    type: 'date',     required: true,  tab: 'main', columnSpan: 1 },
       { key: 'toDate',      labelAr: 'تاريخ الانتهاء',  labelEn: 'End Date',      type: 'date',     required: true,  tab: 'main', columnSpan: 1 },
@@ -627,7 +623,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     columns: [
       { key: 'code',        labelAr: 'الكود',       labelEn: 'Code',     type: 'text',     sortable: true, width: '130px' },
       { key: 'nameAr',      labelAr: 'البرنامج',    labelEn: 'Program',  type: 'text',     sortable: true },
-      { key: 'portfolioAr', labelAr: 'الحافظة',     labelEn: 'Portfolio',type: 'text' },
+      { key: 'portfolioAr', labelAr: 'المحفظة',     labelEn: 'Portfolio',type: 'text' },
       { key: 'ownerAr',     labelAr: 'المسؤول',     labelEn: 'Owner',    type: 'people' },
       { key: 'projectsCount',labelAr: 'المشاريع',   labelEn: 'Projects', type: 'number' },
       { key: 'budget',      labelAr: 'الميزانية',   labelEn: 'Budget',   type: 'currency' },
@@ -715,7 +711,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     ],
     fields: [
       { key: 'nameAr',           labelAr: 'الاسم',              labelEn: 'Name',              type: 'text',   required: true,  tab: 'main',       columnSpan: 1 },
-      { key: 'type',             labelAr: 'النوع',              labelEn: 'Type',              type: 'select', required: true,  tab: 'main',       columnSpan: 1, options: [{ value: 'government', labelAr: 'حكومي', labelEn: 'Government' }, { value: 'internal', labelAr: 'داخلي', labelEn: 'Internal' }, { value: 'external', labelAr: 'خارجي', labelEn: 'External' }, { value: 'private', labelAr: 'خاص', labelEn: 'Private' }] },
+      { key: 'type',             labelAr: 'النوع',              labelEn: 'Type',              type: 'select', required: true,  tab: 'main',       columnSpan: 1, options: [{ value: 'government', labelAr: 'حكومي', labelEn: 'Government' }, { value: 'internal', labelAr: 'استراتيجي', labelEn: 'Internal' }, { value: 'external', labelAr: 'خارجي', labelEn: 'External' }, { value: 'private', labelAr: 'خاص', labelEn: 'Private' }] },
       { key: 'roleAr',           labelAr: 'الدور',              labelEn: 'Role',              type: 'text',   required: false, tab: 'main',       columnSpan: 1 },
       { key: 'contactPerson',    labelAr: 'شخص التواصل',        labelEn: 'Contact Person',    type: 'people', required: false, tab: 'main',       columnSpan: 1 },
       { key: 'email',            labelAr: 'البريد الإلكتروني',  labelEn: 'Email',             type: 'email',  required: false, tab: 'main',       columnSpan: 1 },

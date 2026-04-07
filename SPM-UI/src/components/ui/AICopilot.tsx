@@ -23,7 +23,7 @@ export default function AICopilot() {
       id: 'welcome',
       sender: 'ai',
       text: t(
-        'مرحباً بك! أنا مساعدك الذكي. يمكنك إرفاق مستند استراتيجية أو أهداف، وسأقوم ببناء الهيكل نيابة عنك.',
+        'مرحباً بك! أنا مساعدك الذكي. يمكنك إرفاق مستند استراتيجية أو أهداف، وسأقوم ببناء القالب نيابة عنك.',
         'Hello! I am your AI Assistant. Attach a strategy or objectives document, and I will build the hierarchy for you.'
       )
     }
@@ -59,7 +59,7 @@ export default function AICopilot() {
         id: (Date.now() + 1).toString(),
         sender: 'ai',
         text: t(
-          'قمت بتحليل المستند. وجدت استراتيجية واحدة، ركيزتين، و3 أهداف. هل توافق على هذا الهيكل؟',
+          'قمت بتحليل المستند. وجدت استراتيجية واحدة، ركيزتين، و3 أهداف. هل توافق على هذا القالب؟',
           'I analyzed the document. I found 1 Strategy, 2 Pillars, and 3 Objectives. Do you approve this structure?'
         ),
         isProposal: true // This triggers the special interactive card
@@ -182,7 +182,7 @@ export default function AICopilot() {
                       <div style={{ marginTop: '12px', width: '95%', background: '#ffffff', border: '1px solid #147a6d', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 4px 12px rgba(20, 122, 109, 0.1)' }}>
                         <div style={{ background: '#e6f2f0', padding: '10px 16px', borderBottom: '1px solid #147a6d', display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <Sparkles size={14} color="#147a6d" />
-                          <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#147a6d' }}>{t('مقترح الهيكل', 'Structure Proposal')}</span>
+                          <span style={{ fontSize: '13px', fontWeight: 'bold', color: '#147a6d' }}>{t('مقترح القالب', 'Structure Proposal')}</span>
                         </div>
                         <div style={{ padding: '16px' }}>
                           <p style={{ margin: '0 0 4px 0', fontSize: '14px', fontWeight: 'bold', color: '#1f2937' }}>{t('الاستراتيجية', 'Strategy')}</p>

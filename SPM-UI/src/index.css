@@ -787,7 +787,7 @@ html, body {
   align-items: flex-start;
 }
 .pure-hero-banner.primary {
-  background: linear-gradient(to left, #166534, #15803d); /* Green theme for Projects */
+  background: linear-gradient(to left, #147a6d , #0a433b ); /* Green theme for Projects */
 }
 .pure-hero-title { font-size: 20px; font-weight: 900; margin: 8px 0 4px 0; line-height: 1.2; }
 .pure-hero-subtitle { font-size: 14px; opacity: 0.8; margin: 0; }

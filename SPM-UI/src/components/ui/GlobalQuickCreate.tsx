@@ -72,7 +72,7 @@ const hubModules = (Object.values(MODULE_CONFIGS) as any[]).filter(m => m && m.s
 
     // 3. Persist and Redirect
     persistData();
-    showToast('تم إنشاء الهيكل السريع بنجاح', 'Quick Hierarchy created successfully');
+    showToast('تم إنشاء القالب السريع بنجاح', 'Quick Hierarchy created successfully');
     handleReset();
 
     // Jump straight to the Hub so they can see it!
@@ -105,7 +105,7 @@ const hubModules = (Object.values(MODULE_CONFIGS) as any[]).filter(m => m && m.s
       <Modal
         open={isOpen}
         onClose={handleReset}
-        titleAr="الإنشاء السريع للهيكل"
+        titleAr="الإنشاء السريع للقالب"
         titleEn="Quick Hierarchy Builder"
         size="md"
         footer={
@@ -121,7 +121,7 @@ const hubModules = (Object.values(MODULE_CONFIGS) as any[]).filter(m => m && m.s
 
           {/* Step 1: Select Type */}
           <div className="pure-input-group">
-            <label className="pure-label">{t('نوع الهيكل', 'Hierarchy Type')}</label>
+            <label className="pure-label">{t('نوع القالب', 'Hierarchy Type')}</label>
             <select
               className="pure-input"
               value={selectedModuleKey}
