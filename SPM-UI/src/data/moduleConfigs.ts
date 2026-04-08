@@ -285,7 +285,7 @@ const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'classificationAr', labelAr: 'تصنيف المؤشر',           labelEn: 'Classification',       type: 'select',  required: true,  tab: 'main',       columnSpan: 1, options: KPI_CLASSIFICATION_OPTIONS },
       { key: 'fromYear',         labelAr: 'من سنة',                 labelEn: 'From Year',            type: 'select',  required: true,  tab: 'main',       columnSpan: 1, options: YEAR_OPTIONS },
       { key: 'toYear',           labelAr: 'إلى سنة',                labelEn: 'To Year',              type: 'select',  required: true,  tab: 'main',       columnSpan: 1, options: YEAR_OPTIONS },
-      { key: 'descriptionAr',    labelAr: 'وصف المؤشر',             labelEn: 'KPI Description',      type: 'textarea',required: false, tab: 'main',       columnSpan: 2, maxLength: 5000 },
+      { key: 'descriptionAr',    labelAr: 'وصف المؤشر',             labelEn: 'KPI Description',      type: 't',required: false, tab: 'main',       columnSpan: 2, maxLength: 5000 },
       { key: 'externalFactorsAr',labelAr: 'العوامل الخارجية',       labelEn: 'External Factors',     type: 'textarea',required: false, tab: 'main',       columnSpan: 2 },
       { key: 'ownerAr',          labelAr: 'مالك المؤشر',            labelEn: 'KPI Owner',            type: 'people',  required: true,  tab: 'main',       columnSpan: 1 },
       { key: 'linkedObjectiveAr',labelAr: 'المؤشر الرابط',          labelEn: 'Linked Objective',     type: 'select',  required: false, tab: 'main',       columnSpan: 1, options: [] },
