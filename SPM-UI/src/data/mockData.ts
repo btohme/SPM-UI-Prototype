@@ -12,7 +12,7 @@ export const MOCK_USERS = [
 ];
 
 export const MOCK_DATA: Record<string, any[]> = {
-  // 1. Strategies (الاستراتيجيات)
+  // 1. STRATEGIES (الاستراتيجيات)
   Strategies: [
     {
       id: 'strat-1',
@@ -28,7 +28,7 @@ export const MOCK_DATA: Record<string, any[]> = {
     }
   ],
 
-  // 2. Objectives (الأهداف الاستراتيجية)
+  // 2. OBJECTIVES (الأهداف الاستراتيجية)
   Objectives: [
     {
       id: 'obj-1',
@@ -128,7 +128,7 @@ export const MOCK_DATA: Record<string, any[]> = {
       risks: 'عدم تحديث قاعدة بيانات المستفيدين بشكل دوري',
       externalFactors: 'التغيرات الاقتصادية العالمية والتضخم',
       assumptions: 'استقرار الأوضاع الاقتصادية واستمرار برامج الدعم',
-      relatedMainKPIs: 'opt1',
+      relatedMainKpis: 'opt1',
       externalKpiOwner: 'الهيئة العامة للإحصاء',
       owner: 'u5', // Represents kabdelhadi from mock users
       performanceLeader: 'u2', // Represents sjamil or another user
@@ -243,7 +243,9 @@ export const fetchMockData = (moduleKey: string) => {
 };
 
 // Function to mock saving or updating data in the store
-export const persistData = (moduleKey: string, item: any) => {
+export const persistData = (moduleKey?: string, item?: any) => {
+  if (!moduleKey || !item) return null; // Safely handle calls with zero arguments
+  
   if (!MOCK_DATA[moduleKey]) {
     MOCK_DATA[moduleKey] = [];
   }

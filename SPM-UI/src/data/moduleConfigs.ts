@@ -1,7 +1,7 @@
 import type { ModuleConfig, SelectOption } from '../types';
 
 // ─── Common Option Sets ────────────────────────────────────────────────────
-const STATUS_OPTIONS: SelectOption[] = [
+export const STATUS_OPTIONS: SelectOption[] = [
   { value: 'active',       labelAr: 'نشط',          labelEn: 'Active',       color: '#2E7D52' },
   { value: 'draft',        labelAr: 'مسودة',         labelEn: 'Draft',        color: '#78909C' },
   { value: 'inactive',     labelAr: 'غير نشط',       labelEn: 'Inactive',     color: '#B0BEC5' },
@@ -44,7 +44,7 @@ export const PERIOD_TYPES: SelectOption[] = [
   { value: 'annual', labelAr: 'سنوي', labelEn: 'Annual' },
 ];
 
-const PROJECT_STATUS_OPTIONS: SelectOption[] = [
+export const PROJECT_STATUS_OPTIONS: SelectOption[] = [
   { value: 'new',          labelAr: 'جديد',           labelEn: 'New',          color: '#1565C0' },
   { value: 'preparation',  labelAr: 'الإعداد',        labelEn: 'Preparation',  color: '#283593' },
   { value: 'planning',     labelAr: 'التخطيط',        labelEn: 'Planning',     color: '#006064' },
@@ -55,7 +55,7 @@ const PROJECT_STATUS_OPTIONS: SelectOption[] = [
   { value: 'on_hold',      labelAr: 'معلق',           labelEn: 'On Hold',      color: '#E65100' },
 ];
 
-const COMPLETION_STATUS_OPTIONS: SelectOption[] = [
+export const COMPLETION_STATUS_OPTIONS: SelectOption[] = [
   { value: 'not_started',  labelAr: 'لم يبدأ',        labelEn: 'Not Started',  color: '#78909C' },
   { value: 'in_progress',  labelAr: 'جاري',           labelEn: 'In Progress',  color: '#1565C0' },
   { value: 'on_track',     labelAr: 'على المسار',     labelEn: 'On Track',     color: '#2E7D52' },
@@ -64,13 +64,13 @@ const COMPLETION_STATUS_OPTIONS: SelectOption[] = [
   { value: 'completed',    labelAr: 'مكتمل',          labelEn: 'Completed',    color: '#2E7D32' },
 ];
 
-const RISK_LEVEL_OPTIONS: SelectOption[] = [
+export const RISK_LEVEL_OPTIONS: SelectOption[] = [
   { value: 'low',    labelAr: 'منخفض', labelEn: 'Low',    color: '#2E7D52' },
   { value: 'medium', labelAr: 'متوسط', labelEn: 'Medium', color: '#F57F17' },
   { value: 'high',   labelAr: 'مرتفع', labelEn: 'High',   color: '#B71C1C' },
 ];
 
-const PROBABILITY_OPTIONS: SelectOption[] = [
+export const PROBABILITY_OPTIONS: SelectOption[] = [
   { value: 'very_low',  labelAr: 'منخفض جداً', labelEn: 'Very Low',  color: '#2E7D52' },
   { value: 'low',       labelAr: 'منخفض',      labelEn: 'Low',       color: '#66BB6A' },
   { value: 'medium',    labelAr: 'متوسط',      labelEn: 'Medium',    color: '#F57F17' },
@@ -78,44 +78,44 @@ const PROBABILITY_OPTIONS: SelectOption[] = [
   { value: 'very_high', labelAr: 'مرتفع جداً', labelEn: 'Very High', color: '#B71C1C' },
 ];
 
-const PRIORITY_OPTIONS: SelectOption[] = [
+export const PRIORITY_OPTIONS: SelectOption[] = [
   { value: 'low',    labelAr: 'منخفض',  labelEn: 'Low',    color: '#78909C' },
   { value: 'medium', labelAr: 'متوسط',  labelEn: 'Medium', color: '#F57F17' },
   { value: 'high',   labelAr: 'عالي',   labelEn: 'High',   color: '#B71C1C' },
   { value: 'urgent', labelAr: 'عاجل',   labelEn: 'Urgent', color: '#880E4F' },
 ];
 
-const YES_NO_OPTIONS: SelectOption[] = [
+export const YES_NO_OPTIONS: SelectOption[] = [
   { value: 'yes', labelAr: 'نعم', labelEn: 'Yes' },
   { value: 'no',  labelAr: 'لا',  labelEn: 'No'  },
 ];
 
-const CATEGORY_OPTIONS: SelectOption[] = [
+export const CATEGORY_OPTIONS: SelectOption[] = [
   { value: 'internal',    labelAr: 'استراتيجي',   labelEn: 'Internal'    },
   { value: 'development', labelAr: 'تشغيلي',   labelEn: 'Development' },
   { value: 'technical',   labelAr: 'تقني',    labelEn: 'Technical'   },
   { value: 'social',      labelAr: 'اجتماعي', labelEn: 'Social'      },
 ];
 
-const OBJECTIVE_LEVEL_OPTIONS: SelectOption[] = [
+export const OBJECTIVE_LEVEL_OPTIONS: SelectOption[] = [
   { value: 'main',          labelAr: 'رئيسي',              labelEn: 'Main'            },
   { value: 'sub_level1',    labelAr: 'فرعي مستوى أول',     labelEn: 'Sub Level 1'     },
   { value: 'sub_level2',    labelAr: 'فرعي مستوى ثاني',    labelEn: 'Sub Level 2'     },
   { value: 'sub_level3',    labelAr: 'فرعي مستوى ثالث',    labelEn: 'Sub Level 3'     },
 ];
 
-const OBJECTIVE_TYPE_OPTIONS: SelectOption[] = [
+export const OBJECTIVE_TYPE_OPTIONS: SelectOption[] = [
   { value: 'strategic',    labelAr: 'استراتيجي',  labelEn: 'Strategic'   },
   { value: 'operational',  labelAr: 'تشغيلي',     labelEn: 'Operational' },
   { value: 'tactical',     labelAr: 'تكتيكي',     labelEn: 'Tactical'    },
 ];
 
-const KPI_TYPE_OPTIONS: SelectOption[] = [
+export const KPI_TYPE_OPTIONS: SelectOption[] = [
   { value: 'strategic',   labelAr: 'استراتيجي',  labelEn: 'Strategic'   },
   { value: 'operational', labelAr: 'تشغيلي',     labelEn: 'Operational' },
 ];
 
-const KPI_CLASSIFICATION_OPTIONS: SelectOption[] = [
+export const KPI_CLASSIFICATION_OPTIONS: SelectOption[] = [
   { value: 'growth',      labelAr: 'النمو (القدرات الرئيسية)', labelEn: 'Growth (Core Capabilities)' },
   { value: 'performance', labelAr: 'الأداء',   labelEn: 'Performance' },
   { value: 'quality',     labelAr: 'الجودة',   labelEn: 'Quality'     },
@@ -123,42 +123,42 @@ const KPI_CLASSIFICATION_OPTIONS: SelectOption[] = [
   { value: 'productivity',labelAr: 'الإنتاجية',labelEn: 'Productivity'},
 ];
 
-const FREQUENCY_OPTIONS: SelectOption[] = [
+export const FREQUENCY_OPTIONS: SelectOption[] = [
   { value: 'monthly',    labelAr: 'شهري',      labelEn: 'Monthly'    },
   { value: 'quarterly',  labelAr: 'ربع سنوي',  labelEn: 'Quarterly'  },
   { value: 'semi_annual',labelAr: 'نصف سنوي',  labelEn: 'Semi-Annual'},
   { value: 'annual',     labelAr: 'سنوي',      labelEn: 'Annual'     },
 ];
 
-const TASK_STATUS_OPTIONS: SelectOption[] = [
+export const TASK_STATUS_OPTIONS: SelectOption[] = [
   { value: 'pending',     labelAr: 'معلق',     labelEn: 'Pending',      color: '#F57F17' },
   { value: 'in_progress', labelAr: 'جاري',     labelEn: 'In Progress',  color: '#1565C0' },
   { value: 'completed',   labelAr: 'مكتمل',    labelEn: 'Completed',    color: '#2E7D32' },
   { value: 'cancelled',   labelAr: 'ملغى',     labelEn: 'Cancelled',    color: '#B71C1C' },
 ];
 
-const SEVERITY_OPTIONS: SelectOption[] = [
+export const SEVERITY_OPTIONS: SelectOption[] = [
   { value: 'low',      labelAr: 'منخفض', labelEn: 'Low',      color: '#2E7D52' },
   { value: 'medium',   labelAr: 'متوسط', labelEn: 'Medium',   color: '#F57F17' },
   { value: 'high',     labelAr: 'مرتفع', labelEn: 'High',     color: '#EF5350' },
   { value: 'critical', labelAr: 'حرج',   labelEn: 'Critical', color: '#B71C1C' },
 ];
 
-const ISSUE_STATUS_OPTIONS: SelectOption[] = [
+export const ISSUE_STATUS_OPTIONS: SelectOption[] = [
   { value: 'open',        labelAr: 'مفتوح',       labelEn: 'Open',        color: '#B71C1C' },
   { value: 'in_progress', labelAr: 'قيد المعالجة',labelEn: 'In Progress', color: '#1565C0' },
   { value: 'resolved',    labelAr: 'محلول',       labelEn: 'Resolved',    color: '#2E7D32' },
   { value: 'closed',      labelAr: 'مغلق',        labelEn: 'Closed',      color: '#78909C' },
 ];
 
-const MILESTONE_STATUS_OPTIONS: SelectOption[] = [
+export const MILESTONE_STATUS_OPTIONS: SelectOption[] = [
   { value: 'not_started',  labelAr: 'لم يبدأ',   labelEn: 'Not Started',  color: '#78909C' },
   { value: 'in_progress',  labelAr: 'جاري',      labelEn: 'In Progress',  color: '#1565C0' },
   { value: 'completed',    labelAr: 'مكتمل',     labelEn: 'Completed',    color: '#2E7D32' },
   { value: 'delayed',      labelAr: 'متأخر',     labelEn: 'Delayed',      color: '#B71C1C' },
 ];
 
-const YEAR_OPTIONS: SelectOption[] = Array.from({ length: 20 }, (_, i) => {
+export const YEAR_OPTIONS: SelectOption[] = Array.from({ length: 20 }, (_, i) => {
   const y = (2020 + i).toString();
   return { value: y, labelAr: y, labelEn: y };
 });
@@ -196,7 +196,7 @@ export const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'scope',       labelAr: 'نطاق العمل',                labelEn: 'Scope of Work',      type: 'select', required: true,  tab: 'details',    columnSpan: 2, options: CATEGORY_OPTIONS },
       { key: 'budget',      labelAr: 'الميزانية المعتمدة',        labelEn: 'Approved Budget',    type: 'currency',required: false, tab: 'details',   columnSpan: 1 },
       { key: 'status',      labelAr: 'الحالة',                    labelEn: 'Status',             type: 'select', required: true,  tab: 'details',    columnSpan: 1, options: PROJECT_STATUS_OPTIONS },
-      { key: 'ownerAr',     labelAr: ' مدير المشروع',              labelEn: 'Project Manager',    type: 'people', required: true,  tab: 'org',        columnSpan: 1 },
+      { key: 'ownerAr',     labelAr: 'مدير المشروع',              labelEn: 'Project Manager',    type: 'people', required: true,  tab: 'org',        columnSpan: 1 },
       { key: 'departmentAr',labelAr: 'الإدارة العامة',            labelEn: 'General Department', type: 'text',   required: false, tab: 'org',        columnSpan: 1 },
       { key: 'unitAr',      labelAr: 'الوحدة',                    labelEn: 'Unit',               type: 'text',   required: false, tab: 'org',        columnSpan: 1 },
       { key: 'programAr',   labelAr: 'البرنامج',                  labelEn: 'Program',            type: 'select', required: false, tab: 'org',        columnSpan: 1, options: GENERIC_SELECT_OPTIONS },
@@ -265,6 +265,9 @@ export const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     key: 'Strategies',
     nameAr: 'الاستراتيجيات',
     nameEn: 'Strategies',
+    icon: 'Target',
+    workspace: null,
+    codePrefix: 'STR',
     tabs: [
       { key: 'main', labelAr: 'البيانات الرئيسية', labelEn: 'Basic Info' },
       { key: 'details', labelAr: 'التفاصيل', labelEn: 'Details' }
@@ -295,6 +298,9 @@ export const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     key: 'Objectives',
     nameAr: 'الأهداف الاستراتيجية',
     nameEn: 'Strategic Objectives',
+    icon: 'Crosshair',
+    workspace: null,
+    codePrefix: 'OBJ',
     tabs: [
       { key: 'main', labelAr: 'البيانات الرئيسية', labelEn: 'Basic Info' },
       { key: 'owners', labelAr: 'المالك والمعنيين', labelEn: 'Owners & Stakeholders' }
@@ -331,9 +337,9 @@ export const MODULE_CONFIGS: Record<string, ModuleConfig> = {
     key: 'KPIs',
     nameAr: 'إدارة المؤشرات',
     nameEn: 'KPIs Management',
-    icon: 'BarChart2',
-    workspace: 'global',
-    codePrefix: 'KP',
+    icon: 'TrendingUp',
+    workspace: null,
+    codePrefix: 'KPI',
     tabs: [
       { key: 'main', labelAr: 'البيانات الرئيسية', labelEn: 'Basic Info' },
       { key: 'details', labelAr: 'التفاصيل', labelEn: 'Details' },
@@ -359,7 +365,7 @@ export const MODULE_CONFIGS: Record<string, ModuleConfig> = {
       { key: 'risks', labelAr: 'المخاطر', labelEn: 'Risks', type: 'textarea', required: false, tab: 'details', columnSpan: 2 },
       { key: 'externalFactors', labelAr: 'عوامل خارجية', labelEn: 'External Factors', type: 'textarea', required: false, tab: 'details', columnSpan: 2 },
       { key: 'assumptions', labelAr: 'الافتراضات', labelEn: 'Assumptions', type: 'textarea', required: false, tab: 'details', columnSpan: 2 },
-      { key: 'relatedMainKPIs', labelAr: 'المؤشرات الرئيسية المرتبطة', labelEn: 'Related Main KPIs', type: 'select', options: GENERIC_SELECT_OPTIONS, required: false, tab: 'details', columnSpan: 1 },
+      { key: 'relatedMainKpis', labelAr: 'المؤشرات الرئيسية المرتبطة', labelEn: 'Related Main KPIs', type: 'select', options: GENERIC_SELECT_OPTIONS, required: false, tab: 'details', columnSpan: 1 },
 
       // Owners Tab
       { key: 'externalKpiOwner', labelAr: 'مالك المؤشر الخارجي', labelEn: 'External KPI Owner', type: 'text', required: false, tab: 'owners', columnSpan: 1 },
